@@ -35,3 +35,20 @@ Use `.tmp/jira/` as local source of truth for generated plan artifacts.
 - Acceptance criteria met.
 - Relevant tests added/updated.
 - Review and fixes recorded.
+
+## AI Content Workflows
+Reusable prompts live in `docs/ai/prompts/`.
+
+Use them when adding Berlin content, expanding a section, or adapting the project to another destination:
+- `docs/ai/prompts/alternative-place-expansion.md`: intensive research workflow for alternative/local/friend-style places, live music, vegan food, street art, autonomous spaces and nightlife.
+- `docs/ai/prompts/place-fact-check.md`: one-by-one enrichment and verification checklist for existing place fichas.
+- `docs/ai/prompts/new-destination-seed.md`: seed workflow for reusing this architecture for another city.
+
+Content rules:
+- Search current web sources before adding modern venues, events, restaurants or opening hours.
+- Prefer official/institutional sources for verified facts.
+- Use social media, Reddit, RA, Google/Maps and local guides as discovery signals, then verify via original source when possible.
+- Represent dynamic venues/events as `needs_verification`.
+- Never leave visible placeholder copy in fichas. If exact hours are variable, provide useful event-driven guidance and the source to check.
+- For autonomous/squatted spaces, write respectful guidance: event-only when appropriate, no intrusive tourism, no treating residential/political projects as attractions.
+- Embedded images require a clear license, ownership or permission. Google Images is discovery only, not a license source.

@@ -2,7 +2,7 @@ import type { NightlifeEvent } from "@/domain/event";
 import type { ItineraryDay } from "@/domain/itinerary";
 import type { Place, PlaceImage } from "@/domain/place";
 
-const foodMetadataCategories = new Set(["vegetarian", "restaurant", "cafe", "bakery"]);
+const foodMetadataCategories = new Set(["vegetarian", "restaurant", "cafe", "bakery", "supermarket"]);
 
 function hasValidUrl(value: string): boolean {
   try {

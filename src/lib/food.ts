@@ -2,7 +2,7 @@ import { itinerary } from "@/data/itinerary";
 import type { ItineraryDay } from "@/domain/itinerary";
 import type { AreaUseCase, Place } from "@/domain/place";
 
-export const foodCategories = ["vegetarian", "restaurant", "cafe", "bakery", "market"] as const;
+export const foodCategories = ["vegetarian", "restaurant", "cafe", "bakery", "market", "supermarket"] as const;
 
 export function isFoodPlace(place: Place): boolean {
   return foodCategories.includes(place.category as (typeof foodCategories)[number]);

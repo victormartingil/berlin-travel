@@ -58,6 +58,7 @@ Reusable prompts live in `docs/ai/prompts/`.
 
 Use them when adding Berlin content, expanding a section, or adapting the project to another destination:
 - `docs/ai/prompts/alternative-place-expansion.md`: intensive research workflow for alternative/local/friend-style places, live music, vegan food, street art, autonomous spaces and nightlife.
+- `docs/ai/prompts/context-culture-news-media.md`: research and writing workflow for history, sociopolitical context, current affairs, books, films, documentaries, newspapers and alternative magazines.
 - `docs/ai/prompts/place-fact-check.md`: one-by-one enrichment and verification checklist for existing place fichas.
 - `docs/ai/prompts/static-site-implementation-review.md`: implementation/review workflow for GitHub Pages, internal links, i18n, map popups, tests and production readiness.
 - `docs/ai/prompts/new-destination-seed.md`: seed workflow for reusing this architecture for another city.
@@ -72,6 +73,9 @@ Content rules:
 - For dated events, capture exact time, venue, price, lineup, ticket/source URL and flyer/source link when the original source provides them.
 - For autonomous/squatted spaces, write respectful guidance: event-only when appropriate, no intrusive tourism, no treating residential/political projects as attractions.
 - Embedded images require a clear license, ownership or permission. Google Images is discovery only, not a license source.
+- Wikipedia can be used for orientation and cross-checking, but final copy must be original synthesis with source links, not copied text.
+- Current-affairs content must include publication dates, distinguish Berlin-local issues from Germany-wide issues, and avoid presenting opinion as fact.
+- Cultural recommendations must link to stable reference pages where possible: IMDb/TMDb/official distributor for films and documentaries; Open Library/WorldCat/publisher pages for books.
 
 ## Itinerary And Internal Linking Rules
 - The itinerary is a route guide first. Food is useful support, not the main structure unless the block is explicitly about food.
@@ -87,6 +91,8 @@ Content rules:
 - Do not leave vague placeholders such as "check official source before going" as the only opening-hours content. If exact hours are dynamic, write the operational pattern and link the source to verify.
 - For events on trip dates, store concrete details only when sourced: date, start time, end time when available, venue, lineup, style, price, ticket URL, source URL and poster/flyer source URL.
 - Do not add places just to increase count. Add more only when they are top-tier, repeatedly recommended, friend-recommended, or clearly useful as a backup by area/weather/energy.
+- Context/history/current-affairs sections should be short, lively and useful for travelling: explain what the visitor will notice in the city, why it matters, and how it connects to neighbourhoods or places in the guide.
+- Do not make the app feel like an encyclopedia. Use expandable cards, timelines, "why it matters" notes, and media recommendations instead of long walls of text.
 
 ## Commit And Push Checklist
 - Run `npm run lint && npm run typecheck && npm run test && npm run build`.

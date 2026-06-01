@@ -23,6 +23,7 @@ Steps:
 
 Reuse these Berlin project prompts as implementation guardrails:
 - `alternative-place-expansion.md` for intensive local/alternative/content research.
+- `context-culture-news-media.md` for history, current affairs, media, books, films and documentary context.
 - `place-fact-check.md` for one-by-one ficha enrichment.
 - `static-site-implementation-review.md` for static export, route, link, map, i18n and deployment checks.
 
@@ -32,3 +33,4 @@ Destination setup checklist:
 - Keep Google Maps as external navigation; keep internal fichas as the main detail experience.
 - Store content in typed data files, not hardcoded UI.
 - Treat event listings and opening hours as time-sensitive unless verified from current official sources.
+- Treat current-affairs sections as dated snapshots with refresh dates, not evergreen truth.

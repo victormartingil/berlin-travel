@@ -1,0 +1,35 @@
+{
+  "id": "stable-human-readable-id",
+  "name": "Place name",
+  "category": "restaurant",
+  "secondaryCategories": ["cafe"],
+  "description": "Full description.",
+  "shortDescription": "Short card description.",
+  "neighbourhood": "Kreuzberg",
+  "address": "Street address",
+  "coordinates": {
+    "lat": 52.0,
+    "lng": 13.0
+  },
+  "priceLevel": "medium",
+  "vegetarianFriendly": true,
+  "mealTypes": ["lunch", "dinner"],
+  "estimatedDurationMinutes": 90,
+  "openingHoursSummary": "To be verified",
+  "bookingRecommended": false,
+  "tags": ["vegetarian", "casual"],
+  "links": {
+    "official": "https://example.com",
+    "googleMaps": "https://www.google.com/maps/search/?api=1&query=...",
+    "instagram": "https://instagram.com/...",
+    "source": "https://example.com/source"
+  },
+  "verification": {
+    "status": "needs_verification",
+    "sourceUrl": "https://example.com/source",
+    "officialUrl": "https://example.com",
+    "lastVerifiedAt": "2026-06-01",
+    "notes": "Explain what has or has not been verified."
+  },
+  "notes": ["Optional practical note"]
+}

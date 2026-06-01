@@ -1,0 +1,32 @@
+[
+  {
+    "id": "day-2026-06-10",
+    "date": "2026-06-10",
+    "title": "Arrival and Kreuzberg orientation",
+    "summary": "Light arrival day focused on settling in, walking around Moritzplatz/Kreuzberg and having an easy vegetarian dinner.",
+    "neighbourhoodFocus": ["Kreuzberg", "Moritzplatz"],
+    "blocks": [
+      {
+        "id": "day-2026-06-10-evening",
+        "type": "evening",
+        "title": "Arrival walk",
+        "description": "Short walk around the accommodation area to get oriented.",
+        "items": [
+          {
+            "id": "arrival-accommodation-checkin",
+            "title": "Check in and settle",
+            "placeId": "accommodation-nena-moritzplatz",
+            "priority": "must"
+          },
+          {
+            "id": "arrival-light-dinner",
+            "title": "Easy vegetarian dinner nearby",
+            "description": "Choose from verified nearby vegetarian-friendly options once content is finalized.",
+            "priority": "recommended",
+            "tags": ["food", "vegetarian", "nearby"]
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,42 @@
+{
+  "id": "day-2026-06-10",
+  "date": "2026-06-10",
+  "title": "Day title",
+  "summary": "Short summary of the day.",
+  "neighbourhoodFocus": ["Kreuzberg"],
+  "blocks": [
+    {
+      "id": "day-2026-06-10-morning",
+      "type": "morning",
+      "title": "Morning block title",
+      "description": "Block description.",
+      "items": [
+        {
+          "id": "item-id",
+          "title": "Item title",
+          "description": "Item description.",
+          "placeId": "optional-place-id",
+          "startTime": "10:00",
+          "endTime": "12:00",
+          "estimatedDurationMinutes": 120,
+          "transport": {
+            "from": "Accommodation",
+            "to": "Destination",
+            "mode": "transit",
+            "summary": "Use public transport or walk depending on weather.",
+            "googleMapsUrl": "https://www.google.com/maps/dir/?api=1&origin=...&destination=...&travelmode=transit"
+          },
+          "links": [
+            {
+              "label": "Official site",
+              "url": "https://example.com",
+              "kind": "official"
+            }
+          ],
+          "tags": ["culture", "walk"],
+          "priority": "recommended"
+        }
+      ]
+    }
+  ]
+}

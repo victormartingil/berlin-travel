@@ -1,0 +1,42 @@
+[
+  {
+    "id": "accommodation-nena-moritzplatz",
+    "name": "Nena Apartments Moritzplatz by LESA",
+    "category": "accommodation",
+    "description": "Accommodation base for the trip, located around Moritzplatz/Kreuzberg.",
+    "shortDescription": "Trip accommodation in Kreuzberg near Moritzplatz.",
+    "neighbourhood": "Kreuzberg",
+    "address": "Moritzplatz area, Berlin",
+    "coordinates": {
+      "lat": 52.503,
+      "lng": 13.410
+    },
+    "priceLevel": "unknown",
+    "vegetarianFriendly": false,
+    "tags": ["base", "kreuzberg", "moritzplatz"],
+    "links": {
+      "googleMaps": "https://www.google.com/maps/search/?api=1&query=Nena%20Apartments%20Moritzplatz%20Berlin"
+    },
+    "verification": {
+      "status": "needs_verification",
+      "notes": "Coordinates are approximate and should be verified before final publication."
+    }
+  },
+  {
+    "id": "sample-vegetarian-restaurant",
+    "name": "Sample Vegetarian Restaurant",
+    "category": "vegetarian_restaurant",
+    "description": "Placeholder vegetarian restaurant. Replace with verified Berlin data.",
+    "shortDescription": "Placeholder vegetarian option.",
+    "neighbourhood": "Kreuzberg",
+    "priceLevel": "medium",
+    "vegetarianFriendly": true,
+    "mealTypes": ["lunch", "dinner"],
+    "tags": ["vegetarian", "needs-verification"],
+    "links": {},
+    "verification": {
+      "status": "unknown",
+      "notes": "Placeholder item. Replace with verified source."
+    }
+  }
+]

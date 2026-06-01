@@ -22,7 +22,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <LocaleProvider>
             <FavoritesProvider>
               <SiteNav />
-              <main className="mx-auto w-full max-w-6xl px-4 pb-24 pt-6 md:pb-8">{children}</main>
+              <main className="mx-auto w-full max-w-6xl px-4 pb-32 pt-6 lg:pb-8">{children}</main>
             </FavoritesProvider>
           </LocaleProvider>
         </ThemeProvider>

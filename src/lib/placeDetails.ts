@@ -27,6 +27,25 @@ const priceContext = {
   high: { es: "Presupuesto alto: reservarlo para una decision consciente, no por inercia.", en: "High budget: use it as a conscious decision, not by inertia." },
 } as const;
 
+const hoursFallback: Record<Place["category"], LocalizedText> = {
+  accommodation: { es: "Horario operativo de alojamiento/check-in: confirmar en la reserva.", en: "Accommodation/check-in timing: confirm in the booking." },
+  vegetarian: { es: "Horario no fijado en la ficha: confirmar el mismo dia en la fuente enlazada.", en: "No fixed hours in this card: confirm same-day through the linked source." },
+  restaurant: { es: "Horario no fijado en la ficha: confirmar el mismo dia y reservar si es cena clave.", en: "No fixed hours in this card: confirm same-day and book if it is a key dinner." },
+  cafe: { es: "Horario no fijado en la ficha: usar como comodin solo tras confirmar apertura.", en: "No fixed hours in this card: use as a backup only after confirming opening." },
+  bakery: { es: "Horario no fijado en la ficha: confirmar por la manana antes de desviarse.", en: "No fixed hours in this card: confirm in the morning before detouring." },
+  supermarket: { es: "Horario comercial variable: comprobar antes si es tarde o domingo.", en: "Variable retail hours: check first if it is late or Sunday." },
+  museum: { es: "Horario no fijado en la ficha: revisar exposiciones y franjas antes de ir.", en: "No fixed hours in this card: check exhibitions and slots before going." },
+  gallery: { es: "Horario de exposicion variable: confirmar programa actual antes de ir.", en: "Variable exhibition hours: confirm current program before going." },
+  street_art: { es: "Horario/entrada variable: confirmar condiciones actuales antes del desplazamiento.", en: "Variable hours/access: confirm current conditions before the transfer." },
+  alternative: { es: "Espacio de programa variable: confirmar calendario si vais por un evento concreto.", en: "Variable-program space: confirm the calendar if going for a specific event." },
+  nightlife: { es: "Programa nocturno variable: comprobar evento, puerta y entradas el mismo dia.", en: "Variable nightlife program: check event, door policy and tickets same-day." },
+  park: { es: "Espacio abierto con horarios estacionales: confirmar si vais al amanecer o tarde.", en: "Open space with seasonal hours: confirm if going early or late." },
+  transport: { es: "Nodo de transporte: comprobar servicio en BVG/VBB antes de trayectos criticos.", en: "Transport node: check BVG/VBB before critical transfers." },
+  history: { es: "Horario no fijado en la ficha: confirmar si quereis entrar a centro de visitantes.", en: "No fixed hours in this card: confirm if visiting an indoor visitor centre." },
+  market: { es: "Mercado con calendario variable: confirmar dia y franja antes de mover la ruta.", en: "Market with variable calendar: confirm date and time before moving the route." },
+  club: { es: "Programa y puerta variables: comprobar line-up, preventa y cash/card el mismo dia.", en: "Variable program and door: check line-up, presale and cash/card same-day." },
+};
+
 export function buildPlaceDetailSections(place: Place, locale: "es" | "en") {
   const why = [
     place.story ? t(place.story, locale) : t(place.description, locale),
@@ -35,7 +54,7 @@ export function buildPlaceDetailSections(place: Place, locale: "es" | "en") {
   ];
 
   const practical = [
-    place.openingHours ? t(place.openingHours, locale) : locale === "es" ? "Horarios: revisar fuente oficial antes de ir." : "Hours: check the official source before going.",
+    place.openingHours ? t(place.openingHours, locale) : t(hoursFallback[place.category], locale),
     place.estimatedDuration ? `${locale === "es" ? "Duracion estimada" : "Estimated duration"}: ${place.estimatedDuration}` : null,
     t(priceContext[place.priceLevel], locale),
     place.bookingRecommended ? (locale === "es" ? "Reserva recomendada si es comida/cena o evento clave." : "Booking recommended for meals, dinners or key events.") : null,
@@ -52,4 +71,3 @@ export function buildPlaceDetailSections(place: Place, locale: "es" | "en") {
 
   return { why, practical, signals };
 }
-

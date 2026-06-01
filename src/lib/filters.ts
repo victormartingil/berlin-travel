@@ -1,6 +1,6 @@
 import type { NightlifeEvent } from "@/domain/event";
 import type { Priority, VerificationStatus } from "@/domain/common";
-import type { Place, PlaceCategory, PriceLevel } from "@/domain/place";
+import type { AreaUseCase, DietType, MealType, Place, PlaceCategory, PriceLevel } from "@/domain/place";
 
 export type PlaceFilters = {
   categories: PlaceCategory[];
@@ -8,6 +8,9 @@ export type PlaceFilters = {
   price: PriceLevel | "all";
   verification: VerificationStatus | "all";
   priority: Priority | "all";
+  mealType: MealType | "all";
+  areaUseCase: AreaUseCase | "all";
+  diet: DietType | "all";
   search: string;
 };
 
@@ -17,7 +20,17 @@ export type EventFilters = {
   priority: Priority | "all";
 };
 
-export const defaultPlaceFilters: PlaceFilters = { categories: [], neighbourhood: "all", price: "all", verification: "all", priority: "all", search: "" };
+export const defaultPlaceFilters: PlaceFilters = {
+  categories: [],
+  neighbourhood: "all",
+  price: "all",
+  verification: "all",
+  priority: "all",
+  mealType: "all",
+  areaUseCase: "all",
+  diet: "all",
+  search: "",
+};
 export const defaultEventFilters: EventFilters = { date: "all", intensity: "all", priority: "all" };
 
 export function filterPlaces(items: Place[], f: PlaceFilters): Place[] {
@@ -28,6 +41,9 @@ export function filterPlaces(items: Place[], f: PlaceFilters): Place[] {
     if (f.price !== "all" && p.priceLevel !== f.price) return false;
     if (f.verification !== "all" && p.verification.status !== f.verification) return false;
     if (f.priority !== "all" && p.priority !== f.priority) return false;
+    if (f.mealType !== "all" && !p.mealTypes?.includes(f.mealType)) return false;
+    if (f.areaUseCase !== "all" && !p.areaUseCase?.includes(f.areaUseCase)) return false;
+    if (f.diet !== "all" && p.diet !== f.diet) return false;
     if (q && !`${p.name} ${p.neighbourhood} ${p.tags.join(" ")}`.toLowerCase().includes(q)) return false;
     return true;
   });

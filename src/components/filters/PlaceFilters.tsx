@@ -11,12 +11,14 @@ export function PlaceFilters({
   categories,
   neighbourhoods,
   locale,
+  showFoodFilters = false,
 }: {
   filters: PF;
   setFilters: (f: PF) => void;
   categories: PlaceCategory[];
   neighbourhoods: string[];
   locale: Locale;
+  showFoodFilters?: boolean;
 }) {
   return (
     <div className="grid gap-2 rounded-md border border-zinc-200 bg-white p-3 md:grid-cols-5">
@@ -54,6 +56,33 @@ export function PlaceFilters({
         <option value="unknown">{t(ui.labels.unknown, locale)}</option>
         <option value="outdated">{t(ui.labels.outdated, locale)}</option>
       </select>
+      {showFoodFilters ? (
+        <>
+          <select value={filters.mealType} onChange={(e) => setFilters({ ...filters, mealType: e.target.value as PF["mealType"] })} className="rounded border p-2 text-sm">
+            <option value="all">{locale === "es" ? "Cualquier momento" : "Any moment"}</option>
+            <option value="breakfast">{locale === "es" ? "Desayuno" : "Breakfast"}</option>
+            <option value="brunch">Brunch</option>
+            <option value="lunch">{locale === "es" ? "Comida" : "Lunch"}</option>
+            <option value="dinner">{locale === "es" ? "Cena" : "Dinner"}</option>
+            <option value="quick">{locale === "es" ? "Rapido" : "Quick"}</option>
+            <option value="special">{locale === "es" ? "Especial" : "Special"}</option>
+          </select>
+          <select value={filters.areaUseCase} onChange={(e) => setFilters({ ...filters, areaUseCase: e.target.value as PF["areaUseCase"] })} className="rounded border p-2 text-sm">
+            <option value="all">{locale === "es" ? "Cualquier contexto" : "Any context"}</option>
+            <option value="near_base">{locale === "es" ? "Cerca base" : "Near base"}</option>
+            <option value="near_museum">{locale === "es" ? "Post-museo" : "Near museum"}</option>
+            <option value="near_market">{locale === "es" ? "Mercados/ruta" : "Near market"}</option>
+            <option value="near_club">{locale === "es" ? "Pre/post club" : "Near club"}</option>
+            <option value="destination_worthy">{locale === "es" ? "Merece desvio" : "Worth a detour"}</option>
+          </select>
+          <select value={filters.diet} onChange={(e) => setFilters({ ...filters, diet: e.target.value as PF["diet"] })} className="rounded border p-2 text-sm">
+            <option value="all">{locale === "es" ? "Cualquier dieta" : "Any diet"}</option>
+            <option value="vegan">Vegan</option>
+            <option value="vegetarian">Vegetarian</option>
+            <option value="vegan_options">{locale === "es" ? "Opciones veganas" : "Vegan options"}</option>
+          </select>
+        </>
+      ) : null}
       <div className="flex flex-wrap gap-2 md:col-span-5">
         {categories.map((c) => {
           const active = filters.categories.includes(c);

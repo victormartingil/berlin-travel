@@ -9,12 +9,29 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { t, ui } from "@/lib/i18n";
 import { buildGoogleMapsPlaceUrl } from "@/lib/maps";
 
+const mealLabels = {
+  breakfast: { es: "desayuno", en: "breakfast" },
+  brunch: { es: "brunch", en: "brunch" },
+  lunch: { es: "comida", en: "lunch" },
+  dinner: { es: "cena", en: "dinner" },
+  quick: { es: "rapido", en: "quick" },
+  special: { es: "especial", en: "special" },
+} as const;
+
+const areaLabels = {
+  near_base: { es: "cerca base", en: "near base" },
+  near_museum: { es: "post-museo", en: "near museum" },
+  near_market: { es: "ruta/mercado", en: "market route" },
+  near_club: { es: "pre/post club", en: "pre/post club" },
+  destination_worthy: { es: "merece desvio", en: "worth a detour" },
+} as const;
+
 export function PlaceCard({ place, locale }: { place: Place; locale: Locale }) {
   const fav = useFavorites();
   const isFav = fav.isFavorite(place.id);
 
   return (
-    <article className="space-y-3 rounded-md border border-zinc-200 bg-white p-4 shadow-sm">
+    <article id={place.id} className="space-y-3 scroll-mt-24 rounded-md border border-zinc-200 bg-white p-4 shadow-sm">
       <div className="flex items-start justify-between gap-2">
         <div>
           <h3 className="font-semibold leading-tight">{place.name}</h3>
@@ -35,7 +52,17 @@ export function PlaceCard({ place, locale }: { place: Place; locale: Locale }) {
         {place.rainyDay ? <span className="rounded-full bg-blue-100 px-2 py-1 text-xs text-blue-800">{t(ui.labels.rainy, locale)}</span> : null}
         {place.bookingRecommended ? <span className="rounded-full bg-fuchsia-100 px-2 py-1 text-xs text-fuchsia-800">{t(ui.labels.booking, locale)}</span> : null}
         {place.cashless ? <span className="rounded-full bg-teal-100 px-2 py-1 text-xs text-teal-800">{t(ui.labels.cashless, locale)}</span> : null}
+        {place.diet ? <span className="rounded-full bg-emerald-100 px-2 py-1 text-xs text-emerald-800">{place.diet.replace("_", " ")}</span> : null}
+        {place.quickStop ? <span className="rounded-full bg-amber-100 px-2 py-1 text-xs text-amber-800">{locale === "es" ? "rapido" : "quick stop"}</span> : null}
+        {place.destinationWorthy ? <span className="rounded-full bg-indigo-100 px-2 py-1 text-xs text-indigo-800">{locale === "es" ? "merece desvio" : "worth a detour"}</span> : null}
       </div>
+
+      {place.mealTypes?.length || place.areaUseCase?.length ? (
+        <div className="flex flex-wrap gap-2 text-xs text-zinc-600">
+          {place.mealTypes?.map((meal) => <span key={meal}>{t(mealLabels[meal], locale)}</span>)}
+          {place.areaUseCase?.map((useCase) => <span key={useCase}>· {t(areaLabels[useCase], locale)}</span>)}
+        </div>
+      ) : null}
 
       {place.openingHours || place.estimatedDuration ? (
         <div className="grid gap-1 text-sm text-zinc-600">

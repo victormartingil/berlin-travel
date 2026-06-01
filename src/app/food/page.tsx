@@ -1,5 +1,5 @@
-import { PlacesSectionClient } from "@/components/places/PlacesSectionClient";
+import { FoodPageClient } from "@/components/food/FoodPageClient";
 
 export default function FoodPage() {
-  return <PlacesSectionClient title="Food" categories={["vegetarian", "restaurant", "cafe", "bakery", "market"]} />;
+  return <FoodPageClient />;
 }

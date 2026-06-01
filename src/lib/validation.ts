@@ -2,6 +2,8 @@ import type { NightlifeEvent } from "@/domain/event";
 import type { ItineraryDay } from "@/domain/itinerary";
 import type { Place } from "@/domain/place";
 
+const foodMetadataCategories = new Set(["vegetarian", "restaurant", "cafe", "bakery"]);
+
 function hasValidUrl(value: string): boolean {
   try {
     const url = new URL(value);
@@ -20,6 +22,11 @@ export function validatePlaces(items: Place[]): string[] {
     if (!item.verification) errors.push(`missing verification: ${item.id}`);
     if (!item.sourceUrl && !item.officialUrl && !item.verification.sourceUrl && !item.verification.officialUrl) errors.push(`missing source: ${item.id}`);
     if (!item.lastVerifiedAt && !item.verification.lastVerifiedAt) errors.push(`missing lastVerifiedAt: ${item.id}`);
+    if (foodMetadataCategories.has(item.category)) {
+      if (!item.mealTypes?.length) errors.push(`missing mealTypes: ${item.id}`);
+      if (!item.areaUseCase?.length) errors.push(`missing areaUseCase: ${item.id}`);
+      if (!item.diet) errors.push(`missing diet: ${item.id}`);
+    }
     for (const url of [item.sourceUrl, item.officialUrl, item.ticketUrl, item.reservationUrl].filter(Boolean)) {
       if (url && !hasValidUrl(url)) errors.push(`invalid url for ${item.id}: ${url}`);
     }

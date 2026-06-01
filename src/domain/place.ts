@@ -19,6 +19,9 @@ export type PlaceCategory =
   | "club";
 
 export type PriceLevel = "low" | "mid" | "high";
+export type MealType = "breakfast" | "brunch" | "lunch" | "dinner" | "quick" | "special";
+export type AreaUseCase = "near_base" | "near_museum" | "near_market" | "near_club" | "destination_worthy";
+export type DietType = "vegetarian" | "vegan" | "vegan_options";
 
 export type Place = {
   id: string;
@@ -43,6 +46,11 @@ export type Place = {
   rainyDay?: boolean;
   cashless?: boolean;
   bookingRecommended?: boolean;
+  quickStop?: boolean;
+  destinationWorthy?: boolean;
+  mealTypes?: MealType[];
+  areaUseCase?: AreaUseCase[];
+  diet?: DietType;
   practicalNotes?: LocalizedText[];
   verification: VerificationMetadata;
 };

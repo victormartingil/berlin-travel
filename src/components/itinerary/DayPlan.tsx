@@ -3,6 +3,7 @@ import type { Locale } from "@/domain/common";
 import type { NightlifeEvent } from "@/domain/event";
 import type { ItineraryDay } from "@/domain/itinerary";
 import type { Place } from "@/domain/place";
+import { isFoodPlace, sortFood } from "@/lib/food";
 import { t } from "@/lib/i18n";
 import { buildGoogleMapsDirectionsUrl, buildGoogleMapsPlaceUrl } from "@/lib/maps";
 
@@ -15,6 +16,18 @@ const blockLabels = {
   night: { es: "Noche", en: "Night" },
   alternatives: { es: "Alternativas", en: "Alternatives" },
 } as const;
+
+function foodBackups(blockName: string, blockPlaces: Place[], allPlaces: Place[]): Place[] {
+  if (blockName !== "lunch" && blockName !== "dinner") return [];
+  const neighbourhoods = new Set(blockPlaces.map((place) => place.neighbourhood));
+  const preferredMeal = blockName === "lunch" ? "lunch" : "dinner";
+  return allPlaces
+    .filter(isFoodPlace)
+    .filter((place) => neighbourhoods.has(place.neighbourhood) || place.mealTypes?.includes(preferredMeal))
+    .filter((place) => !blockPlaces.some((blockPlace) => blockPlace.id === place.id))
+    .sort(sortFood)
+    .slice(0, 3);
+}
 
 export function DayPlan({ day, locale, places, events }: { day: ItineraryDay; locale: Locale; places: Place[]; events: NightlifeEvent[] }) {
   return (
@@ -64,6 +77,22 @@ export function DayPlan({ day, locale, places, events }: { day: ItineraryDay; lo
                 );
               })}
             </div>
+            {(() => {
+              const blockPlaces = items.map((item) => (item.placeId ? places.find((place) => place.id === item.placeId) : undefined)).filter(Boolean) as Place[];
+              const backups = foodBackups(name, blockPlaces, places);
+              return backups.length ? (
+                <div className="rounded-md border border-emerald-100 bg-emerald-50 p-3 text-sm">
+                  <p className="font-medium text-emerald-950">{locale === "es" ? "Alternativas de comida cerca" : "Nearby food backups"}</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {backups.map((place) => (
+                      <a key={place.id} className="rounded bg-white px-2 py-1 text-xs text-emerald-950" href={buildGoogleMapsPlaceUrl(place)} target="_blank" rel="noreferrer">
+                        {place.name}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ) : null;
+            })()}
           </section>
         ) : null,
       )}

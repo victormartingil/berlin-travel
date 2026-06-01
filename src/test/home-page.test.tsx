@@ -14,4 +14,16 @@ describe("HomePage", () => {
     );
     expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
   });
+
+  it("links the accommodation card to its internal detail page", () => {
+    render(
+      <LocaleProvider>
+        <FavoritesProvider>
+          <HomePage />
+        </FavoritesProvider>
+      </LocaleProvider>
+    );
+
+    expect(screen.getByRole("link", { name: "Ver ficha" }).getAttribute("href")).toMatch(/^\/places\/accommodation-nena-moritzplatz\/?$/);
+  });
 });

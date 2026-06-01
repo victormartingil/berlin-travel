@@ -15,6 +15,7 @@ export default function HomePage() {
   const priorityPlaces = places.filter((p) => p.priority === "essential" || p.priority === "high").slice(0, 4);
   const friendPicks = places.filter((p) => p.friendRecommended).slice(0, 4);
   const saved = places.filter((p) => fav.ids.includes(p.id)).slice(0, 2);
+  const accommodation = places.find((p) => p.id === "accommodation-nena-moritzplatz");
 
   return (
     <section className="space-y-6">
@@ -30,12 +31,25 @@ export default function HomePage() {
         </div>
         <div className="rounded-md border border-zinc-200 bg-white p-4">
           <p className="text-sm text-zinc-500">{isEs ? "Base" : "Base"}</p>
-          <p className="font-semibold">Nena Apartments Moritzplatz</p>
+          {accommodation ? (
+            <Link className="font-semibold text-emerald-900 underline decoration-emerald-300 underline-offset-2" href={`/places/${accommodation.id}/`}>
+              Nena Apartments Moritzplatz
+            </Link>
+          ) : (
+            <p className="font-semibold">Nena Apartments Moritzplatz</p>
+          )}
           <p className="mt-1 text-sm text-zinc-600">Prinzessinnenstrasse 17, Kreuzberg</p>
-          <Link className="mt-3 inline-flex items-center gap-2 rounded-md bg-zinc-900 px-3 py-2 text-sm text-white" href="/map/">
-            <MapPin size={16} />
-            {isEs ? "Abrir mapa" : "Open map"}
-          </Link>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {accommodation ? (
+              <Link className="inline-flex items-center gap-2 rounded-md bg-emerald-900 px-3 py-2 text-sm text-white" href={`/places/${accommodation.id}/`}>
+                {isEs ? "Ver ficha" : "View details"}
+              </Link>
+            ) : null}
+            <Link className="inline-flex items-center gap-2 rounded-md bg-zinc-100 px-3 py-2 text-sm text-zinc-900" href="/map/">
+              <MapPin size={16} />
+              {isEs ? "Abrir mapa" : "Open map"}
+            </Link>
+          </div>
         </div>
       </div>
 

@@ -74,7 +74,10 @@ function foodBackups(blockName: string, blockPlaces: Place[], allPlaces: Place[]
 }
 
 export function DayPlan({ day, locale, places, events }: { day: ItineraryDay; locale: Locale; places: Place[]; events: NightlifeEvent[] }) {
-  const labels = locale === "es" ? { route: "Ruta", source: "Fuente", flyer: "Evento" } : { route: "Route", source: "Source", flyer: "Event" };
+  const labels =
+    locale === "es"
+      ? { detail: "Ficha", maps: "Mapa", route: "Ruta", source: "Fuente", flyer: "Evento" }
+      : { detail: "Details", maps: "Map", route: "Route", source: "Source", flyer: "Event" };
   return (
     <article className="space-y-4 rounded-md border border-zinc-200 bg-white p-4">
       <h3 className="text-lg font-semibold">{t(day.label, locale)}</h3>
@@ -94,10 +97,15 @@ export function DayPlan({ day, locale, places, events }: { day: ItineraryDay; lo
                     {item.note ? <p className="mt-1 text-zinc-600">{linkedText(t(item.note, locale), places)}</p> : null}
                     <div className="mt-2 flex flex-wrap gap-2">
                       {place ? (
-                        <a className="inline-flex items-center gap-1 rounded bg-white px-2 py-1 text-xs" href={buildGoogleMapsPlaceUrl(place)} target="_blank" rel="noreferrer">
-                          <MapPin size={14} />
-                          {place.name}
-                        </a>
+                        <>
+                          <Link className="inline-flex items-center gap-1 rounded bg-emerald-900 px-2 py-1 text-xs text-white" href={`/places/${place.id}/`}>
+                            {labels.detail}: {place.name}
+                          </Link>
+                          <a className="inline-flex items-center gap-1 rounded bg-white px-2 py-1 text-xs" href={buildGoogleMapsPlaceUrl(place)} target="_blank" rel="noreferrer">
+                            <MapPin size={14} />
+                            {labels.maps}
+                          </a>
+                        </>
                       ) : null}
                       {origin && destination ? (
                         <a className="inline-flex items-center gap-1 rounded bg-white px-2 py-1 text-xs" href={buildGoogleMapsDirectionsUrl(origin.address ?? origin.name, destination, item.routeMode ?? "walking")} target="_blank" rel="noreferrer">
@@ -155,9 +163,9 @@ export function DayPlan({ day, locale, places, events }: { day: ItineraryDay; lo
                   <p className="font-medium text-emerald-950">{locale === "es" ? "Alternativas de comida cerca" : "Nearby food backups"}</p>
                   <div className="mt-2 flex flex-wrap gap-2">
                     {backups.map((place) => (
-                      <a key={place.id} className="rounded bg-white px-2 py-1 text-xs text-emerald-950" href={buildGoogleMapsPlaceUrl(place)} target="_blank" rel="noreferrer">
+                      <Link key={place.id} className="rounded bg-white px-2 py-1 text-xs text-emerald-950 underline decoration-emerald-300 underline-offset-2" href={`/places/${place.id}/`}>
                         {place.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>

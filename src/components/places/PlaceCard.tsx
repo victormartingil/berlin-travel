@@ -35,7 +35,11 @@ export function PlaceCard({ place, locale }: { place: Place; locale: Locale }) {
     <article id={place.id} className="space-y-3 scroll-mt-24 rounded-md border border-zinc-200 bg-white p-4 shadow-sm">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <h3 className="font-semibold leading-tight">{place.name}</h3>
+          <h3 className="font-semibold leading-tight">
+            <Link className="text-emerald-950 underline decoration-emerald-300 underline-offset-2" href={`/places/${place.id}/`}>
+              {place.name}
+            </Link>
+          </h3>
           <p className="mt-1 text-sm text-zinc-600">
             {place.neighbourhood}
             {place.address ? ` · ${place.address}` : ""}
@@ -84,14 +88,14 @@ export function PlaceCard({ place, locale }: { place: Place; locale: Locale }) {
       ) : null}
 
       <div className="flex flex-wrap gap-2">
-        <a className="inline-flex items-center gap-2 rounded-md bg-zinc-900 px-3 py-2 text-sm text-white" href={buildGoogleMapsPlaceUrl(place)} target="_blank" rel="noreferrer">
-          <MapPin size={16} />
-          {t(ui.actions.maps, locale)}
-        </a>
         <Link className="inline-flex items-center gap-2 rounded-md bg-emerald-900 px-3 py-2 text-sm text-white" href={`/places/${place.id}/`}>
           <ExternalLink size={16} />
           {locale === "es" ? "Detalle" : "Details"}
         </Link>
+        <a className="inline-flex items-center gap-2 rounded-md bg-zinc-100 px-3 py-2 text-sm text-zinc-900" href={buildGoogleMapsPlaceUrl(place)} target="_blank" rel="noreferrer">
+          <MapPin size={16} />
+          {t(ui.actions.maps, locale)}
+        </a>
         <FavoriteButton active={isFav} onToggle={() => fav.toggle(place.id)} locale={locale} />
         {place.officialUrl ? (
           <a className="inline-flex items-center gap-2 rounded-md bg-zinc-100 px-3 py-2 text-sm" href={place.officialUrl} target="_blank" rel="noreferrer">

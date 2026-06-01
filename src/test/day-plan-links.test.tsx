@@ -13,6 +13,7 @@ describe("DayPlan internal links", () => {
     render(<DayPlan day={saturday!} locale="es" places={places} events={events} />);
 
     expect(screen.getAllByRole("link", { name: "RAW-Gelaende" }).some((link) => link.getAttribute("href")?.startsWith("/places/raw-gelaende"))).toBe(true);
+    expect(screen.getAllByRole("link", { name: "Ficha: RAW-Gelaende" }).some((link) => link.getAttribute("href")?.startsWith("/places/raw-gelaende"))).toBe(true);
     expect(screen.getAllByRole("link", { name: "REWE voll pflanzlich" }).some((link) => link.getAttribute("href")?.startsWith("/places/rewe-voll-pflanzlich"))).toBe(true);
     expect(screen.getAllByRole("link", { name: "AEDEN" }).some((link) => link.getAttribute("href")?.startsWith("/places/aeden"))).toBe(true);
   });

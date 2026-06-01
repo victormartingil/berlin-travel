@@ -30,6 +30,9 @@ export function validatePlaces(items: Place[]): string[] {
     for (const url of [item.sourceUrl, item.officialUrl, item.ticketUrl, item.reservationUrl].filter(Boolean)) {
       if (url && !hasValidUrl(url)) errors.push(`invalid url for ${item.id}: ${url}`);
     }
+    for (const photo of item.photoReferences ?? []) {
+      if (!hasValidUrl(photo.url)) errors.push(`invalid photo reference for ${item.id}: ${photo.url}`);
+    }
   }
   return errors;
 }

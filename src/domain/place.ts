@@ -23,6 +23,12 @@ export type MealType = "breakfast" | "brunch" | "lunch" | "dinner" | "quick" | "
 export type AreaUseCase = "near_base" | "near_museum" | "near_market" | "near_club" | "destination_worthy";
 export type DietType = "vegetarian" | "vegan" | "vegan_options";
 
+export type PlacePhotoReference = {
+  url: string;
+  label: LocalizedText;
+  credit?: string;
+};
+
 export type Place = {
   id: string;
   name: string;
@@ -51,6 +57,10 @@ export type Place = {
   mealTypes?: MealType[];
   areaUseCase?: AreaUseCase[];
   diet?: DietType;
+  story?: LocalizedText;
+  whyGo?: LocalizedText[];
+  localSignals?: LocalizedText[];
+  photoReferences?: PlacePhotoReference[];
   practicalNotes?: LocalizedText[];
   verification: VerificationMetadata;
 };

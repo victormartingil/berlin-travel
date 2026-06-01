@@ -6,6 +6,8 @@ describe("maps urls", () => {
   it("builds place url", () => {
     const url = buildGoogleMapsPlaceUrl(places[0]);
     expect(url).toContain("google.com/maps/search");
+    expect(url).toContain("Nena");
+    expect(url).not.toContain("52.5032");
   });
 
   it("builds directions url", () => {

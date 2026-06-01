@@ -75,11 +75,14 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
       link.target = "_blank";
       link.rel = "noreferrer";
       link.textContent = t(ui.actions.maps, locale);
+      const detailLink = document.createElement("a");
+      detailLink.href = `/places/${place.id}/`;
+      detailLink.textContent = locale === "es" ? "Abrir ficha" : "Open details";
       const button = document.createElement("button");
       button.type = "button";
       button.textContent = fav.isFavorite(place.id) ? t(ui.actions.unfavorite, locale) : t(ui.actions.favorite, locale);
       button.addEventListener("click", () => fav.toggle(place.id));
-      container.append(title, meta, link, document.createElement("br"), button);
+      container.append(title, meta, link, document.createTextNode(" · "), detailLink, document.createElement("br"), button);
       marker.bindPopup(container);
       markersRef.current.push(marker);
     });

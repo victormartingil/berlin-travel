@@ -1,6 +1,7 @@
 "use client";
 
 import { CalendarCheck, ExternalLink, MapPin, Ticket } from "lucide-react";
+import Link from "next/link";
 import type { Locale } from "@/domain/common";
 import type { Place } from "@/domain/place";
 import { FavoriteButton } from "@/components/ui/FavoriteButton";
@@ -84,6 +85,10 @@ export function PlaceCard({ place, locale }: { place: Place; locale: Locale }) {
           <MapPin size={16} />
           {t(ui.actions.maps, locale)}
         </a>
+        <Link className="inline-flex items-center gap-2 rounded-md bg-emerald-900 px-3 py-2 text-sm text-white" href={`/places/${place.id}/`}>
+          <ExternalLink size={16} />
+          {locale === "es" ? "Detalle" : "Details"}
+        </Link>
         <FavoriteButton active={isFav} onToggle={() => fav.toggle(place.id)} locale={locale} />
         {place.officialUrl ? (
           <a className="inline-flex items-center gap-2 rounded-md bg-zinc-100 px-3 py-2 text-sm" href={place.officialUrl} target="_blank" rel="noreferrer">

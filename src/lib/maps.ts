@@ -2,10 +2,7 @@ import type { Place } from "@/domain/place";
 
 export function buildGoogleMapsPlaceUrl(place: Place): string {
   if (place.googleMapsUrl) return place.googleMapsUrl;
-  if (place.coordinates) {
-    return `https://www.google.com/maps/search/?api=1&query=${place.coordinates.lat},${place.coordinates.lng}`;
-  }
-  const q = encodeURIComponent(place.googleMapsQuery ?? `${place.name} ${place.neighbourhood} Berlin`);
+  const q = encodeURIComponent(place.googleMapsQuery ?? `${place.name}${place.address ? `, ${place.address}` : `, ${place.neighbourhood}, Berlin`}`);
   return `https://www.google.com/maps/search/?api=1&query=${q}`;
 }
 

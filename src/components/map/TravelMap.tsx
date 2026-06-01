@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import type { Layer as LeafletLayer, Map as LeafletMap } from "leaflet";
 import type { Locale } from "@/domain/common";
 import type { Place } from "@/domain/place";
+import { getPlaceImages } from "@/data/placeMedia";
 import { useFavorites } from "@/hooks/useFavorites";
 import { getMapIconForCategory } from "@/lib/mapIcons";
 import { buildGoogleMapsPlaceUrl } from "@/lib/maps";
@@ -65,7 +66,16 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
       }).addTo(map);
 
       const container = document.createElement("div");
-      container.className = "space-y-2";
+      container.className = "travel-map-popup";
+      const image = getPlaceImages(place.id)[0];
+      if (image) {
+        const thumb = document.createElement("img");
+        thumb.src = image.src;
+        thumb.alt = t(image.alt, locale);
+        thumb.loading = "lazy";
+        thumb.className = "travel-map-popup-image";
+        container.append(thumb);
+      }
       const title = document.createElement("strong");
       title.textContent = place.name;
       const meta = document.createElement("div");
@@ -93,7 +103,10 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
 
   return (
     <div className="space-y-3">
-      <div ref={elRef} className="h-[65vh] w-full rounded-md [&_.travel-map-marker_span]:flex [&_.travel-map-marker_span]:h-8 [&_.travel-map-marker_span]:w-8 [&_.travel-map-marker_span]:items-center [&_.travel-map-marker_span]:justify-center [&_.travel-map-marker_span]:rounded-full [&_.travel-map-marker_span]:border-2 [&_.travel-map-marker_span]:border-white [&_.travel-map-marker_span]:bg-[var(--marker-color)] [&_.travel-map-marker_span]:text-white [&_.travel-map-marker_span]:shadow-lg [&_.travel-map-marker_svg]:h-4 [&_.travel-map-marker_svg]:w-4" />
+      <div
+        ref={elRef}
+        className="h-[65vh] w-full rounded-md [&_.travel-map-marker_span]:flex [&_.travel-map-marker_span]:h-8 [&_.travel-map-marker_span]:w-8 [&_.travel-map-marker_span]:items-center [&_.travel-map-marker_span]:justify-center [&_.travel-map-marker_span]:rounded-full [&_.travel-map-marker_span]:border-2 [&_.travel-map-marker_span]:border-white [&_.travel-map-marker_span]:bg-[var(--marker-color)] [&_.travel-map-marker_span]:text-white [&_.travel-map-marker_span]:shadow-lg [&_.travel-map-marker_svg]:h-4 [&_.travel-map-marker_svg]:w-4 [&_.travel-map-popup-image]:mb-2 [&_.travel-map-popup-image]:h-24 [&_.travel-map-popup-image]:w-52 [&_.travel-map-popup-image]:rounded-md [&_.travel-map-popup-image]:object-cover [&_.travel-map-popup]:space-y-2"
+      />
       <div className="flex flex-wrap gap-2 text-xs">
         {categories.map((category) => (
           <span key={category} className="inline-flex items-center gap-1">

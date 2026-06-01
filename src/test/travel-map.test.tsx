@@ -4,9 +4,10 @@ import { FavoritesProvider } from "@/components/favorites/FavoritesProvider";
 import { TravelMap } from "@/components/map/TravelMap";
 import { places } from "@/data/places";
 
+const bindPopupMock = vi.fn();
 const markerMock = vi.fn(() => ({
   addTo: vi.fn().mockReturnThis(),
-  bindPopup: vi.fn(),
+  bindPopup: bindPopupMock,
   remove: vi.fn(),
 }));
 
@@ -30,5 +31,20 @@ describe("TravelMap", () => {
       expect(markerMock).toHaveBeenCalled();
     });
   });
-});
 
+  it("adds a licensed thumbnail to popups when media exists", async () => {
+    const placeWithImage = places.find((place) => place.id === "teufelsberg");
+    expect(placeWithImage).toBeDefined();
+
+    render(
+      <FavoritesProvider>
+        <TravelMap places={placeWithImage ? [placeWithImage] : []} locale="en" />
+      </FavoritesProvider>,
+    );
+
+    await waitFor(() => {
+      const popup = bindPopupMock.mock.calls.at(-1)?.[0] as HTMLElement | undefined;
+      expect(popup?.querySelector("img")?.getAttribute("src")).toBe("/images/places/teufelsberg-01.jpg");
+    });
+  });
+});

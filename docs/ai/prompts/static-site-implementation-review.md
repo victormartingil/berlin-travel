@@ -76,6 +76,10 @@ When map code or data changes:
 - Internal detail links inside popups must use `appPath()`.
 - Google Maps links should point to the specific place when possible, not just raw coordinates.
 - Mappable categories should have representative icons and test coverage.
+- Itinerary day maps should derive stops from structured `placeId`/`eventId` data, not duplicated hand-written coordinates.
+- Daily maps should show numbered markers, draw the main route line, exclude alternatives from the main route, and resolve event stops to their venue.
+- Daily route maps must be described as orientation aids; do not imply exact walking/transit timing unless sourced.
+- Add tests for route-stop extraction and Leaflet marker/polyline rendering when daily maps change.
 
 ## Media Review
 For embedded local images:

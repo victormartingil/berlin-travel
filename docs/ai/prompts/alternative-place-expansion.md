@@ -98,6 +98,9 @@ Copy must be human and specific:
 - If adding aliases or spelling variants, update the link-matching logic and tests.
 - Update filters only when the new content gives users a real decision lever.
 - Re-run data validation tests after adding places/events/media.
+- If new places/events are added to an itinerary day, verify the daily route map still makes spatial sense.
+- Use `placeId` and `eventId` consistently so daily maps can resolve numbered stops automatically.
+- Keep alternatives out of the main daily route unless the itinerary explicitly promotes them to the selected plan.
 
 ## Image Policy
 Use embedded images only if source license is clear or image is owned/authorized. Google Images may be used for discovery only; final source must be original page with license/permission.

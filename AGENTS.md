@@ -84,6 +84,9 @@ Content rules:
 - Add aliases for common spelling variants when needed, for example accent differences, shortened venue names or friend-provided names.
 - Add or update regression tests when automatic linking logic changes.
 - For every relevant itinerary item, prefer explicit `placeId` or `eventId` over plain text only.
+- Each itinerary day should include a compact route map when enough mappable stops exist.
+- Daily route maps should number stops in suggested order, draw a line for the main route, exclude alternatives from the main line, and resolve event items to their venue place.
+- Daily route maps are orientation aids, not exact walking/transit promises; keep Google Maps route links as external helpers.
 
 ## Content Depth Standard
 - Every ficha should feel like a useful human travel note, not database filler.

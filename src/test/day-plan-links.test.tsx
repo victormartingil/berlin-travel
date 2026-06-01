@@ -1,9 +1,13 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { DayPlan } from "@/components/itinerary/DayPlan";
 import { events } from "@/data/events";
 import { itinerary } from "@/data/itinerary";
 import { places } from "@/data/places";
+
+vi.mock("@/components/itinerary/DayRouteMap", () => ({
+  DayRouteMap: () => null,
+}));
 
 describe("DayPlan internal links", () => {
   it("links mentioned place names to their internal detail pages", () => {

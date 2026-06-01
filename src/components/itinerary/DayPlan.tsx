@@ -5,6 +5,7 @@ import type { Locale } from "@/domain/common";
 import type { NightlifeEvent } from "@/domain/event";
 import type { ItineraryDay } from "@/domain/itinerary";
 import type { Place } from "@/domain/place";
+import { DayRouteMap } from "@/components/itinerary/DayRouteMap";
 import { isFoodPlace, sortFood } from "@/lib/food";
 import { t } from "@/lib/i18n";
 import { buildGoogleMapsDirectionsUrl, buildGoogleMapsPlaceUrl } from "@/lib/maps";
@@ -81,6 +82,7 @@ export function DayPlan({ day, locale, places, events }: { day: ItineraryDay; lo
   return (
     <article className="space-y-4 rounded-md border border-zinc-200 bg-white p-4">
       <h3 className="text-lg font-semibold">{t(day.label, locale)}</h3>
+      <DayRouteMap day={day} locale={locale} places={places} events={events} />
       {Object.entries(day.blocks).map(([name, items]) =>
         items.length ? (
           <section key={name} className="space-y-2">

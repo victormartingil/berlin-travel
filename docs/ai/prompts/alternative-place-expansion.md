@@ -100,6 +100,8 @@ Copy must be human and specific:
 - Re-run data validation tests after adding places/events/media.
 - If new places/events are added to an itinerary day, verify the daily route map still makes spatial sense.
 - Use `placeId` and `eventId` consistently so daily maps can resolve numbered stops automatically.
+- When a new place or event enters the itinerary, make sure the rendered route explains briefly what the stop is. Names like Bethanien, YAAM, OXI or RAW-Gelaende are not self-explanatory for travellers.
+- Keep route sections organised around travel decisions and flow: start, main block, transition, selected night and backups. Avoid turning the route into a rigid meal-first schedule unless food is the actual plan.
 - Keep alternatives out of the main daily route unless the itinerary explicitly promotes them to the selected plan.
 
 ## Image Policy

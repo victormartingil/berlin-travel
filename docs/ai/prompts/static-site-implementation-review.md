@@ -65,6 +65,9 @@ Before committing content changes, scan the visible app for weak copy:
 - No generic AI-sounding filler.
 - Spanish and English versions both read naturally.
 - Itinerary focuses on the best plans and pacing, not only food.
+- Itinerary block labels help the traveller decide pace and energy, not just "morning/lunch/afternoon" as empty structure.
+- Every itinerary stop linked to a place or event shows a short context line explaining what it is, for example museum, alternative cultural space, park, market, club or event venue.
+- Event-only itinerary items still link back to the internal venue ficha when the venue exists in `src/data/places.ts`.
 - Each ficha explains why the place fits this trip, when to go, what to combine nearby and what to watch out for.
 - Events include sourced date, time, venue, price, lineup/style and ticket/source URLs when available.
 

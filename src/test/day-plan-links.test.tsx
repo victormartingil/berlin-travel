@@ -21,4 +21,26 @@ describe("DayPlan internal links", () => {
     expect(screen.getAllByRole("link", { name: "REWE voll pflanzlich" }).some((link) => link.getAttribute("href")?.startsWith("/places/rewe-voll-pflanzlich"))).toBe(true);
     expect(screen.getAllByRole("link", { name: "AEDEN" }).some((link) => link.getAttribute("href")?.startsWith("/places/aeden"))).toBe(true);
   });
+
+  it("adds readable context for opaque itinerary stop names", () => {
+    const wednesday = itinerary.find((day) => day.date === "2026-06-10");
+    expect(wednesday).toBeDefined();
+
+    render(<DayPlan day={wednesday!} locale="es" places={places} events={events} />);
+
+    expect(screen.getByText("Bloque principal")).toBeInTheDocument();
+    expect(screen.getByText(/Museo ·/)).toHaveTextContent("Museo de arte moderno");
+    expect(screen.getByText(/Alternativo ·/)).toHaveTextContent("centro artistico/cultural");
+    expect(screen.getByText(/La parte que mas define el dia/)).toBeInTheDocument();
+  });
+
+  it("links event-only route items back to their venue ficha", () => {
+    const saturday = itinerary.find((day) => day.date === "2026-06-13");
+    expect(saturday).toBeDefined();
+
+    render(<DayPlan day={saturday!} locale="es" places={places} events={events} />);
+
+    expect(screen.getAllByText(/Evento ·/).some((node) => node.textContent?.includes("Else"))).toBe(true);
+    expect(screen.getAllByRole("link", { name: "Ficha: Else" }).some((link) => link.getAttribute("href")?.startsWith("/places/else"))).toBe(true);
+  });
 });

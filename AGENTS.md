@@ -84,6 +84,8 @@ Content rules:
 - Add aliases for common spelling variants when needed, for example accent differences, shortened venue names or friend-provided names.
 - Add or update regression tests when automatic linking logic changes.
 - For every relevant itinerary item, prefer explicit `placeId` or `eventId` over plain text only.
+- Every itinerary item that resolves to a place or event must show a short visible context line explaining what it is: museum, park, club, autonomous space, market, food stop, etc. Do not assume the name explains the place.
+- Itinerary block labels should help travel decisions and pacing. Prefer labels such as "Start of the day", "Main route block", "Sunset transition" or "Backups" over generic labels when that makes the day easier to use.
 - Each itinerary day should include a compact route map when enough mappable stops exist.
 - Daily route maps should number stops in suggested order, draw a line for the main route, exclude alternatives from the main line, and resolve event items to their venue place.
 - Daily route maps are orientation aids, not exact walking/transit promises; keep Google Maps route links as external helpers.

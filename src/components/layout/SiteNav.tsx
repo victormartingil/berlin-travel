@@ -4,6 +4,7 @@ import Link from "next/link";
 import { BookOpen, Heart, Home, Info, Landmark, Map, Menu, Moon, Palette, Soup, Train } from "lucide-react";
 import { LanguageSwitch } from "@/components/i18n/LanguageSwitch";
 import { useLocale } from "@/components/i18n/LocaleProvider";
+import { ThemeSwitch } from "@/components/theme/ThemeSwitch";
 import { t, ui } from "@/lib/i18n";
 
 const primaryItems = [
@@ -43,7 +44,10 @@ export function SiteNav() {
             );
           })}
         </div>
-        <LanguageSwitch />
+        <div className="flex items-center gap-2">
+          <ThemeSwitch />
+          <LanguageSwitch />
+        </div>
       </div>
 
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-zinc-200 bg-white md:hidden">

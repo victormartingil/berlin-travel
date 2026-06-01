@@ -59,6 +59,7 @@ Reusable prompts live in `docs/ai/prompts/`.
 Use them when adding Berlin content, expanding a section, or adapting the project to another destination:
 - `docs/ai/prompts/alternative-place-expansion.md`: intensive research workflow for alternative/local/friend-style places, live music, vegan food, street art, autonomous spaces and nightlife.
 - `docs/ai/prompts/context-culture-news-media.md`: research and writing workflow for history, sociopolitical context, current affairs, books, films, documentaries, newspapers and alternative magazines.
+- `docs/ai/prompts/legal-health-safety.md`: official-source workflow for laws, cannabis, alcohol, controlled substances, emergencies, healthcare, EHIC/TSE, insurance and harm reduction.
 - `docs/ai/prompts/place-fact-check.md`: one-by-one enrichment and verification checklist for existing place fichas.
 - `docs/ai/prompts/static-site-implementation-review.md`: implementation/review workflow for GitHub Pages, internal links, i18n, map popups, tests and production readiness.
 - `docs/ai/prompts/new-destination-seed.md`: seed workflow for reusing this architecture for another city.
@@ -76,6 +77,7 @@ Content rules:
 - Wikipedia can be used for orientation and cross-checking, but final copy must be original synthesis with source links, not copied text.
 - Current-affairs content must include publication dates, distinguish Berlin-local issues from Germany-wide issues, and avoid presenting opinion as fact.
 - Cultural recommendations must link to stable reference pages where possible: IMDb/TMDb/official distributor for films and documentaries; Open Library/WorldCat/publisher pages for books.
+- Legal, health and drug-related content must use official or specialist harm-reduction sources, show a verification date, and avoid legal/medical advice framing.
 
 ## Itinerary And Internal Linking Rules
 - The itinerary is a route guide first. Food is useful support, not the main structure unless the block is explicitly about food.

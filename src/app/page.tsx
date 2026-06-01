@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CalendarCheck, CloudRain, CreditCard, Heart, MapPin, WalletCards } from "lucide-react";
+import { CalendarCheck, CloudRain, CreditCard, Heart, MapPin, Newspaper, ShieldCheck, WalletCards } from "lucide-react";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import { PlaceCard } from "@/components/places/PlaceCard";
 import { places } from "@/data/places";
@@ -53,12 +53,14 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="grid gap-3 md:grid-cols-4">
+      <div className="grid gap-3 md:grid-cols-6">
         {[
           { icon: CalendarCheck, label: isEs ? "Reservar antes" : "Book ahead", href: "/food/" },
           { icon: CloudRain, label: isEs ? "Planes de lluvia" : "Rain plans", href: "/museums/" },
           { icon: WalletCards, label: isEs ? "Low budget" : "Low budget", href: "/alternative/" },
           { icon: CreditCard, label: isEs ? "Cash/card" : "Cash/card", href: "/practical/" },
+          { icon: Newspaper, label: isEs ? "Contexto" : "Context", href: "/context/" },
+          { icon: ShieldCheck, label: isEs ? "Seguridad" : "Safety", href: "/safety/" },
         ].map((item) => {
           const Icon = item.icon;
           return (

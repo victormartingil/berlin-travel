@@ -50,6 +50,15 @@ For the trip dates, search:
 
 Represent uncertain event leads as `needs_verification`, not `verified`.
 
+For each trip day, build an event shortlist before editing data:
+- Search by exact date, venue and city, for example `site:ra.co/events Berlin 13 June 2026 Else`, `site:lido-berlin.de 15.06.2026`, and the venue's own calendar.
+- Capture concrete details only when the source states them: date, start/end time, venue, price, age limit, cash/card rule, lineup, genre, ticket URL and poster/flyer URL.
+- Add `posterUrl` only as a link to the original flyer/source page unless the image license or permission is clear.
+- Prefer official venue pages for concerts and RA/official promoter pages for club nights; use Reddit/social posts only as discovery signals.
+- If a venue has no confirmed listing for the trip dates, keep it as a place recommendation, not a fake event.
+- In the itinerary, place confirmed events under the relevant day and explain why they fit the route, energy level and neighbourhood.
+- Do not overload the route with events: surface the best option plus 1-2 realistic alternatives per night.
+
 ## Content Quality
 Each ficha should answer:
 - Why this place fits this specific trip.

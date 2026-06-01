@@ -46,6 +46,9 @@ export function validateEvents(events: NightlifeEvent[], places: Place[]): strin
     ids.add(event.id);
     if (!placeIds.has(event.venuePlaceId)) errors.push(`missing venue: ${event.id}`);
     if (!hasValidUrl(event.sourceUrl)) errors.push(`invalid event source: ${event.id}`);
+    for (const url of [event.ticketUrl, event.posterUrl].filter(Boolean)) {
+      if (url && !hasValidUrl(url)) errors.push(`invalid event url for ${event.id}: ${url}`);
+    }
     if (!event.verification.lastVerifiedAt) errors.push(`missing event lastVerifiedAt: ${event.id}`);
   }
   return errors;
@@ -55,11 +58,14 @@ export function validateItinerary(days: ItineraryDay[], places: Place[], events:
   const errors: string[] = [];
   const placeIds = new Set(places.map((p) => p.id));
   const eventIds = new Set(events.map((e) => e.id));
+  const eventsById = new Map(events.map((event) => [event.id, event]));
   for (const day of days) {
     for (const items of Object.values(day.blocks)) {
       for (const item of items) {
         if (item.placeId && !placeIds.has(item.placeId)) errors.push(`missing itinerary place: ${item.id}`);
         if (item.eventId && !eventIds.has(item.eventId)) errors.push(`missing itinerary event: ${item.id}`);
+        const event = item.eventId ? eventsById.get(item.eventId) : undefined;
+        if (event && event.date !== day.date) errors.push(`itinerary event date mismatch: ${item.id} references ${event.id} (${event.date}) on ${day.date}`);
       }
     }
   }

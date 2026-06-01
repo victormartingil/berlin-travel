@@ -19,17 +19,18 @@ const blockLabels = {
 
 function foodBackups(blockName: string, blockPlaces: Place[], allPlaces: Place[]): Place[] {
   if (blockName !== "lunch" && blockName !== "dinner") return [];
+  if (!blockPlaces.length) return [];
   const neighbourhoods = new Set(blockPlaces.map((place) => place.neighbourhood));
-  const preferredMeal = blockName === "lunch" ? "lunch" : "dinner";
   return allPlaces
     .filter(isFoodPlace)
-    .filter((place) => neighbourhoods.has(place.neighbourhood) || place.mealTypes?.includes(preferredMeal))
+    .filter((place) => neighbourhoods.has(place.neighbourhood))
     .filter((place) => !blockPlaces.some((blockPlace) => blockPlace.id === place.id))
     .sort(sortFood)
     .slice(0, 3);
 }
 
 export function DayPlan({ day, locale, places, events }: { day: ItineraryDay; locale: Locale; places: Place[]; events: NightlifeEvent[] }) {
+  const labels = locale === "es" ? { route: "Ruta", source: "Fuente", flyer: "Evento" } : { route: "Route", source: "Source", flyer: "Event" };
   return (
     <article className="space-y-4 rounded-md border border-zinc-200 bg-white p-4">
       <h3 className="text-lg font-semibold">{t(day.label, locale)}</h3>
@@ -57,22 +58,47 @@ export function DayPlan({ day, locale, places, events }: { day: ItineraryDay; lo
                       {origin && destination ? (
                         <a className="inline-flex items-center gap-1 rounded bg-white px-2 py-1 text-xs" href={buildGoogleMapsDirectionsUrl(origin.address ?? origin.name, destination, item.routeMode ?? "walking")} target="_blank" rel="noreferrer">
                           <MapPin size={14} />
-                          Route
+                          {labels.route}
                         </a>
                       ) : null}
                       {event ? (
-                        <a className="inline-flex items-center gap-1 rounded bg-white px-2 py-1 text-xs" href={event.ticketUrl ?? event.sourceUrl} target="_blank" rel="noreferrer">
-                          <ExternalLink size={14} />
-                          {event.title}
-                        </a>
+                        <>
+                          <a className="inline-flex items-center gap-1 rounded bg-white px-2 py-1 text-xs" href={event.ticketUrl ?? event.sourceUrl} target="_blank" rel="noreferrer">
+                            <ExternalLink size={14} />
+                            {event.title}
+                          </a>
+                          {event.posterUrl ? (
+                            <a className="inline-flex items-center gap-1 rounded bg-white px-2 py-1 text-xs" href={event.posterUrl} target="_blank" rel="noreferrer">
+                              <ExternalLink size={14} />
+                              {labels.flyer}
+                            </a>
+                          ) : null}
+                        </>
                       ) : null}
                       {item.externalUrl ? (
                         <a className="inline-flex items-center gap-1 rounded bg-white px-2 py-1 text-xs" href={item.externalUrl} target="_blank" rel="noreferrer">
                           <ExternalLink size={14} />
-                          Source
+                          {labels.source}
                         </a>
                       ) : null}
                     </div>
+                    {event ? (
+                      <div className="mt-3 rounded-md border border-zinc-200 bg-white p-3 text-xs text-zinc-700">
+                        {event.summary ? <p className="font-medium">{t(event.summary, locale)}</p> : null}
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          <span className="rounded-full bg-zinc-100 px-2 py-1">{event.date}</span>
+                          <span className="rounded-full bg-zinc-100 px-2 py-1">{event.startTime}{event.endTime ? `-${event.endTime}` : ""}</span>
+                          {event.price ? <span className="rounded-full bg-zinc-100 px-2 py-1">{event.price}</span> : null}
+                          <span className="rounded-full bg-zinc-100 px-2 py-1">{t(event.style, locale)}</span>
+                        </div>
+                        {event.lineup?.length ? <p className="mt-2">{event.lineup.join(" · ")}</p> : null}
+                        {event.practicalNotes?.length ? (
+                          <ul className="mt-2 space-y-1 text-zinc-600">
+                            {event.practicalNotes.map((note) => <li key={t(note, locale)}>· {t(note, locale)}</li>)}
+                          </ul>
+                        ) : null}
+                      </div>
+                    ) : null}
                   </div>
                 );
               })}

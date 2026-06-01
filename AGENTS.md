@@ -50,5 +50,7 @@ Content rules:
 - Use social media, Reddit, RA, Google/Maps and local guides as discovery signals, then verify via original source when possible.
 - Represent dynamic venues/events as `needs_verification`.
 - Never leave visible placeholder copy in fichas. If exact hours are variable, provide useful event-driven guidance and the source to check.
+- Write itinerary and ficha copy as human travel guidance: concrete, opinionated, specific to the route, and useful in both Spanish and English.
+- For dated events, capture exact time, venue, price, lineup, ticket/source URL and flyer/source link when the original source provides them.
 - For autonomous/squatted spaces, write respectful guidance: event-only when appropriate, no intrusive tourism, no treating residential/political projects as attractions.
 - Embedded images require a clear license, ownership or permission. Google Images is discovery only, not a license source.

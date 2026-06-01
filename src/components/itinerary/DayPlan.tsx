@@ -65,6 +65,10 @@ function placeLinkLabels(place: Place): string[] {
   if (place.name === "Cafe Vux") labels.add("Café Vux");
   if (place.name === "Voner") labels.add("Vöner");
   if (place.name === "REWE voll pflanzlich Warschauer") labels.add("REWE voll pflanzlich");
+  if (place.id === "arkonaplatz-flea-market") labels.add("Arkonaplatz");
+  if (place.id === "antikmarkt-ostbahnhof") labels.add("Antikmarkt Ostbahnhof");
+  if (place.id === "marheinekeplatz-flea-market") labels.add("Marheinekeplatz");
+  if (place.id === "berliner-troedelmarkt-strasse-17-juni") labels.add("Berliner Troedelmarkt Strasse des 17. Juni");
   return [...labels].filter((label) => label.length >= minimumLinkLabelLength);
 }
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, Heart, Home, Info, Landmark, Map, Menu, Moon, Newspaper, Palette, ShieldCheck, Soup, Train } from "lucide-react";
+import { BookOpen, Heart, Home, Info, Landmark, Map, Menu, Moon, Newspaper, Palette, ShieldCheck, ShoppingBag, Soup, Train } from "lucide-react";
 import { LanguageSwitch } from "@/components/i18n/LanguageSwitch";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import { ThemeSwitch } from "@/components/theme/ThemeSwitch";
@@ -17,6 +17,7 @@ const primaryItems = [
 
 const secondaryItems = [
   { href: "/transport/", label: { es: "Transporte", en: "Transport" }, icon: Train },
+  { href: "/markets/", label: { es: "Mercados", en: "Markets" }, icon: ShoppingBag },
   { href: "/nightlife/", label: { es: "Noche", en: "Nightlife" }, icon: Moon },
   { href: "/museums/", label: { es: "Museos", en: "Museums" }, icon: Landmark },
   { href: "/alternative/", label: { es: "Alternativo", en: "Alternative" }, icon: Menu },

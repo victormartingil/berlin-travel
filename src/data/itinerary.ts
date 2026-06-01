@@ -144,6 +144,7 @@ export const itinerary: ItineraryDay[] = [
       afternoon: [
         item("d14-a1", "Bearpit Karaoke si el tiempo acompaña. Es turístico, si, pero también es Berlín dominguero en una forma muy fácil de disfrutar.", "Bearpit Karaoke if the weather allows. Yes, it is touristy, but it is also Sunday Berlin in a very easy-to-enjoy form.", { placeId: "mauerpark" }),
         item("d14-a2", "Si Mauerpark se satura, cambiad a Nowkoelln Flowmarkt y canal. Menos postal, más paseo.", "If Mauerpark gets too crowded, switch to Nowkoelln Flowmarkt and the canal. Less postcard, more walking.", { placeId: "nowkoelln-flowmarkt" }),
+        item("d14-a3", "Si queréis rastro de verdad en vez de karaoke, elegid Arkonaplatz por cercanía o Berliner Troedelmarkt Strasse des 17. Juni por antigüedades y objetos con más calma.", "If you want a proper flea market instead of karaoke, choose Arkonaplatz for proximity or Berliner Troedelmarkt Strasse des 17. Juni for antiques and calmer browsing.", { placeId: "berliner-troedelmarkt-strasse-17-juni" }),
       ],
       dinner: [
         item("d14-d1", "Cena ligera en Neukolln o cerca del río. La noche ideal hoy no empieza con prisa.", "Light dinner in Neukolln or near the river. The ideal night today does not start in a rush.", { placeId: "la-stella-nera" }),
@@ -157,6 +158,8 @@ export const itinerary: ItineraryDay[] = [
       ],
       alternatives: [
         item("d14-x1", "Si llueve: Hamburger Bahnhof/Gropius Bau y café largo. No baséis el domingo en karaoke si el cielo no acompaña.", "If it rains: Hamburger Bahnhof/Gropius Bau and a long coffee. Do not build Sunday around karaoke if the weather disagrees.", { placeId: "gropius-bau", flags: ["rain"] }),
+        item("d14-x2", "Si lo que os apetece son libros, discos o piezas antiguas: Antikmarkt Ostbahnhof es más coleccionista y menos festival.", "If you want books, records or antique pieces: Antikmarkt Ostbahnhof is more collector-oriented and less festival-like.", { placeId: "antikmarkt-ostbahnhof" }),
+        item("d14-x3", "Si os quedáis cerca de Kreuzberg: Marheinekeplatz resuelve rastro corto, cafés y Bergmannstrasse sin cruzar la ciudad.", "If you stay near Kreuzberg: Marheinekeplatz gives you a short flea-market stop, cafes and Bergmannstrasse without crossing town.", { placeId: "marheinekeplatz-flea-market" }),
       ],
     },
   },

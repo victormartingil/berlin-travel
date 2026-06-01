@@ -25,6 +25,16 @@ describe("filterPlaces", () => {
     expect(result.length).toBeGreaterThan(0);
     expect(result.every((p) => p.mealTypes?.includes("dinner") && p.areaUseCase?.includes("destination_worthy") && p.diet === "vegan")).toBe(true);
   });
+
+  it("filters markets by practical market kind", () => {
+    const antiques = filterPlaces(places, { ...defaultPlaceFilters, categories: ["market"], marketKind: "antiques" });
+    expect(antiques.map((p) => p.id)).toContain("berliner-troedelmarkt-strasse-17-juni");
+    expect(antiques.every((p) => p.category === "market" && p.tags.includes("antiques"))).toBe(true);
+
+    const sundayMarkets = filterPlaces(places, { ...defaultPlaceFilters, categories: ["market"], marketKind: "sunday" });
+    expect(sundayMarkets.map((p) => p.id)).toContain("arkonaplatz-flea-market");
+    expect(sundayMarkets.every((p) => p.tags.includes("sunday"))).toBe(true);
+  });
 });
 
 describe("food helpers", () => {

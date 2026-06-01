@@ -12,6 +12,7 @@ export function PlaceFilters({
   neighbourhoods,
   locale,
   showFoodFilters = false,
+  showMarketFilters = false,
 }: {
   filters: PF;
   setFilters: (f: PF) => void;
@@ -19,6 +20,7 @@ export function PlaceFilters({
   neighbourhoods: string[];
   locale: Locale;
   showFoodFilters?: boolean;
+  showMarketFilters?: boolean;
 }) {
   return (
     <div className="grid gap-2 rounded-md border border-zinc-200 bg-white p-3 md:grid-cols-5">
@@ -89,6 +91,17 @@ export function PlaceFilters({
             <option value="vegan_options">{locale === "es" ? "Opciones veganas" : "Vegan options"}</option>
           </select>
         </>
+      ) : null}
+      {showMarketFilters ? (
+        <select value={filters.marketKind} onChange={(e) => setFilters({ ...filters, marketKind: e.target.value as PF["marketKind"] })} className="rounded border p-2 text-sm">
+          <option value="all">{locale === "es" ? "Cualquier mercado" : "Any market"}</option>
+          <option value="flea">{locale === "es" ? "Rastro / segunda mano" : "Flea / second-hand"}</option>
+          <option value="antiques">{locale === "es" ? "Antigüedades" : "Antiques"}</option>
+          <option value="food">{locale === "es" ? "Comida" : "Food"}</option>
+          <option value="craft">{locale === "es" ? "Arte / craft" : "Art / craft"}</option>
+          <option value="saturday">{locale === "es" ? "Sábado" : "Saturday"}</option>
+          <option value="sunday">{locale === "es" ? "Domingo" : "Sunday"}</option>
+        </select>
       ) : null}
       <div className="flex flex-wrap gap-2 md:col-span-5">
         {categories.map((c) => {

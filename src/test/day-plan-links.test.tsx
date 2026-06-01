@@ -43,4 +43,15 @@ describe("DayPlan internal links", () => {
     expect(screen.getAllByText(/Evento ·/).some((node) => node.textContent?.includes("Else"))).toBe(true);
     expect(screen.getAllByRole("link", { name: "Ficha: Else" }).some((link) => link.getAttribute("href")?.startsWith("/places/else"))).toBe(true);
   });
+
+  it("links short flea-market aliases in itinerary copy", () => {
+    const sunday = itinerary.find((day) => day.date === "2026-06-14");
+    expect(sunday).toBeDefined();
+
+    render(<DayPlan day={sunday!} locale="es" places={places} events={events} />);
+
+    expect(screen.getAllByRole("link", { name: "Arkonaplatz" }).some((link) => link.getAttribute("href")?.startsWith("/places/arkonaplatz-flea-market"))).toBe(true);
+    expect(screen.getAllByRole("link", { name: "Antikmarkt Ostbahnhof" }).some((link) => link.getAttribute("href")?.startsWith("/places/antikmarkt-ostbahnhof"))).toBe(true);
+    expect(screen.getAllByRole("link", { name: "Marheinekeplatz" }).some((link) => link.getAttribute("href")?.startsWith("/places/marheinekeplatz-flea-market"))).toBe(true);
+  });
 });

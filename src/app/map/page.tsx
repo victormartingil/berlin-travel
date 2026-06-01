@@ -17,9 +17,9 @@ export default function MapPage() {
   return (
     <section className="space-y-4">
       <h1 className="text-2xl font-semibold">{locale === "es" ? "Mapa" : "Map"}</h1>
-      <PlaceFilters filters={filters} setFilters={setFilters} categories={categories} neighbourhoods={neighbourhoods} />
+      <PlaceFilters filters={filters} setFilters={setFilters} categories={categories} neighbourhoods={neighbourhoods} locale={locale} />
       <div className="overflow-hidden rounded-xl border bg-white p-2">
-        <TravelMap places={filtered} />
+        <TravelMap places={filtered} locale={locale} />
       </div>
       <div className="grid gap-4 md:grid-cols-2">
         {filtered.map((p) => <PlaceCard key={p.id} place={p} locale={locale} />)}

@@ -11,3 +11,5 @@ export type VerificationMetadata = {
 };
 
 export type LocalizedText = { es: string; en: string };
+
+export type Priority = "essential" | "high" | "medium" | "optional";

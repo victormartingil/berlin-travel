@@ -1,25 +1,108 @@
-import type { ItineraryDay } from "@/domain/itinerary";
+import type { ItineraryDay, ItineraryItem } from "@/domain/itinerary";
 
-const day = (date: string, es: string, en: string): ItineraryDay => ({
-  date,
-  label: { es, en },
-  blocks: {
-    morning: [{ id: `${date}-m1`, title: { es: "Paseo por barrio", en: "Neighborhood walk" }, placeId: "accommodation-nena-moritzplatz", verification: { status: "unknown" } }],
-    lunch: [{ id: `${date}-l1`, title: { es: "Comida vegetariana", en: "Vegetarian lunch" }, placeId: "mustafa-gemuse-kebap", verification: { status: "unknown" } }],
-    afternoon: [{ id: `${date}-a1`, title: { es: "Museo/galería", en: "Museum/gallery" }, placeId: "hamburger-bahnhof", verification: { status: "unknown" } }],
-    dinner: [{ id: `${date}-d1`, title: { es: "Cena y paseo", en: "Dinner and walk" }, placeId: "five-elephant", verification: { status: "unknown" } }],
-    evening: [{ id: `${date}-e1`, title: { es: "Atardecer y descanso", en: "Sunset and rest" }, placeId: "tempelhofer-feld", verification: { status: "unknown" } }],
-    night: [{ id: `${date}-n1`, title: { es: "Noche electrónica", en: "Electronic night" }, placeId: "sisyphos", verification: { status: "unknown" } }],
-    alternatives: [{ id: `${date}-x1`, title: { es: "Alternativa low-budget", en: "Low-budget alternative" }, placeId: "markthalle-neun", verification: { status: "unknown" } }],
-  },
+const verification = {
+  status: "needs_verification" as const,
+  sourceUrl: "/Users/vmart/Downloads/Guía profunda y verificada para Berlín.pdf",
+  lastVerifiedAt: "2026-06-01",
+};
+
+const item = (id: string, es: string, en: string, extra: Partial<ItineraryItem> = {}): ItineraryItem => ({
+  id,
+  title: { es, en },
+  verification,
+  ...extra,
 });
 
 export const itinerary: ItineraryDay[] = [
-  day("2026-06-10", "Día 1 · Llegada", "Day 1 · Arrival"),
-  day("2026-06-11", "Día 2 · Kreuzberg", "Day 2 · Kreuzberg"),
-  day("2026-06-12", "Día 3 · Mitte", "Day 3 · Mitte"),
-  day("2026-06-13", "Día 4 · Arte", "Day 4 · Art"),
-  day("2026-06-14", "Día 5 · Mercados", "Day 5 · Markets"),
-  day("2026-06-15", "Día 6 · Museos", "Day 6 · Museums"),
-  day("2026-06-16", "Día 7 · Cierre", "Day 7 · Wrap-up"),
+  {
+    date: "2026-06-10",
+    label: { es: "Miercoles 10 junio · llegada suave", en: "Wednesday 10 June · soft arrival" },
+    blocks: {
+      morning: [item("d10-m1", "Llegada, check-in y orientacion Moritzplatz-Oranienstrasse.", "Arrival, check-in and Moritzplatz-Oranienstrasse orientation.", { placeId: "accommodation-nena-moritzplatz", duration: "2-3 h" })],
+      lunch: [item("d10-l1", "Comida facil cerca de Kreuzberg; Happa si encaja.", "Easy Kreuzberg lunch; Happa if it fits.", { placeId: "happa", duration: "1-1.5 h" })],
+      afternoon: [item("d10-a1", "Berlinische Galerie y paseo por Alte Jakobstrasse.", "Berlinische Galerie and Alte Jakobstrasse walk.", { placeId: "berlinische-galerie", duration: "2-3 h", flags: ["rain", "tired"] })],
+      dinner: [item("d10-d1", "Cena tranquila en Kreuzberg.", "Calm dinner in Kreuzberg.", { placeId: "markthalle-neun", duration: "1.5-2 h" })],
+      evening: [item("d10-e1", "Copa suave si queda energia.", "Low-key drink if there is energy.", { flags: ["tired"] })],
+      night: [item("d10-n1", "Opcion club: AEDEN si apetece empezar con musica.", "Club option: AEDEN if you want a music start.", { placeId: "aeden", flags: ["booking"] })],
+      alternatives: [item("d10-x1", "Si llueve o estais cansados: cafe largo y descanso.", "If it rains or you are tired: long coffee and rest.", { flags: ["rain", "tired", "low_budget"] })],
+    },
+  },
+  {
+    date: "2026-06-11",
+    label: { es: "Jueves 11 junio · historia y patios", en: "Thursday 11 June · history and courtyards" },
+    blocks: {
+      morning: [item("d11-m1", "Topography of Terror.", "Topography of Terror.", { placeId: "topography-of-terror", duration: "1.5-2 h", flags: ["rain", "low_budget"] })],
+      lunch: [item("d11-l1", "Comida por Potsdamer/Mitte o vuelta hacia Kreuzberg.", "Lunch around Potsdamer/Mitte or back toward Kreuzberg.", { duration: "1-1.5 h" })],
+      afternoon: [item("d11-a1", "Reichstag/Brandenburger Tor exterior y Hackesche Hofe/Haus Schwarzenberg.", "Reichstag/Brandenburger Tor exterior and Hackesche Hofe/Haus Schwarzenberg.", { placeId: "hackesche-hoefe", duration: "3-4 h" })],
+      dinner: [item("d11-d1", "Cookies Cream si quereis cena especial; si no, algo casual.", "Cookies Cream for a special dinner; otherwise keep it casual.", { placeId: "cookies-cream", flags: ["booking"] })],
+      evening: [item("d11-e1", "Katergarten o descanso antes del viernes.", "Katergarten or rest before Friday.", { placeId: "kater-blau" })],
+      night: [item("d11-n1", "No forzar noche: viernes y sabado son mejores.", "Do not force the night: Friday and Saturday are stronger.", { flags: ["tired"] })],
+      alternatives: [item("d11-x1", "Con lluvia: alargar museo o ir a Hamburger Bahnhof.", "With rain: extend museum time or go to Hamburger Bahnhof.", { placeId: "hamburger-bahnhof", flags: ["rain"] })],
+    },
+  },
+  {
+    date: "2026-06-12",
+    label: { es: "Viernes 12 junio · canal y primera gran noche", en: "Friday 12 June · canal and first big night" },
+    blocks: {
+      morning: [item("d12-m1", "Mercado de Maybachufer.", "Maybachufer market.", { placeId: "maybachufer-market", duration: "2-3 h", flags: ["low_budget"] })],
+      lunch: [item("d12-l1", "Comida de mercado o brunch tardio en Neukolln.", "Market lunch or late Neukolln brunch.", { placeId: "brammibals-maybachufer" })],
+      afternoon: [item("d12-a1", "Tempelhofer Feld; si llueve, Hamburger Bahnhof.", "Tempelhofer Feld; if it rains, Hamburger Bahnhof.", { placeId: "tempelhofer-feld", flags: ["rain"] })],
+      dinner: [item("d12-d1", "Alaska Bar o La Stella Nera.", "Alaska Bar or La Stella Nera.", { placeId: "alaska-bar" })],
+      evening: [item("d12-e1", "Elegir energia real antes de club.", "Check real energy before clubbing.", { flags: ["tired"] })],
+      night: [item("d12-n1", "Opciones: Sisyphos, Tresor o descanso.", "Options: Sisyphos, Tresor or rest.", { eventId: "sisyphos-weekend-2026-06-12", flags: ["booking"] })],
+      alternatives: [item("d12-x1", "Plan cansado: canal, cafe y cena sencilla.", "Tired plan: canal, coffee and simple dinner.", { flags: ["tired", "low_budget"] })],
+    },
+  },
+  {
+    date: "2026-06-13",
+    label: { es: "Sabado 13 junio · Friedrichshain y mejor noche", en: "Saturday 13 June · Friedrichshain and best night" },
+    blocks: {
+      morning: [item("d13-m1", "Hackesche Hofe, Haus Schwarzenberg y cafes de Mitte.", "Hackesche Hofe, Haus Schwarzenberg and Mitte cafes.", { placeId: "haus-schwarzenberg" })],
+      lunch: [item("d13-l1", "Mitte o traslado a Friedrichshain.", "Mitte or transfer to Friedrichshain." )],
+      afternoon: [item("d13-a1", "Boxhagener Platz y calles alrededor; alternativa Hamburger Bahnhof.", "Boxhagener Platz and nearby streets; Hamburger Bahnhof alternative.", { placeId: "boxhagener-platz" })],
+      dinner: [item("d13-d1", "1990 Vegan Living o Voner para no complicar.", "1990 Vegan Living or Voner to keep it easy.", { placeId: "1990-vegan-living" })],
+      evening: [item("d13-e1", "Pre-club suave y decision final.", "Soft pre-club and final decision." )],
+      night: [item("d13-n1", "Else x Mano Le Tough como primera opcion; AEDEN o Kater como alternativas.", "Else x Mano Le Tough as first choice; AEDEN or Kater as alternatives.", { eventId: "else-mano-le-tough-maeve-2026-06-13", flags: ["booking", "cash_card"] })],
+      alternatives: [item("d13-x1", "Si quereis algo mas solar: Toy Tonics en AEDEN.", "For a sunnier option: Toy Tonics at AEDEN.", { eventId: "toy-tonics-aeden-2026-06-13" })],
+    },
+  },
+  {
+    date: "2026-06-14",
+    label: { es: "Domingo 14 junio · Neukolln y flowmarkt", en: "Sunday 14 June · Neukolln and flow market" },
+    blocks: {
+      morning: [item("d14-m1", "Brunch en Cafe Vux.", "Brunch at Cafe Vux.", { placeId: "cafe-vux" })],
+      lunch: [item("d14-l1", "Nowkoelln Flowmarkt y canal.", "Nowkoelln Flowmarkt and canal.", { placeId: "nowkoelln-flowmarkt", duration: "2-3 h" })],
+      afternoon: [item("d14-a1", "Prinzessinnengarten o Mauerpark si quereis mas ambiente.", "Prinzessinnengarten or Mauerpark if you want more crowd energy.", { placeId: "holzmarkt-25" })],
+      dinner: [item("d14-d1", "La Stella Nera o algo ligero en Neukolln.", "La Stella Nera or something light in Neukolln.", { placeId: "la-stella-nera" })],
+      evening: [item("d14-e1", "Descanso o tarde-noche abierta.", "Rest or open-air evening." )],
+      night: [item("d14-n1", "Dyketopia Open Air en OXI si queda energia.", "Dyketopia Open Air at OXI if there is energy.", { eventId: "oxi-dyketopia-2026-06-14" })],
+      alternatives: [item("d14-x1", "Si llueve: Hamburger Bahnhof Open House o cafe largo.", "If it rains: Hamburger Bahnhof Open House or long coffee.", { placeId: "hamburger-bahnhof", flags: ["rain"] })],
+    },
+  },
+  {
+    date: "2026-06-15",
+    label: { es: "Lunes 15 junio · street art y Teufelsberg", en: "Monday 15 June · street art and Teufelsberg" },
+    blocks: {
+      morning: [item("d15-m1", "URBAN NATION y eje mural de Bulowstrasse.", "URBAN NATION and Bulowstrasse mural corridor.", { placeId: "urban-nation", duration: "2-3 h", flags: ["rain", "low_budget"] })],
+      lunch: [item("d15-l1", "Schoneberg o camino a Charlottenburg.", "Schoneberg or transfer toward Charlottenburg." )],
+      afternoon: [item("d15-a1", "Teufelsberg para fotografia, vistas y street art.", "Teufelsberg for photography, views and street art.", { placeId: "teufelsberg", duration: "3-4 h", flags: ["booking"] })],
+      dinner: [item("d15-d1", "Lucky Leek o Bonvivant si quereis otra cena especial.", "Lucky Leek or Bonvivant for another special dinner.", { placeId: "lucky-leek", flags: ["booking"] })],
+      evening: [item("d15-e1", "Paseo tranquilo o bar.", "Quiet walk or bar." )],
+      night: [item("d15-n1", "Noche baja: proteger energia para salida.", "Low night: protect energy before departure.", { flags: ["tired"] })],
+      alternatives: [item("d15-x1", "Si llueve: Neue Nationalgalerie o Gropius Bau segun exposiciones.", "If it rains: Neue Nationalgalerie or Gropius Bau depending on exhibitions.", { flags: ["rain"] })],
+    },
+  },
+  {
+    date: "2026-06-16",
+    label: { es: "Martes 16 junio · cierre y BER", en: "Tuesday 16 June · wrap-up and BER" },
+    blocks: {
+      morning: [item("d16-m1", "Maybachufer si no lo hicisteis antes.", "Maybachufer if you did not do it before.", { placeId: "maybachufer-market", duration: "1.5-2.5 h" })],
+      lunch: [item("d16-l1", "Despedida ligera cerca del alojamiento.", "Light farewell near the apartment.", { placeId: "accommodation-nena-moritzplatz" })],
+      afternoon: [item("d16-a1", "Recogida y salida hacia BER: recordad billete ABC.", "Pack up and leave for BER: remember ABC ticket.", { externalUrl: "https://ber.berlin-airport.de/en/orientation/getting-here/public-transport.html", flags: ["cash_card"] })],
+      dinner: [],
+      evening: [],
+      night: [],
+      alternatives: [item("d16-x1", "Si vais cargados o justos, taxi sin culpa.", "If luggage or timing is tight, take a taxi without overthinking it.", { flags: ["tired"] })],
+    },
+  },
 ];

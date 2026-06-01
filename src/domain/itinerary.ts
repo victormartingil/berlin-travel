@@ -7,10 +7,12 @@ export type ItineraryItem = {
   title: LocalizedText;
   note?: LocalizedText;
   placeId?: string;
+  eventId?: string;
   duration?: string;
   routeFromPlaceId?: string;
   routeMode?: "walking" | "transit" | "bicycling";
   externalUrl?: string;
+  flags?: ("rain" | "tired" | "low_budget" | "booking" | "cash_card")[];
   verification: VerificationMetadata;
 };
 

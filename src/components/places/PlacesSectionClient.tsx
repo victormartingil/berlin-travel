@@ -17,7 +17,7 @@ export function PlacesSectionClient({ title, categories }: { title: string; cate
   return (
     <section className="space-y-4">
       <h1 className="text-2xl font-semibold">{title}</h1>
-      <PlaceFilters filters={filters} setFilters={setFilters} categories={categories} neighbourhoods={neighbourhoods} />
+      <PlaceFilters filters={filters} setFilters={setFilters} categories={categories} neighbourhoods={neighbourhoods} locale={locale} />
       <div className="grid gap-4 md:grid-cols-2">
         {filtered.map((p) => <PlaceCard key={p.id} place={p} locale={locale} />)}
       </div>

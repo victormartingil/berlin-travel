@@ -1,4 +1,4 @@
-import type { LocalizedText, VerificationMetadata } from "./common";
+import type { LocalizedText, Priority, VerificationMetadata } from "./common";
 
 export type PlaceCategory =
   | "accommodation"
@@ -13,7 +13,10 @@ export type PlaceCategory =
   | "alternative"
   | "nightlife"
   | "park"
-  | "transport";
+  | "transport"
+  | "history"
+  | "market"
+  | "club";
 
 export type PriceLevel = "low" | "mid" | "high";
 
@@ -23,10 +26,23 @@ export type Place = {
   category: PlaceCategory;
   neighbourhood: string;
   description: LocalizedText;
+  priority: Priority;
   priceLevel: PriceLevel;
   tags: string[];
   address?: string;
   coordinates?: { lat: number; lng: number };
   googleMapsQuery?: string;
+  googleMapsUrl?: string;
+  openingHours?: LocalizedText;
+  estimatedDuration?: string;
+  ticketUrl?: string;
+  reservationUrl?: string;
+  officialUrl?: string;
+  sourceUrl?: string;
+  lastVerifiedAt?: string;
+  rainyDay?: boolean;
+  cashless?: boolean;
+  bookingRecommended?: boolean;
+  practicalNotes?: LocalizedText[];
   verification: VerificationMetadata;
 };

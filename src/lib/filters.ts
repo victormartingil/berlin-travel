@@ -1,15 +1,24 @@
+import type { NightlifeEvent } from "@/domain/event";
+import type { Priority, VerificationStatus } from "@/domain/common";
 import type { Place, PlaceCategory, PriceLevel } from "@/domain/place";
-import type { VerificationStatus } from "@/domain/common";
 
 export type PlaceFilters = {
   categories: PlaceCategory[];
   neighbourhood: string;
   price: PriceLevel | "all";
   verification: VerificationStatus | "all";
+  priority: Priority | "all";
   search: string;
 };
 
-export const defaultPlaceFilters: PlaceFilters = { categories: [], neighbourhood: "all", price: "all", verification: "all", search: "" };
+export type EventFilters = {
+  date: string;
+  intensity: NightlifeEvent["intensity"] | "all";
+  priority: Priority | "all";
+};
+
+export const defaultPlaceFilters: PlaceFilters = { categories: [], neighbourhood: "all", price: "all", verification: "all", priority: "all", search: "" };
+export const defaultEventFilters: EventFilters = { date: "all", intensity: "all", priority: "all" };
 
 export function filterPlaces(items: Place[], f: PlaceFilters): Place[] {
   const q = f.search.trim().toLowerCase();
@@ -18,7 +27,17 @@ export function filterPlaces(items: Place[], f: PlaceFilters): Place[] {
     if (f.neighbourhood !== "all" && p.neighbourhood !== f.neighbourhood) return false;
     if (f.price !== "all" && p.priceLevel !== f.price) return false;
     if (f.verification !== "all" && p.verification.status !== f.verification) return false;
+    if (f.priority !== "all" && p.priority !== f.priority) return false;
     if (q && !`${p.name} ${p.neighbourhood} ${p.tags.join(" ")}`.toLowerCase().includes(q)) return false;
+    return true;
+  });
+}
+
+export function filterEvents(items: NightlifeEvent[], f: EventFilters): NightlifeEvent[] {
+  return items.filter((event) => {
+    if (f.date !== "all" && event.date !== f.date) return false;
+    if (f.intensity !== "all" && event.intensity !== f.intensity) return false;
+    if (f.priority !== "all" && event.priority !== f.priority) return false;
     return true;
   });
 }

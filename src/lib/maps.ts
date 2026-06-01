@@ -1,6 +1,7 @@
 import type { Place } from "@/domain/place";
 
 export function buildGoogleMapsPlaceUrl(place: Place): string {
+  if (place.googleMapsUrl) return place.googleMapsUrl;
   if (place.coordinates) {
     return `https://www.google.com/maps/search/?api=1&query=${place.coordinates.lat},${place.coordinates.lng}`;
   }

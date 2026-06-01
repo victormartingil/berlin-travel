@@ -12,6 +12,8 @@ Static Next.js travel guide for a Berlin trip (June 10-16, 2026), optimized for 
 - Verification metadata for real-world content.
 - Favorites persisted in `localStorage`.
 - Language switch ES/EN (client-side).
+- Verified, data-first guide content based on the curated Berlin PDF and official sources.
+- Dedicated nightlife event model for date-specific club options.
 
 ## Project Structure
 - `src/app`: routes/pages.
@@ -39,6 +41,7 @@ npm run build
 ## Content Editing
 - Places: `src/data/places.ts`
 - Itinerary: `src/data/itinerary.ts`
+- Nightlife events: `src/data/events.ts`
 - Transport notes: `src/data/transport.ts`
 - Trip settings: `src/data/settings.ts`
 
@@ -47,6 +50,8 @@ Keep verification status updated for each real-world item:
 - `needs_verification`
 - `outdated`
 - `unknown`
+
+Every accepted place/event should include a source or official URL plus `lastVerifiedAt`.
 
 ## i18n (ES/EN)
 Current implementation uses a client-side locale switch persisted in localStorage.

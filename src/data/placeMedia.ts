@@ -65,6 +65,15 @@ export const placeImages: PlaceImage[] = [
     sourceUrl: "https://commons.wikimedia.org/wiki/File:Urban_Nation_Museum_Berlin.jpg",
   },
   {
+    placeId: "east-side-gallery",
+    src: "/images/places/east-side-gallery-01.jpg",
+    alt: { es: "Mural en East Side Gallery junto al antiguo Muro.", en: "Mural at East Side Gallery by the former Wall." },
+    author: "Singlespeedfahrer",
+    license: "CC0",
+    licenseUrl: "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:Mural_Himlen_over_Berlin_Karina_Bjerregaard_Lotte_Haubert_East_Side_Gallery_Berlin_02.jpg",
+  },
+  {
     placeId: "hackesche-hoefe",
     src: "/images/places/hackesche-hoefe-01.jpg",
     alt: { es: "Patios Hackesche Hofe en Berlin-Mitte.", en: "Hackesche Hofe courtyards in Berlin-Mitte." },
@@ -114,4 +123,3 @@ export const placeImages: PlaceImage[] = [
 export function getPlaceImages(placeId: string): PlaceImage[] {
   return placeImages.filter((image) => image.placeId === placeId);
 }
-

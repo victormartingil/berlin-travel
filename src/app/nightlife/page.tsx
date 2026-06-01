@@ -40,7 +40,7 @@ export default function NightlifePage() {
           {filtered.map((event) => <EventCard key={event.id} event={event} venue={places.find((p) => p.id === event.venuePlaceId)} locale={locale} />)}
         </div>
       </div>
-      <PlacesSectionClient title={locale === "es" ? "Clubs y venues" : "Clubs and venues"} categories={["club"]} />
+      <PlacesSectionClient title={locale === "es" ? "Clubs, venues y atardeceres" : "Clubs, venues and sunset spots"} categories={["club", "nightlife"]} />
     </section>
   );
 }

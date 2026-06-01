@@ -12,6 +12,7 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { t, ui } from "@/lib/i18n";
 import { getMapIconForCategory } from "@/lib/mapIcons";
 import { buildGoogleMapsPlaceUrl } from "@/lib/maps";
+import { publicAssetPath } from "@/lib/paths";
 import { buildPlaceDetailSections } from "@/lib/placeDetails";
 
 export function PlaceDetailClient({ place }: { place: Place }) {
@@ -48,7 +49,7 @@ export function PlaceDetailClient({ place }: { place: Place }) {
           <div className="relative flex min-h-64 items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.28),transparent_28%),linear-gradient(135deg,var(--detail-color),#111827)]" style={{ "--detail-color": icon.color } as React.CSSProperties}>
             {heroImage ? (
               <>
-                <Image src={heroImage.src} alt={t(heroImage.alt, locale)} fill sizes="(min-width: 768px) 40vw, 100vw" className="object-cover" priority />
+                <Image src={publicAssetPath(heroImage.src)} alt={t(heroImage.alt, locale)} fill sizes="(min-width: 768px) 40vw, 100vw" className="object-cover" priority />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-xs text-white">
                   {heroImage.license} · {heroImage.author}
                 </div>
@@ -102,7 +103,7 @@ export function PlaceDetailClient({ place }: { place: Place }) {
                 {images.map((image) => (
                   <figure key={image.src} className="overflow-hidden rounded-md border border-zinc-200 bg-zinc-50">
                     <div className="relative aspect-[4/3]">
-                      <Image src={image.src} alt={t(image.alt, locale)} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover" />
+                      <Image src={publicAssetPath(image.src)} alt={t(image.alt, locale)} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover" />
                     </div>
                     <figcaption className="space-y-1 p-3 text-xs text-zinc-600">
                       <p>{t(image.alt, locale)}</p>

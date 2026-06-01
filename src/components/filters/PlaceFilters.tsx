@@ -56,6 +56,13 @@ export function PlaceFilters({
         <option value="unknown">{t(ui.labels.unknown, locale)}</option>
         <option value="outdated">{t(ui.labels.outdated, locale)}</option>
       </select>
+      <button
+        type="button"
+        onClick={() => setFilters({ ...filters, friendRecommended: !filters.friendRecommended })}
+        className={`rounded border p-2 text-sm ${filters.friendRecommended ? "border-amber-500 bg-amber-100 text-amber-950" : "border-zinc-300 bg-white text-zinc-700"}`}
+      >
+        {locale === "es" ? "⭐ Consejos amigo" : "⭐ Friend picks"}
+      </button>
       {showFoodFilters ? (
         <>
           <select value={filters.mealType} onChange={(e) => setFilters({ ...filters, mealType: e.target.value as PF["mealType"] })} className="rounded border p-2 text-sm">

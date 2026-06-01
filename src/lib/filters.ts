@@ -11,6 +11,7 @@ export type PlaceFilters = {
   mealType: MealType | "all";
   areaUseCase: AreaUseCase | "all";
   diet: DietType | "all";
+  friendRecommended: boolean;
   search: string;
 };
 
@@ -29,6 +30,7 @@ export const defaultPlaceFilters: PlaceFilters = {
   mealType: "all",
   areaUseCase: "all",
   diet: "all",
+  friendRecommended: false,
   search: "",
 };
 export const defaultEventFilters: EventFilters = { date: "all", intensity: "all", priority: "all" };
@@ -44,6 +46,7 @@ export function filterPlaces(items: Place[], f: PlaceFilters): Place[] {
     if (f.mealType !== "all" && !p.mealTypes?.includes(f.mealType)) return false;
     if (f.areaUseCase !== "all" && !p.areaUseCase?.includes(f.areaUseCase)) return false;
     if (f.diet !== "all" && p.diet !== f.diet) return false;
+    if (f.friendRecommended && !p.friendRecommended) return false;
     if (q && !`${p.name} ${p.neighbourhood} ${p.tags.join(" ")}`.toLowerCase().includes(q)) return false;
     return true;
   });

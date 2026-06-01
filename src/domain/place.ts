@@ -62,12 +62,14 @@ export type Place = {
   rainyDay?: boolean;
   cashless?: boolean;
   bookingRecommended?: boolean;
+  friendRecommended?: boolean;
   quickStop?: boolean;
   destinationWorthy?: boolean;
   mealTypes?: MealType[];
   areaUseCase?: AreaUseCase[];
   diet?: DietType;
   story?: LocalizedText;
+  friendNote?: LocalizedText;
   whyGo?: LocalizedText[];
   localSignals?: LocalizedText[];
   photoReferences?: PlacePhotoReference[];

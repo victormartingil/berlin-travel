@@ -52,6 +52,7 @@ export function PlaceCard({ place, locale }: { place: Place; locale: Locale }) {
         <PriceBadge value={place.priceLevel} />
         {place.rainyDay ? <span className="rounded-full bg-blue-100 px-2 py-1 text-xs text-blue-800">{t(ui.labels.rainy, locale)}</span> : null}
         {place.bookingRecommended ? <span className="rounded-full bg-fuchsia-100 px-2 py-1 text-xs text-fuchsia-800">{t(ui.labels.booking, locale)}</span> : null}
+        {place.friendRecommended ? <span className="rounded-full bg-amber-100 px-2 py-1 text-xs text-amber-900">{locale === "es" ? "consejo amigo" : "friend pick"}</span> : null}
         {place.cashless ? <span className="rounded-full bg-teal-100 px-2 py-1 text-xs text-teal-800">{t(ui.labels.cashless, locale)}</span> : null}
         {place.diet ? <span className="rounded-full bg-emerald-100 px-2 py-1 text-xs text-emerald-800">{place.diet.replace("_", " ")}</span> : null}
         {place.quickStop ? <span className="rounded-full bg-amber-100 px-2 py-1 text-xs text-amber-800">{locale === "es" ? "rapido" : "quick stop"}</span> : null}
@@ -71,6 +72,8 @@ export function PlaceCard({ place, locale }: { place: Place; locale: Locale }) {
           {place.estimatedDuration ? <p>{place.estimatedDuration}</p> : null}
         </div>
       ) : null}
+
+      {place.friendNote ? <p className="rounded-md bg-amber-50 p-2 text-sm text-amber-950">★ {t(place.friendNote, locale)}</p> : null}
 
       {place.practicalNotes?.length ? (
         <ul className="space-y-1 text-sm text-zinc-600">

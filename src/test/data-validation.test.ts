@@ -14,6 +14,20 @@ describe("content validation", () => {
     expect(places.filter((place) => !place.openingHours?.es || !place.openingHours.en).map((place) => place.id)).toEqual([]);
   });
 
+  it("keeps friend recommendations explicit and useful", () => {
+    const friendPicks = places.filter((place) => place.friendRecommended);
+    expect(friendPicks.map((place) => place.id).sort()).toEqual([
+      "koepi-137",
+      "mauerpark",
+      "raw-gelaende",
+      "tempelhofer-feld",
+      "teufelsberg",
+      "victory-column",
+      "yaam",
+    ]);
+    expect(friendPicks.filter((place) => !place.friendNote?.es || !place.googleMapsUrl).map((place) => place.id)).toEqual([]);
+  });
+
   it("keeps events linked to venues", () => {
     expect(validateEvents(events, places)).toEqual([]);
   });

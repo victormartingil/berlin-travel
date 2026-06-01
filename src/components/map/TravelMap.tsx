@@ -9,6 +9,7 @@ import { getPlaceImages } from "@/data/placeMedia";
 import { useFavorites } from "@/hooks/useFavorites";
 import { getMapIconForCategory } from "@/lib/mapIcons";
 import { buildGoogleMapsPlaceUrl } from "@/lib/maps";
+import { appPath, publicAssetPath } from "@/lib/paths";
 import { t, ui } from "@/lib/i18n";
 
 export function TravelMap({ places, locale }: { places: Place[]; locale: Locale }) {
@@ -70,7 +71,7 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
       const image = getPlaceImages(place.id)[0];
       if (image) {
         const thumb = document.createElement("img");
-        thumb.src = image.src;
+        thumb.src = publicAssetPath(image.src);
         thumb.alt = t(image.alt, locale);
         thumb.loading = "lazy";
         thumb.className = "travel-map-popup-image";
@@ -86,7 +87,7 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
       link.rel = "noreferrer";
       link.textContent = t(ui.actions.maps, locale);
       const detailLink = document.createElement("a");
-      detailLink.href = `/places/${place.id}/`;
+      detailLink.href = appPath(`/places/${place.id}/`);
       detailLink.textContent = locale === "es" ? "Abrir ficha" : "Open details";
       const button = document.createElement("button");
       button.type = "button";

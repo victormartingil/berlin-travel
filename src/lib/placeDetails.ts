@@ -63,6 +63,7 @@ export function buildPlaceDetailSections(place: Place, locale: "es" | "en") {
   ].filter(Boolean) as string[];
 
   const signals = [
+    place.friendNote ? `★ ${t(place.friendNote, locale)}` : null,
     ...(place.localSignals ?? []).map((note) => t(note, locale)),
     place.rainyDay ? (locale === "es" ? "Buen comodin con lluvia." : "Good rainy-day backup.") : null,
     place.quickStop ? (locale === "es" ? "Sirve para resolver rapido sin romper ruta." : "Useful for a quick stop without breaking the route.") : null,

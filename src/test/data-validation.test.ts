@@ -10,6 +10,10 @@ describe("content validation", () => {
     expect(validatePlaces(places)).toEqual([]);
   });
 
+  it("keeps every place with practical opening guidance", () => {
+    expect(places.filter((place) => !place.openingHours?.es || !place.openingHours.en).map((place) => place.id)).toEqual([]);
+  });
+
   it("keeps events linked to venues", () => {
     expect(validateEvents(events, places)).toEqual([]);
   });

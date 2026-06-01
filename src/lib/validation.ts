@@ -1,6 +1,6 @@
 import type { NightlifeEvent } from "@/domain/event";
 import type { ItineraryDay } from "@/domain/itinerary";
-import type { Place } from "@/domain/place";
+import type { Place, PlaceImage } from "@/domain/place";
 
 const foodMetadataCategories = new Set(["vegetarian", "restaurant", "cafe", "bakery"]);
 
@@ -62,6 +62,24 @@ export function validateItinerary(days: ItineraryDay[], places: Place[], events:
         if (item.eventId && !eventIds.has(item.eventId)) errors.push(`missing itinerary event: ${item.id}`);
       }
     }
+  }
+  return errors;
+}
+
+export function validatePlaceImages(images: PlaceImage[], places: Place[]): string[] {
+  const errors: string[] = [];
+  const placeIds = new Set(places.map((place) => place.id));
+  const srcs = new Set<string>();
+  for (const image of images) {
+    if (!placeIds.has(image.placeId)) errors.push(`image references missing place: ${image.placeId}`);
+    if (srcs.has(image.src)) errors.push(`duplicate image src: ${image.src}`);
+    srcs.add(image.src);
+    if (!image.src.startsWith("/images/places/")) errors.push(`image must be local place asset: ${image.src}`);
+    if (!image.alt.es || !image.alt.en) errors.push(`missing image alt: ${image.src}`);
+    if (!image.author) errors.push(`missing image author: ${image.src}`);
+    if (!image.license) errors.push(`missing image license: ${image.src}`);
+    if (!hasValidUrl(image.licenseUrl)) errors.push(`invalid image license url: ${image.src}`);
+    if (!hasValidUrl(image.sourceUrl)) errors.push(`invalid image source url: ${image.src}`);
   }
   return errors;
 }

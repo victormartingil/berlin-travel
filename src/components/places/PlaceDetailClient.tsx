@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, CalendarCheck, ExternalLink, ImageIcon, MapPin, Ticket } from "lucide-react";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import { FavoriteButton } from "@/components/ui/FavoriteButton";
 import { PriceBadge, PriorityBadge, VerificationBadge } from "@/components/ui/Badges";
+import { getPlaceImages } from "@/data/placeMedia";
 import type { Place } from "@/domain/place";
 import { useFavorites } from "@/hooks/useFavorites";
 import { t, ui } from "@/lib/i18n";
@@ -17,6 +19,8 @@ export function PlaceDetailClient({ place }: { place: Place }) {
   const fav = useFavorites();
   const icon = getMapIconForCategory(place.category);
   const details = buildPlaceDetailSections(place, locale);
+  const images = getPlaceImages(place.id);
+  const heroImage = images[0];
 
   return (
     <article className="space-y-6">
@@ -41,16 +45,25 @@ export function PlaceDetailClient({ place }: { place: Place }) {
             </div>
             <p className="max-w-2xl text-zinc-200">{t(place.description, locale)}</p>
           </div>
-          <div className="flex min-h-56 items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.28),transparent_28%),linear-gradient(135deg,var(--detail-color),#111827)] p-6" style={{ "--detail-color": icon.color } as React.CSSProperties}>
-            <div className="rounded-2xl border border-white/30 bg-white/10 p-6 text-center backdrop-blur">
-              <ImageIcon className="mx-auto" size={36} />
-              <p className="mt-3 text-sm text-zinc-100">{locale === "es" ? "Ficha visual propia" : "Own visual card"}</p>
-              <p className="mt-1 max-w-xs text-xs text-zinc-300">
-                {locale === "es"
-                  ? "Evitamos fotos copiadas de Google. Si hay referencias visuales fiables, aparecen abajo enlazadas a su fuente."
-                  : "No copied Google photos. Reliable visual references are linked below when available."}
-              </p>
-            </div>
+          <div className="relative flex min-h-64 items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.28),transparent_28%),linear-gradient(135deg,var(--detail-color),#111827)]" style={{ "--detail-color": icon.color } as React.CSSProperties}>
+            {heroImage ? (
+              <>
+                <Image src={heroImage.src} alt={t(heroImage.alt, locale)} fill sizes="(min-width: 768px) 40vw, 100vw" className="object-cover" priority />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-xs text-white">
+                  {heroImage.license} · {heroImage.author}
+                </div>
+              </>
+            ) : (
+              <div className="m-6 rounded-2xl border border-white/30 bg-white/10 p-6 text-center backdrop-blur">
+                <ImageIcon className="mx-auto" size={36} />
+                <p className="mt-3 text-sm text-zinc-100">{locale === "es" ? "Ficha visual propia" : "Own visual card"}</p>
+                <p className="mt-1 max-w-xs text-xs text-zinc-300">
+                  {locale === "es"
+                    ? "Sin foto embebida con licencia clara todavia. Usa las referencias visuales y Google Maps para confirmar el ambiente actual."
+                    : "No embedded photo with clear license yet. Use visual references and Google Maps to confirm the current vibe."}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </header>
@@ -83,7 +96,27 @@ export function PlaceDetailClient({ place }: { place: Place }) {
           </section>
 
           <section className="rounded-md border border-zinc-200 bg-white p-4">
-            <h2 className="text-lg font-semibold">{locale === "es" ? "Referencias visuales" : "Visual references"}</h2>
+            <h2 className="text-lg font-semibold">{locale === "es" ? "Imagenes y referencias visuales" : "Images and visual references"}</h2>
+            {images.length > 0 ? (
+              <div className="mt-3 grid gap-3 md:grid-cols-2">
+                {images.map((image) => (
+                  <figure key={image.src} className="overflow-hidden rounded-md border border-zinc-200 bg-zinc-50">
+                    <div className="relative aspect-[4/3]">
+                      <Image src={image.src} alt={t(image.alt, locale)} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover" />
+                    </div>
+                    <figcaption className="space-y-1 p-3 text-xs text-zinc-600">
+                      <p>{t(image.alt, locale)}</p>
+                      <p>
+                        {image.license} · {image.author} ·{" "}
+                        <a href={image.sourceUrl} target="_blank" rel="noreferrer" className="underline">
+                          Wikimedia Commons
+                        </a>
+                      </p>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+            ) : null}
             {place.photoReferences?.length ? (
               <div className="mt-3 grid gap-3 md:grid-cols-2">
                 {place.photoReferences.map((photo) => (
@@ -93,13 +126,13 @@ export function PlaceDetailClient({ place }: { place: Place }) {
                   </a>
                 ))}
               </div>
-            ) : (
+            ) : images.length === 0 ? (
               <p className="mt-3 text-sm text-zinc-600">
                 {locale === "es"
                   ? "Pendiente de anadir fotos con licencia o desde fuentes oficiales. Mientras tanto usa Google Maps y la web oficial para confirmar ambiente actual."
                   : "Pending licensed or official photos. For now use Google Maps and the official site to confirm the current vibe."}
               </p>
-            )}
+            ) : null}
           </section>
         </div>
 
@@ -132,4 +165,3 @@ function ActionLink({ href, label, icon }: { href: string; label: string; icon: 
     </a>
   );
 }
-

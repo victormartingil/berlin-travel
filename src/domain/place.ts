@@ -29,6 +29,16 @@ export type PlacePhotoReference = {
   credit?: string;
 };
 
+export type PlaceImage = {
+  placeId: string;
+  src: string;
+  alt: LocalizedText;
+  author: string;
+  license: string;
+  licenseUrl: string;
+  sourceUrl: string;
+};
+
 export type Place = {
   id: string;
   name: string;

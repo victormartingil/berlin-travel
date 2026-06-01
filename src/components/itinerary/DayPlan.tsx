@@ -1,4 +1,6 @@
 import { ExternalLink, MapPin } from "lucide-react";
+import Link from "next/link";
+import type { ReactNode } from "react";
 import type { Locale } from "@/domain/common";
 import type { NightlifeEvent } from "@/domain/event";
 import type { ItineraryDay } from "@/domain/itinerary";
@@ -16,6 +18,48 @@ const blockLabels = {
   night: { es: "Noche", en: "Night" },
   alternatives: { es: "Alternativas", en: "Alternatives" },
 } as const;
+
+const minimumLinkLabelLength = 4;
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function placeLinkLabels(place: Place): string[] {
+  const labels = new Set([place.name]);
+  if (place.name.endsWith(" Berlin")) labels.add(place.name.replace(/ Berlin$/, ""));
+  if (place.name.includes(" - ")) place.name.split(" - ").forEach((part) => labels.add(part));
+  if (place.name === "Cafe Vux") labels.add("Café Vux");
+  if (place.name === "Voner") labels.add("Vöner");
+  if (place.name === "REWE voll pflanzlich Warschauer") labels.add("REWE voll pflanzlich");
+  return [...labels].filter((label) => label.length >= minimumLinkLabelLength);
+}
+
+function linkedText(value: string, places: Place[]): ReactNode {
+  const candidates = places
+    .flatMap((place) => placeLinkLabels(place).map((label) => ({ label, place })))
+    .sort((a, b) => b.label.length - a.label.length);
+  if (!candidates.length) return value;
+
+  const pattern = new RegExp(`\\b(${candidates.map((candidate) => escapeRegExp(candidate.label)).join("|")})\\b`, "g");
+  const nodes: ReactNode[] = [];
+  let lastIndex = 0;
+  for (const match of value.matchAll(pattern)) {
+    const label = match[0];
+    const index = match.index ?? 0;
+    const candidate = candidates.find((item) => item.label === label);
+    if (!candidate) continue;
+    if (index > lastIndex) nodes.push(value.slice(lastIndex, index));
+    nodes.push(
+      <Link key={`${candidate.place.id}-${index}`} href={`/places/${candidate.place.id}/`} className="font-semibold text-emerald-800 underline decoration-emerald-300 underline-offset-2">
+        {label}
+      </Link>,
+    );
+    lastIndex = index + label.length;
+  }
+  if (lastIndex < value.length) nodes.push(value.slice(lastIndex));
+  return nodes.length ? nodes : value;
+}
 
 function foodBackups(blockName: string, blockPlaces: Place[], allPlaces: Place[]): Place[] {
   if (blockName !== "lunch" && blockName !== "dinner") return [];
@@ -46,8 +90,8 @@ export function DayPlan({ day, locale, places, events }: { day: ItineraryDay; lo
                 const origin = item.routeFromPlaceId ? places.find((p) => p.id === item.routeFromPlaceId) : undefined;
                 return (
                   <div key={item.id} className="rounded-md bg-zinc-50 p-3 text-sm">
-                    <p className="font-medium">{t(item.title, locale)}</p>
-                    {item.note ? <p className="mt-1 text-zinc-600">{t(item.note, locale)}</p> : null}
+                    <p className="font-medium">{linkedText(t(item.title, locale), places)}</p>
+                    {item.note ? <p className="mt-1 text-zinc-600">{linkedText(t(item.note, locale), places)}</p> : null}
                     <div className="mt-2 flex flex-wrap gap-2">
                       {place ? (
                         <a className="inline-flex items-center gap-1 rounded bg-white px-2 py-1 text-xs" href={buildGoogleMapsPlaceUrl(place)} target="_blank" rel="noreferrer">

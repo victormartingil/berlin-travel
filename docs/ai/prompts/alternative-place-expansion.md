@@ -18,6 +18,10 @@ Sections to research:
 - Practical food: vegan supermarkets, organic supermarkets, picnic/snack stops.
 - Rain and tired-day backups.
 
+For Berlin specifically, always include friend/local-style places in the search seed when relevant:
+- Tempelhofer Feld, Teufelsberg, Siegessaeule, YAAM, Mauerpark, RAW-Gelaende and Koepi-style autonomous/DIY references.
+- Similar clusters: open-air culture, autonomous spaces, punk/DIY venues, street-art courtyards, industrial cultural sites, sunset/chill places, and not-only-techno live music.
+
 ## Selection Rules
 Add a place only if at least one is true:
 - It is explicitly recommended by a trusted local/friend/source.
@@ -31,6 +35,14 @@ Reject or downgrade if:
 - It is a private/autonomous/squatted space where visiting would be intrusive unless there is an event.
 - It is mainly hype and lacks a concrete use case.
 
+When deciding whether to add more places, think by real travel use case:
+- "We are already in this neighbourhood and need a strong nearby backup."
+- "It is raining and this gives us a good indoor alternative."
+- "We are tired and need a low-effort plan."
+- "We want a more alternative/local evening than the default club list."
+- "We need vegetarian/vegan food outside the accommodation area."
+- "A friend-style Berlin day needs one more outdoor/chill/industrial stop."
+
 ## Required Data For Every Place
 - `id`, `name`, `category`, `neighbourhood`, `address`, `coordinates` when mappable.
 - `priority`: `essential`, `high`, `medium`, or `optional`.
@@ -41,6 +53,12 @@ Reject or downgrade if:
 - `googleMapsUrl` when a local/friend provided a Maps link.
 - For food: `mealTypes`, `areaUseCase`, `diet`.
 - For friend/local tips: `friendRecommended` and `friendNote`.
+
+For each new place, also decide:
+- Internal route fit: which day or section should mention it.
+- Nearby combinations: 1-3 specific places from the existing dataset.
+- Best slot: morning, lunch, afternoon, sunset, dinner, late night or rainy backup.
+- Whether the place deserves a map icon/filter priority.
 
 ## Events
 For the trip dates, search:
@@ -66,6 +84,20 @@ Each ficha should answer:
 - What to combine it with nearby.
 - Whether it is rain-friendly, tired-day-friendly, low-budget or destination-worthy.
 - Any etiquette/safety note, especially for autonomous spaces.
+
+Copy must be human and specific:
+- Avoid generic tourist-board language.
+- Avoid repeating the same sentence template across places.
+- In Spanish, write natural Spain Spanish, not literal English.
+- In English, keep it concise and travel-useful.
+- If exact opening hours vary, explain the useful operational reality and tell where to verify it.
+
+## Implementation Rules
+- When a section, itinerary item or recommendation mentions a stored place, link the visible place name to `/places/{id}/`.
+- Keep Google Maps as a separate navigation action, not the only destination for a mention.
+- If adding aliases or spelling variants, update the link-matching logic and tests.
+- Update filters only when the new content gives users a real decision lever.
+- Re-run data validation tests after adding places/events/media.
 
 ## Image Policy
 Use embedded images only if source license is clear or image is owned/authorized. Google Images may be used for discovery only; final source must be original page with license/permission.

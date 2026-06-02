@@ -11,12 +11,13 @@ const options: { value: ThemePreference; icon: typeof Monitor; label: { es: stri
   { value: "light", icon: Sun, label: { es: "Claro", en: "Light" } },
 ];
 
-export function ThemeSwitch() {
+export function ThemeSwitch({ variant = "inline" }: { variant?: "inline" | "menu" }) {
   const { locale } = useLocale();
   const { preference, setPreference } = useTheme();
+  const isMenu = variant === "menu";
 
   return (
-    <div className="flex gap-1 rounded-lg border border-zinc-300 p-1" aria-label={locale === "es" ? "Tema" : "Theme"}>
+    <div className={`flex gap-1 rounded-lg border border-zinc-300 p-1 ${isMenu ? "w-full" : ""}`} aria-label={locale === "es" ? "Tema" : "Theme"}>
       {options.map((option) => {
         const Icon = option.icon;
         const active = preference === option.value;
@@ -25,12 +26,12 @@ export function ThemeSwitch() {
             key={option.value}
             type="button"
             onClick={() => setPreference(option.value)}
-            className={`inline-flex items-center gap-1 rounded px-2 py-1 text-xs ${active ? "bg-zinc-900 text-white" : "text-zinc-700"}`}
+            className={`inline-flex items-center justify-center gap-1 rounded px-2 py-1 text-xs ${isMenu ? "flex-1" : ""} ${active ? "bg-zinc-900 text-white" : "text-zinc-700"}`}
             aria-pressed={active}
             title={option.label[locale]}
           >
             <Icon size={14} />
-            <span className="hidden lg:inline">{option.label[locale]}</span>
+            <span className={isMenu ? "inline" : "hidden lg:inline"}>{option.label[locale]}</span>
           </button>
         );
       })}

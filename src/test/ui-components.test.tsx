@@ -40,7 +40,7 @@ describe("SiteNav", () => {
     expect(screen.getAllByRole("link", { name: /Mercados/ }).length).toBeGreaterThan(0);
   });
 
-  it("keeps desktop secondary navigation behind a dropdown", () => {
+  it("keeps lower-priority desktop sections behind a dropdown", () => {
     render(
       <ThemeProvider>
         <LocaleProvider>
@@ -55,7 +55,30 @@ describe("SiteNav", () => {
     fireEvent.click(more);
 
     expect(more).toHaveAttribute("aria-expanded", "true");
-    expect(screen.getAllByRole("link", { name: /Favoritos/ }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("link", { name: /Contexto/ }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("link", { name: /Seguridad/ }).length).toBeGreaterThan(0);
+  });
+
+  it("moves theme and language controls into the settings dropdown", () => {
+    render(
+      <ThemeProvider>
+        <LocaleProvider>
+          <SiteNav />
+        </LocaleProvider>
+      </ThemeProvider>,
+    );
+
+    expect(screen.queryByLabelText("Tema")).not.toBeInTheDocument();
+
+    const settings = screen.getByRole("button", { name: "Ajustes" });
+    expect(settings).toHaveAttribute("aria-expanded", "false");
+
+    fireEvent.click(settings);
+
+    expect(settings).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByLabelText("Tema")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Oscuro" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "English" })).toBeInTheDocument();
   });
 });
 

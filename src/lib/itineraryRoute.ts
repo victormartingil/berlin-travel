@@ -3,6 +3,7 @@ import type { ItineraryBlockKey, ItineraryDay, ItineraryItem } from "@/domain/it
 import type { Place } from "@/domain/place";
 
 const routeBlockOrder: ItineraryBlockKey[] = ["morning", "lunch", "afternoon", "dinner", "evening", "night"];
+export const tripOriginPlaceId = "accommodation-nena-moritzplatz";
 
 export type ItineraryRouteStop = {
   order: number;
@@ -23,6 +24,10 @@ export function getItineraryRouteStops(day: ItineraryDay, places: Place[], event
       const event = item.eventId ? eventById.get(item.eventId) : undefined;
       const placeId = item.placeId ?? event?.venuePlaceId;
       if (!placeId || seenPlaces.has(placeId)) continue;
+      if (placeId === tripOriginPlaceId) {
+        seenPlaces.add(placeId);
+        continue;
+      }
       const place = placeById.get(placeId);
       if (!place?.coordinates) continue;
       seenPlaces.add(placeId);

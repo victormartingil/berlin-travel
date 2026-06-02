@@ -49,6 +49,9 @@ describe("DayRouteMap", () => {
       expect(fitBoundsMock).toHaveBeenCalled();
     });
 
-    expect(markerMock.mock.calls[0]?.[1].icon.html).toContain(">1<");
+    const routePoints = (polylineMock.mock.calls as unknown as [[number, number][]][])[0]?.[0];
+    expect(markerMock.mock.calls[0]?.[1].icon.html).toContain("<svg");
+    expect(markerMock.mock.calls[1]?.[1].icon.html).toContain(">1<");
+    expect(routePoints?.[0]).toEqual([52.5032, 13.4101]);
   });
 });

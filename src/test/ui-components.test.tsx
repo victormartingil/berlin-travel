@@ -31,13 +31,19 @@ describe("SiteNav", () => {
 
     expect(screen.getAllByRole("link", { name: /Inicio/ }).length).toBeGreaterThan(0);
     const more = screen.getByRole("button", { name: "Mas movil" });
+    const topMenu = screen.getByRole("button", { name: "Menu movil" });
     expect(more).toHaveAttribute("aria-expanded", "false");
+    expect(topMenu).toHaveAttribute("aria-expanded", "false");
 
-    fireEvent.click(more);
+    fireEvent.click(topMenu);
 
+    expect(topMenu).toHaveAttribute("aria-expanded", "true");
     expect(more).toHaveAttribute("aria-expanded", "true");
     expect(screen.getAllByRole("link", { name: /Favoritos/ }).length).toBeGreaterThan(0);
     expect(screen.getAllByRole("link", { name: /Mercados/ }).length).toBeGreaterThan(0);
+
+    fireEvent.click(screen.getByRole("button", { name: "Cerrar menu" }));
+    expect(topMenu).toHaveAttribute("aria-expanded", "false");
   });
 
   it("keeps lower-priority desktop sections behind a dropdown", () => {

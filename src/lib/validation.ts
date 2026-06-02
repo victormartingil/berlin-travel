@@ -1,6 +1,6 @@
 import type { NightlifeEvent } from "@/domain/event";
 import type { ItineraryDay } from "@/domain/itinerary";
-import type { Place, PlaceImage } from "@/domain/place";
+import type { Place, PlaceImage, PlaceRatingSnapshot } from "@/domain/place";
 
 const foodMetadataCategories = new Set(["vegetarian", "restaurant", "cafe", "bakery", "supermarket"]);
 
@@ -86,6 +86,23 @@ export function validatePlaceImages(images: PlaceImage[], places: Place[]): stri
     if (!image.license) errors.push(`missing image license: ${image.src}`);
     if (!hasValidUrl(image.licenseUrl)) errors.push(`invalid image license url: ${image.src}`);
     if (!hasValidUrl(image.sourceUrl)) errors.push(`invalid image source url: ${image.src}`);
+  }
+  return errors;
+}
+
+export function validatePlaceRatings(ratings: PlaceRatingSnapshot[], places: Place[]): string[] {
+  const errors: string[] = [];
+  const placeIds = new Set(places.map((place) => place.id));
+  const seen = new Set<string>();
+  for (const rating of ratings) {
+    if (!placeIds.has(rating.placeId)) errors.push(`rating references missing place: ${rating.placeId}`);
+    if (seen.has(rating.placeId)) errors.push(`duplicate rating for place: ${rating.placeId}`);
+    seen.add(rating.placeId);
+    if (rating.source !== "google_places") errors.push(`unsupported rating source for ${rating.placeId}: ${rating.source}`);
+    if (!Number.isFinite(rating.rating) || rating.rating < 0 || rating.rating > 5) errors.push(`invalid rating for ${rating.placeId}: ${rating.rating}`);
+    if (!Number.isInteger(rating.reviewCount) || rating.reviewCount < 0) errors.push(`invalid review count for ${rating.placeId}: ${rating.reviewCount}`);
+    if (!rating.lastVerifiedAt) errors.push(`missing rating lastVerifiedAt: ${rating.placeId}`);
+    if (rating.googleMapsUrl && !hasValidUrl(rating.googleMapsUrl)) errors.push(`invalid rating maps url for ${rating.placeId}: ${rating.googleMapsUrl}`);
   }
   return errors;
 }

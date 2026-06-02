@@ -2,8 +2,9 @@ import { describe, expect, it } from "vitest";
 import { events } from "@/data/events";
 import { itinerary } from "@/data/itinerary";
 import { placeImages } from "@/data/placeMedia";
+import { placeRatings } from "@/data/placeRatings";
 import { places } from "@/data/places";
-import { validateEvents, validateItinerary, validatePlaceImages, validatePlaces } from "@/lib/validation";
+import { validateEvents, validateItinerary, validatePlaceImages, validatePlaceRatings, validatePlaces } from "@/lib/validation";
 
 describe("content validation", () => {
   it("keeps places valid and sourced", () => {
@@ -53,5 +54,9 @@ describe("content validation", () => {
 
   it("keeps embedded place images licensed and attributed", () => {
     expect(validatePlaceImages(placeImages, places)).toEqual([]);
+  });
+
+  it("keeps external rating snapshots coherent when present", () => {
+    expect(validatePlaceRatings(placeRatings, places)).toEqual([]);
   });
 });

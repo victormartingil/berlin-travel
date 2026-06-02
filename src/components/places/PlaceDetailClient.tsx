@@ -6,7 +6,9 @@ import { ArrowLeft, CalendarCheck, ExternalLink, ImageIcon, MapPin, Ticket } fro
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import { FavoriteButton } from "@/components/ui/FavoriteButton";
 import { PriceBadge, PriorityBadge, VerificationBadge } from "@/components/ui/Badges";
+import { RatingBadge } from "@/components/ui/RatingBadge";
 import { getPlaceImages } from "@/data/placeMedia";
+import { getPlaceRating } from "@/data/placeRatings";
 import type { Place } from "@/domain/place";
 import { useFavorites } from "@/hooks/useFavorites";
 import { t, ui } from "@/lib/i18n";
@@ -22,6 +24,7 @@ export function PlaceDetailClient({ place }: { place: Place }) {
   const details = buildPlaceDetailSections(place, locale);
   const images = getPlaceImages(place.id);
   const heroImage = images[0];
+  const rating = getPlaceRating(place.id);
 
   return (
     <article className="space-y-6">
@@ -38,6 +41,7 @@ export function PlaceDetailClient({ place }: { place: Place }) {
               <span className="rounded-full bg-white/10 px-3 py-1 text-xs">{t(icon.label, locale)}</span>
               <PriorityBadge value={place.priority} />
               <PriceBadge value={place.priceLevel} />
+              <RatingBadge rating={rating} locale={locale} />
               <VerificationBadge status={place.verification.status} locale={locale} />
             </div>
             <div>
@@ -151,6 +155,16 @@ export function PlaceDetailClient({ place }: { place: Place }) {
             <p>{locale === "es" ? "Ultima verificacion" : "Last verified"}: {place.lastVerifiedAt ?? place.verification.lastVerifiedAt ?? "unknown"}</p>
             <p className="mt-1">{locale === "es" ? "Estado" : "Status"}: {place.verification.status}</p>
           </div>
+          {rating ? (
+            <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-xs text-amber-950">
+              <p className="font-semibold">{locale === "es" ? "Rating Google Maps" : "Google Maps rating"}</p>
+              <p className="mt-1">
+                {rating.rating.toFixed(1)} / 5 · {rating.reviewCount.toLocaleString(locale === "es" ? "es-ES" : "en-US")}{" "}
+                {locale === "es" ? "resenas" : "reviews"}
+              </p>
+              <p className="mt-1">{locale === "es" ? "Verificado" : "Verified"}: {rating.lastVerifiedAt}</p>
+            </div>
+          ) : null}
         </aside>
       </div>
     </article>

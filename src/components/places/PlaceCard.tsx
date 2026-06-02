@@ -6,6 +6,8 @@ import type { Locale } from "@/domain/common";
 import type { Place } from "@/domain/place";
 import { FavoriteButton } from "@/components/ui/FavoriteButton";
 import { PriceBadge, PriorityBadge, VerificationBadge } from "@/components/ui/Badges";
+import { RatingBadge } from "@/components/ui/RatingBadge";
+import { getPlaceRating } from "@/data/placeRatings";
 import { useFavorites } from "@/hooks/useFavorites";
 import { t, ui } from "@/lib/i18n";
 import { buildGoogleMapsPlaceUrl } from "@/lib/maps";
@@ -30,6 +32,7 @@ const areaLabels = {
 export function PlaceCard({ place, locale }: { place: Place; locale: Locale }) {
   const fav = useFavorites();
   const isFav = fav.isFavorite(place.id);
+  const rating = getPlaceRating(place.id);
 
   return (
     <article id={place.id} className="space-y-3 scroll-mt-24 rounded-md border border-zinc-200 bg-white p-4 shadow-sm">
@@ -54,6 +57,7 @@ export function PlaceCard({ place, locale }: { place: Place; locale: Locale }) {
         <span className="rounded-full bg-zinc-100 px-2 py-1 text-xs text-zinc-700">{place.category}</span>
         <PriorityBadge value={place.priority} />
         <PriceBadge value={place.priceLevel} />
+        <RatingBadge rating={rating} locale={locale} compact />
         {place.rainyDay ? <span className="rounded-full bg-blue-100 px-2 py-1 text-xs text-blue-800">{t(ui.labels.rainy, locale)}</span> : null}
         {place.bookingRecommended ? <span className="rounded-full bg-fuchsia-100 px-2 py-1 text-xs text-fuchsia-800">{t(ui.labels.booking, locale)}</span> : null}
         {place.friendRecommended ? <span className="rounded-full bg-amber-100 px-2 py-1 text-xs text-amber-900">{locale === "es" ? "consejo amigo" : "friend pick"}</span> : null}

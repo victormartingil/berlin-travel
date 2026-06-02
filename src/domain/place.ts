@@ -23,6 +23,16 @@ export type MealType = "breakfast" | "brunch" | "lunch" | "dinner" | "quick" | "
 export type AreaUseCase = "near_base" | "near_museum" | "near_market" | "near_club" | "destination_worthy";
 export type DietType = "vegetarian" | "vegan" | "vegan_options";
 
+export type PlaceRatingSnapshot = {
+  placeId: string;
+  source: "google_places";
+  rating: number;
+  reviewCount: number;
+  googlePlaceId?: string;
+  googleMapsUrl?: string;
+  lastVerifiedAt: string;
+};
+
 export type PlacePhotoReference = {
   url: string;
   label: LocalizedText;

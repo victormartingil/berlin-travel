@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "update:place-ratings": "node scripts/update-place-ratings.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

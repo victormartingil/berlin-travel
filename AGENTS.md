@@ -75,6 +75,7 @@ Content rules:
 - For dated events, capture exact time, venue, price, lineup, ticket/source URL and flyer/source link when the original source provides them.
 - For autonomous/squatted spaces, write respectful guidance: event-only when appropriate, no intrusive tourism, no treating residential/political projects as attractions.
 - Embedded images require a clear license, ownership or permission. Google Images is discovery only, not a license source.
+- Google Maps ratings must come from a dated snapshot, preferably generated with Google Places API using `npm run update:place-ratings` and a local `GOOGLE_PLACES_API_KEY`. Do not scrape Google Maps, do not infer ratings from snippets, and do not add unverified star values by hand.
 - Wikipedia can be used for orientation and cross-checking, but final copy must be original synthesis with source links, not copied text.
 - Current-affairs content must include publication dates, distinguish Berlin-local issues from Germany-wide issues, and avoid presenting opinion as fact.
 - Cultural recommendations must link to stable reference pages where possible: IMDb/TMDb/official distributor for films and documentaries; Open Library/WorldCat/publisher pages for books.

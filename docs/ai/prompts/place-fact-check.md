@@ -10,9 +10,10 @@ For each place:
 5. Mark `verified` only when official/institutional source supports the fact.
 6. Mark `needs_verification` for dynamic event/venue info.
 7. Add or update `googleMapsUrl` if a precise Maps link is known.
-8. For autonomous/squatted spaces, add etiquette: exterior/event-only/respect residents.
-9. If the place is an event venue, check the exact trip dates and enrich related `NightlifeEvent` entries with price, lineup, start/end time, ticket URL and `posterUrl` when available from the original source.
-10. Do not write generic copy. Rewrite descriptions so they sound like a human travel note: specific, useful, and honest about when the place is or is not worth the detour.
+8. If ratings are requested, use a dated snapshot from Google Places API (`rating`, `userRatingCount`, `googleMapsUri`) via `npm run update:place-ratings`. Do not scrape Google Maps or copy star values from search snippets.
+9. For autonomous/squatted spaces, add etiquette: exterior/event-only/respect residents.
+10. If the place is an event venue, check the exact trip dates and enrich related `NightlifeEvent` entries with price, lineup, start/end time, ticket URL and `posterUrl` when available from the original source.
+11. Do not write generic copy. Rewrite descriptions so they sound like a human travel note: specific, useful, and honest about when the place is or is not worth the detour.
 
 For every ficha, explicitly check whether these fields are complete and useful:
 - `description`: one-sentence practical positioning, not generic marketing.
@@ -24,6 +25,7 @@ For every ficha, explicitly check whether these fields are complete and useful:
 - `priceLevel`, `ticketUrl`, `reservationUrl`, `officialUrl`, `sourceUrl`, `lastVerifiedAt`.
 - `practicalNotes`: booking, cash/card, queue, weather, etiquette, noise, late-night or safety notes.
 - `photos` or `placeMedia`: local embedded image only when license/permission is clear; otherwise source link only.
+- `placeRatings`: optional Google Places snapshot with `rating`, `reviewCount`, `googlePlaceId`/`googleMapsUrl`, and `lastVerifiedAt`; omit if not verified.
 
 For itinerary and recommendation references:
 - Search `src/data/itinerary.ts`, page copy and recommendation components for this place name and aliases.

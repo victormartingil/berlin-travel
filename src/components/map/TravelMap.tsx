@@ -76,6 +76,16 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
         thumb.loading = "lazy";
         thumb.className = "travel-map-popup-image";
         container.append(thumb);
+      } else {
+        const fallback = document.createElement("div");
+        fallback.className = "travel-map-popup-image travel-map-popup-fallback";
+        fallback.style.setProperty("--marker-color", icon.color);
+        const fallbackIcon = document.createElement("span");
+        fallbackIcon.innerHTML = icon.svg;
+        const fallbackLabel = document.createElement("span");
+        fallbackLabel.textContent = t(icon.label, locale);
+        fallback.append(fallbackIcon, fallbackLabel);
+        container.append(fallback);
       }
       const title = document.createElement("strong");
       title.textContent = place.name;
@@ -106,7 +116,7 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
     <div className="space-y-3">
       <div
         ref={elRef}
-        className="h-[65vh] w-full rounded-md [&_.travel-map-marker_span]:flex [&_.travel-map-marker_span]:h-8 [&_.travel-map-marker_span]:w-8 [&_.travel-map-marker_span]:items-center [&_.travel-map-marker_span]:justify-center [&_.travel-map-marker_span]:rounded-full [&_.travel-map-marker_span]:border-2 [&_.travel-map-marker_span]:border-white [&_.travel-map-marker_span]:bg-[var(--marker-color)] [&_.travel-map-marker_span]:text-white [&_.travel-map-marker_span]:shadow-lg [&_.travel-map-marker_svg]:h-4 [&_.travel-map-marker_svg]:w-4 [&_.travel-map-popup-image]:mb-2 [&_.travel-map-popup-image]:h-24 [&_.travel-map-popup-image]:w-52 [&_.travel-map-popup-image]:rounded-md [&_.travel-map-popup-image]:object-cover [&_.travel-map-popup]:space-y-2"
+        className="h-[65vh] w-full rounded-md [&_.travel-map-marker_span]:flex [&_.travel-map-marker_span]:h-8 [&_.travel-map-marker_span]:w-8 [&_.travel-map-marker_span]:items-center [&_.travel-map-marker_span]:justify-center [&_.travel-map-marker_span]:rounded-full [&_.travel-map-marker_span]:border-2 [&_.travel-map-marker_span]:border-white [&_.travel-map-marker_span]:bg-[var(--marker-color)] [&_.travel-map-marker_span]:text-white [&_.travel-map-marker_span]:shadow-lg [&_.travel-map-marker_svg]:h-4 [&_.travel-map-marker_svg]:w-4 [&_.travel-map-popup-fallback]:flex [&_.travel-map-popup-fallback]:items-center [&_.travel-map-popup-fallback]:justify-center [&_.travel-map-popup-fallback]:gap-2 [&_.travel-map-popup-fallback]:bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.38),transparent_34%),linear-gradient(135deg,var(--marker-color),#111827)] [&_.travel-map-popup-fallback]:font-semibold [&_.travel-map-popup-fallback]:text-white [&_.travel-map-popup-fallback_svg]:h-5 [&_.travel-map-popup-fallback_svg]:w-5 [&_.travel-map-popup-image]:mb-2 [&_.travel-map-popup-image]:h-24 [&_.travel-map-popup-image]:w-52 [&_.travel-map-popup-image]:rounded-md [&_.travel-map-popup-image]:object-cover [&_.travel-map-popup]:space-y-2"
       />
       <div className="flex flex-wrap gap-2 text-xs">
         {categories.map((category) => (

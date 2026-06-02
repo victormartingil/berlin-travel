@@ -118,6 +118,15 @@ export const placeImages: PlaceImage[] = [
     licenseUrl: "https://commons.wikimedia.org/wiki/File:BoxhagenerPlatzFleamarket.jpg",
     sourceUrl: "https://commons.wikimedia.org/wiki/File:BoxhagenerPlatzFleamarket.jpg",
   },
+  {
+    placeId: "yaam",
+    src: "/images/places/yaam-01.jpg",
+    alt: { es: "Entrada a la zona de playa de YAAM en Berlin.", en: "Entrance to the YAAM beach area in Berlin." },
+    author: "Marcus Grbac",
+    license: "CC BY 2.0",
+    licenseUrl: "https://creativecommons.org/licenses/by/2.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:YAAM_Nightclub_Berlin_Beach_Entrance.jpg",
+  },
 ];
 
 export function getPlaceImages(placeId: string): PlaceImage[] {

@@ -1,5 +1,5 @@
 import { render, waitFor } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { FavoritesProvider } from "@/components/favorites/FavoritesProvider";
 import { TravelMap } from "@/components/map/TravelMap";
 import { places } from "@/data/places";
@@ -20,6 +20,11 @@ vi.mock("leaflet", () => ({
 }));
 
 describe("TravelMap", () => {
+  beforeEach(() => {
+    bindPopupMock.mockClear();
+    markerMock.mockClear();
+  });
+
   it("renders markers after the async Leaflet setup completes", async () => {
     render(
       <FavoritesProvider>
@@ -45,6 +50,40 @@ describe("TravelMap", () => {
     await waitFor(() => {
       const popup = bindPopupMock.mock.calls.at(-1)?.[0] as HTMLElement | undefined;
       expect(popup?.querySelector("img")?.getAttribute("src")).toBe("/images/places/teufelsberg-01.jpg");
+    });
+  });
+
+  it("adds the YAAM thumbnail to its popup", async () => {
+    const yaam = places.find((place) => place.id === "yaam");
+    expect(yaam).toBeDefined();
+
+    render(
+      <FavoritesProvider>
+        <TravelMap places={yaam ? [yaam] : []} locale="en" />
+      </FavoritesProvider>,
+    );
+
+    await waitFor(() => {
+      const popup = bindPopupMock.mock.calls.at(-1)?.[0] as HTMLElement | undefined;
+      expect(popup?.querySelector("img")?.getAttribute("src")).toBe("/images/places/yaam-01.jpg");
+      expect(popup?.querySelector("img")?.getAttribute("alt")).toContain("YAAM");
+    });
+  });
+
+  it("adds a visual fallback to popups when no media exists", async () => {
+    const placeWithoutImage = places.find((place) => place.id === "accommodation-nena-moritzplatz");
+    expect(placeWithoutImage).toBeDefined();
+
+    render(
+      <FavoritesProvider>
+        <TravelMap places={placeWithoutImage ? [placeWithoutImage] : []} locale="en" />
+      </FavoritesProvider>,
+    );
+
+    await waitFor(() => {
+      const popup = bindPopupMock.mock.calls.at(-1)?.[0] as HTMLElement | undefined;
+      expect(popup?.querySelector(".travel-map-popup-fallback")).toBeTruthy();
+      expect(popup?.querySelector(".travel-map-popup-fallback")?.textContent).toContain("Accommodation");
     });
   });
 });

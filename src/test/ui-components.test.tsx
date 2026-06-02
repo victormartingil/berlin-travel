@@ -30,7 +30,7 @@ describe("SiteNav", () => {
     );
 
     expect(screen.getAllByRole("link", { name: /Inicio/ }).length).toBeGreaterThan(0);
-    const more = screen.getByRole("button", { name: "Mas" });
+    const more = screen.getByRole("button", { name: "Mas movil" });
     expect(more).toHaveAttribute("aria-expanded", "false");
 
     fireEvent.click(more);
@@ -38,6 +38,24 @@ describe("SiteNav", () => {
     expect(more).toHaveAttribute("aria-expanded", "true");
     expect(screen.getAllByRole("link", { name: /Favoritos/ }).length).toBeGreaterThan(0);
     expect(screen.getAllByRole("link", { name: /Mercados/ }).length).toBeGreaterThan(0);
+  });
+
+  it("keeps desktop secondary navigation behind a dropdown", () => {
+    render(
+      <ThemeProvider>
+        <LocaleProvider>
+          <SiteNav />
+        </LocaleProvider>
+      </ThemeProvider>,
+    );
+
+    const more = screen.getByRole("button", { name: "Mas secciones" });
+    expect(more).toHaveAttribute("aria-expanded", "false");
+
+    fireEvent.click(more);
+
+    expect(more).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getAllByRole("link", { name: /Favoritos/ }).length).toBeGreaterThan(0);
   });
 });
 

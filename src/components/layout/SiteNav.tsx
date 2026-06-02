@@ -33,6 +33,7 @@ export function SiteNav() {
   const { locale } = useLocale();
   const pathname = usePathname();
   const [mobileMoreOpen, setMobileMoreOpen] = useState(false);
+  const [desktopMoreOpen, setDesktopMoreOpen] = useState(false);
 
   function isActive(href: string): boolean {
     if (href === "/") return pathname === "/";
@@ -41,12 +42,12 @@ export function SiteNav() {
 
   return (
     <nav className="sticky top-0 z-40 border-b border-zinc-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
-        <Link href="/" className="whitespace-nowrap font-semibold">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-3 sm:gap-3 sm:px-4">
+        <Link href="/" className="min-w-0 shrink truncate whitespace-nowrap text-sm font-semibold sm:text-base">
           Berlin Guide
         </Link>
-        <div className="hidden min-w-0 flex-1 justify-center gap-2 overflow-x-auto text-sm lg:flex">
-          {[...primaryItems, ...secondaryItems].map((item) => {
+        <div className="hidden min-w-0 flex-1 items-center justify-center gap-2 text-sm lg:flex">
+          {primaryItems.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.href);
             return (
@@ -56,8 +57,34 @@ export function SiteNav() {
               </Link>
             );
           })}
+          <div className="relative">
+            <button
+              type="button"
+              aria-label={locale === "es" ? "Mas secciones" : "More sections"}
+              aria-expanded={desktopMoreOpen}
+              onClick={() => setDesktopMoreOpen((open) => !open)}
+              className={`flex items-center gap-1 whitespace-nowrap rounded-md px-2 py-1 hover:bg-zinc-100 ${desktopMoreOpen ? "bg-zinc-900 text-white" : "text-zinc-700"}`}
+            >
+              <Menu size={16} />
+              {t(ui.nav.more, locale)}
+            </button>
+            {desktopMoreOpen ? (
+              <div className="absolute right-0 top-10 z-50 grid w-64 gap-1 rounded-xl border border-zinc-200 bg-white p-2 shadow-lg">
+                {secondaryItems.map((item) => {
+                  const Icon = item.icon;
+                  const active = isActive(item.href);
+                  return (
+                    <Link key={item.href} href={item.href} onClick={() => setDesktopMoreOpen(false)} className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm ${active ? "bg-zinc-900 text-white" : "text-zinc-700 hover:bg-zinc-100"}`}>
+                      <Icon size={17} />
+                      <span className="font-medium">{t(item.label, locale)}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            ) : null}
+          </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-1 sm:gap-2">
           <ThemeSwitch />
           <LanguageSwitch />
         </div>
@@ -95,7 +122,7 @@ export function SiteNav() {
               </Link>
             );
           })}
-          <button type="button" aria-expanded={mobileMoreOpen} onClick={() => setMobileMoreOpen((open) => !open)} className={`flex min-w-0 flex-col items-center gap-1 rounded-xl px-1 py-2 text-[10px] font-medium leading-none ${mobileMoreOpen ? "bg-zinc-900 text-white" : "text-zinc-700"}`}>
+          <button type="button" aria-label={locale === "es" ? "Mas movil" : "Mobile more"} aria-expanded={mobileMoreOpen} onClick={() => setMobileMoreOpen((open) => !open)} className={`flex min-w-0 flex-col items-center gap-1 rounded-xl px-1 py-2 text-[10px] font-medium leading-none ${mobileMoreOpen ? "bg-zinc-900 text-white" : "text-zinc-700"}`}>
             <Menu size={18} />
             <span className="max-w-full truncate">{t(ui.nav.more, locale)}</span>
           </button>

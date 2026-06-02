@@ -33,15 +33,29 @@ describe("content validation", () => {
   it("keeps friend recommendations explicit and useful", () => {
     const friendPicks = places.filter((place) => place.friendRecommended);
     expect(friendPicks.map((place) => place.id).sort()).toEqual([
+      "arkonaplatz-flea-market",
+      "east-side-gallery",
+      "else",
+      "friedrichshain-neighbourhood",
+      "hamburger-bahnhof",
+      "holzmarkt-25",
+      "huxleys-neue-welt",
       "koepi-137",
       "mauerpark",
+      "museum-island-pergamon-panorama",
+      "poesiefestival-berlin-2026",
+      "potsdam-sanssouci",
       "raw-gelaende",
+      "ritter-sport-bunte-schokowelt",
       "tempelhofer-feld",
       "teufelsberg",
+      "tresor",
+      "urban-nation",
+      "urban-spree",
       "victory-column",
       "yaam",
     ]);
-    expect(friendPicks.filter((place) => !place.friendNote?.es || !place.googleMapsUrl).map((place) => place.id)).toEqual([]);
+    expect(friendPicks.filter((place) => !place.friendNote?.es || (!place.googleMapsUrl && !place.googleMapsQuery)).map((place) => place.id)).toEqual([]);
   });
 
   it("keeps events linked to venues", () => {

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Potsdam Sanssouci guide visual</title>
+  <desc id="desc">Generated visual with palace terraces and park greenery.</desc>
+  <rect width="1200" height="800" fill="#dcebd7"/>
+  <path d="M0 610 C250 540 410 650 600 580 S970 535 1200 615 V800 H0Z" fill="#6e9f6b"/>
+  <rect x="240" y="250" width="720" height="160" rx="8" fill="#e6c56f"/>
+  <rect x="300" y="180" width="600" height="90" rx="12" fill="#f1d987"/>
+  <g fill="#805f2f">
+    <rect x="330" y="290" width="60" height="120"/>
+    <rect x="470" y="290" width="60" height="120"/>
+    <rect x="610" y="290" width="60" height="120"/>
+    <rect x="750" y="290" width="60" height="120"/>
+  </g>
+  <path d="M250 470 H950 M300 540 H900 M370 610 H830" stroke="#b58b45" stroke-width="24" stroke-linecap="round"/>
+  <text x="255" y="710" fill="#243b25" font-family="Arial, sans-serif" font-size="58" font-weight="700">Potsdam / Sanssouci</text>
+</svg>

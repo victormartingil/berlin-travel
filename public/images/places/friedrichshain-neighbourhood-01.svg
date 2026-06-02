@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Friedrichshain guide visual</title>
+  <desc id="desc">Generated visual with industrial walls, street art marks and evening lights.</desc>
+  <rect width="1200" height="800" fill="#1f2933"/>
+  <rect x="110" y="190" width="980" height="430" fill="#5f6c72"/>
+  <rect x="160" y="250" width="160" height="180" fill="#27323a"/>
+  <rect x="390" y="250" width="160" height="180" fill="#27323a"/>
+  <rect x="620" y="250" width="160" height="180" fill="#27323a"/>
+  <rect x="850" y="250" width="160" height="180" fill="#27323a"/>
+  <path d="M160 540 C300 410 390 640 520 510 S760 390 930 540" fill="none" stroke="#f2c14e" stroke-width="32" stroke-linecap="round"/>
+  <path d="M230 500 L360 380 L440 525 L565 410" fill="none" stroke="#e85d75" stroke-width="24" stroke-linecap="round"/>
+  <circle cx="955" cy="520" r="34" fill="#7bdff2"/>
+  <text x="150" y="705" fill="#f8fafc" font-family="Arial, sans-serif" font-size="62" font-weight="700">Friedrichshain</text>
+</svg>

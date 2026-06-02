@@ -10,10 +10,12 @@ For each place:
 5. Mark `verified` only when official/institutional source supports the fact.
 6. Mark `needs_verification` for dynamic event/venue info.
 7. Add or update `googleMapsUrl` if a precise Maps link is known.
-8. If ratings are requested, use a dated snapshot from Google Places API (`rating`, `userRatingCount`, `googleMapsUri`) via `npm run update:place-ratings`. Do not scrape Google Maps or copy star values from search snippets.
-9. For autonomous/squatted spaces, add etiquette: exterior/event-only/respect residents.
-10. If the place is an event venue, check the exact trip dates and enrich related `NightlifeEvent` entries with price, lineup, start/end time, ticket URL and `posterUrl` when available from the original source.
-11. Do not write generic copy. Rewrite descriptions so they sound like a human travel note: specific, useful, and honest about when the place is or is not worth the detour.
+8. Add a visual card image when possible. Use Wikimedia Commons or official/press media only when license/permission is clear, store it in `public/images/places/{place-id}-NN.jpg`, and add metadata to `src/data/placeMedia.ts`.
+9. Reject ambiguous images: wrong city, logos used as photos, low-quality screenshots, social posts without permission, or Google Images results without a clear license/source.
+10. If ratings are requested, use a dated snapshot from Google Places API (`rating`, `userRatingCount`, `googleMapsUri`) via `npm run update:place-ratings`. Do not scrape Google Maps or copy star values from search snippets.
+11. For autonomous/squatted spaces, add etiquette: exterior/event-only/respect residents.
+12. If the place is an event venue, check the exact trip dates and enrich related `NightlifeEvent` entries with price, lineup, start/end time, ticket URL and `posterUrl` when available from the original source.
+13. Do not write generic copy. Rewrite descriptions so they sound like a human travel note: specific, useful, and honest about when the place is or is not worth the detour.
 
 For every ficha, explicitly check whether these fields are complete and useful:
 - `description`: one-sentence practical positioning, not generic marketing.
@@ -25,7 +27,9 @@ For every ficha, explicitly check whether these fields are complete and useful:
 - `priceLevel`, `ticketUrl`, `reservationUrl`, `officialUrl`, `sourceUrl`, `lastVerifiedAt`.
 - `practicalNotes`: booking, cash/card, queue, weather, etiquette, noise, late-night or safety notes.
 - `photos` or `placeMedia`: local embedded image only when license/permission is clear; otherwise source link only.
+- Small cards: verify that the place shows either a real embedded thumbnail or a useful category visual fallback.
 - `placeRatings`: optional Google Places snapshot with `rating`, `reviewCount`, `googlePlaceId`/`googleMapsUrl`, and `lastVerifiedAt`; omit if not verified.
+- Spanish copy: preserve natural accents and readable phrasing. Search for common degraded strings such as `Mas`, `Menu movil`, `Practico`, `Senales`, `resenas`, `rapido`, `desvio`, `verificacion` before finishing.
 
 For itinerary and recommendation references:
 - Search `src/data/itinerary.ts`, page copy and recommendation components for this place name and aliases.
@@ -43,4 +47,5 @@ Acceptance:
 - Every place has a real use case in itinerary, map filters or backup sections.
 - Itinerary copy prioritizes places, pacing and decisions; food appears as support, not as the only plan.
 - Tests for data validation pass.
+- UI/card tests cover at least one place with embedded media.
 - Static export links are valid for GitHub Pages when internal place links changed.

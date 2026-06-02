@@ -75,6 +75,10 @@ Content rules:
 - For dated events, capture exact time, venue, price, lineup, ticket/source URL and flyer/source link when the original source provides them.
 - For autonomous/squatted spaces, write respectful guidance: event-only when appropriate, no intrusive tourism, no treating residential/political projects as attractions.
 - Embedded images require a clear license, ownership or permission. Google Images is discovery only, not a license source.
+- Cards should be visual by default: use `src/data/placeMedia.ts` for embedded thumbnails and keep author/license/source metadata. If no safe image exists yet, use a category-based visual fallback rather than leaving a flat empty card.
+- When adding images at scale, prefer Wikimedia Commons or official press/media assets with explicit permission/license; reject ambiguous Google Images results, wrong-city matches, logos used as photos, and social images without reuse permission.
+- Spanish visible copy must keep natural accents (`Más`, `Menú móvil`, `Práctico`, `Señales`, `reseñas`, `rápido`, `desvío`, etc.). Do not degrade ES text to ASCII in user-facing strings.
+- UI color changes should use semantic tokens in `src/app/globals.css` (`ui-surface`, `ui-control`, `ui-control-active`, `ui-button-soft`, `ui-button-primary`) instead of hardcoded black/white hover states.
 - Google Maps ratings must come from a dated snapshot, preferably generated with Google Places API using `npm run update:place-ratings` and a local `GOOGLE_PLACES_API_KEY`. Do not scrape Google Maps, do not infer ratings from snippets, and do not add unverified star values by hand.
 - Wikipedia can be used for orientation and cross-checking, but final copy must be original synthesis with source links, not copied text.
 - Current-affairs content must include publication dates, distinguish Berlin-local issues from Germany-wide issues, and avoid presenting opinion as fact.
@@ -103,6 +107,7 @@ Content rules:
 - Do not add places just to increase count. Add more only when they are top-tier, repeatedly recommended, friend-recommended, or clearly useful as a backup by area/weather/energy.
 - Context/history/current-affairs sections should be short, lively and useful for travelling: explain what the visitor will notice in the city, why it matters, and how it connects to neighbourhoods or places in the guide.
 - Do not make the app feel like an encyclopedia. Use expandable cards, timelines, "why it matters" notes, and media recommendations instead of long walls of text.
+- Keep the visual direction travel-editorial rather than generic dashboard: warm light mode, soft dark mode, restrained emerald/amber accents, readable muted text and photo-forward cards.
 
 ## Commit And Push Checklist
 - Run `npm run lint && npm run typecheck && npm run test && npm run build`.

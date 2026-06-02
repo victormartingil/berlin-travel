@@ -12,10 +12,10 @@ import { foodCategories, isFoodPlace, sortFood } from "@/lib/food";
 const zoneDefinitions = [
   { id: "Kreuzberg", label: { es: "Kreuzberg/base", en: "Kreuzberg/base" }, helper: { es: "Comodines cerca del alojamiento y Bergmannkiez.", en: "Backups near the base and Bergmannkiez." } },
   { id: "Neukolln", label: { es: "Neukolln/Maybachufer", en: "Neukolln/Maybachufer" }, helper: { es: "Para mercado, Nowkoelln y cenas tranquilas.", en: "For market days, Nowkoelln and relaxed dinners." } },
-  { id: "Friedrichshain", label: { es: "Friedrichshain/Boxi", en: "Friedrichshain/Boxi" }, helper: { es: "Rapido o cena si el dia acaba por Boxhagener Platz.", en: "Quick food or dinner if the day ends around Boxhagener Platz." } },
+  { id: "Friedrichshain", label: { es: "Friedrichshain/Boxi", en: "Friedrichshain/Boxi" }, helper: { es: "Rápido o cena si el día acaba por Boxhagener Platz.", en: "Quick food or dinner if the day ends around Boxhagener Platz." } },
   { id: "Mitte", label: { es: "Mitte/museos", en: "Mitte/museums" }, helper: { es: "Desayuno, post-museo o cena especial.", en: "Breakfast, post-museum or special dinner." } },
-  { id: "Prenzlauer Berg", label: { es: "Prenzlauer Berg", en: "Prenzlauer Berg" }, helper: { es: "Brunch o cena que justifican desvio.", en: "Brunch or dinner worth a detour." } },
-  { id: "Schoneberg", label: { es: "Schoneberg/URBAN NATION", en: "Schoneberg/URBAN NATION" }, helper: { es: "Opcion especial si el plan cae por Buelowstrasse.", en: "Special option if the plan lands near Buelowstrasse." } },
+  { id: "Prenzlauer Berg", label: { es: "Prenzlauer Berg", en: "Prenzlauer Berg" }, helper: { es: "Brunch o cena que justifican desvío.", en: "Brunch or dinner worth a detour." } },
+  { id: "Schoneberg", label: { es: "Schoneberg/URBAN NATION", en: "Schoneberg/URBAN NATION" }, helper: { es: "Opción especial si el plan cae por Buelowstrasse.", en: "Special option if the plan lands near Buelowstrasse." } },
 ] as const;
 
 function zoneItems(zoneId: string, allPlaces: Place[]): Place[] {

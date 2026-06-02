@@ -1,23 +1,51 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f4f6f8;
-  --foreground: #101828;
-  --surface: rgba(255, 255, 255, 0.92);
-  --surface-muted: rgba(244, 244, 245, 0.92);
-  --border: rgba(212, 212, 216, 0.95);
+  --background: #f6f1e8;
+  --foreground: #1d1a16;
+  --surface: rgba(255, 252, 246, 0.94);
+  --surface-muted: rgba(239, 232, 219, 0.9);
+  --border: rgba(197, 184, 162, 0.7);
+  --nav-surface: rgba(255, 252, 246, 0.92);
+  --accent: #047857;
+  --accent-strong: #065f46;
+  --accent-soft: rgba(4, 120, 87, 0.12);
+  --accent-text: #064e3b;
+  --warm: #b45309;
+  --warm-soft: rgba(180, 83, 9, 0.12);
+  --muted-text: #665f55;
+  --button-soft: rgba(29, 26, 22, 0.06);
+  --button-soft-hover: rgba(4, 120, 87, 0.14);
+  --button-active: #064e3b;
+  --button-active-text: #f8f3e8;
 }
 
 html[data-theme="dark"] {
-  --background: #070a12;
-  --foreground: #e5e7eb;
-  --surface: rgba(24, 24, 27, 0.9);
-  --surface-muted: rgba(39, 39, 42, 0.9);
-  --border: rgba(82, 82, 91, 0.72);
+  --background: #07110f;
+  --foreground: #f1eadc;
+  --surface: rgba(20, 24, 22, 0.92);
+  --surface-muted: rgba(32, 37, 34, 0.9);
+  --border: rgba(116, 103, 82, 0.55);
+  --nav-surface: rgba(10, 14, 18, 0.9);
+  --accent: #34d399;
+  --accent-strong: #10b981;
+  --accent-soft: rgba(52, 211, 153, 0.14);
+  --accent-text: #a7f3d0;
+  --warm: #f59e0b;
+  --warm-soft: rgba(245, 158, 11, 0.14);
+  --muted-text: #b8ad9d;
+  --button-soft: rgba(255, 246, 224, 0.08);
+  --button-soft-hover: rgba(52, 211, 153, 0.14);
+  --button-active: rgba(52, 211, 153, 0.18);
+  --button-active-text: #d1fae5;
 }
 
 body {
-  background: radial-gradient(circle at 10% 20%, #eef6ff, transparent 40%), radial-gradient(circle at 90% 80%, #fff1e6, transparent 40%), var(--background);
+  background:
+    radial-gradient(circle at 12% 18%, rgba(20, 184, 166, 0.18), transparent 36%),
+    radial-gradient(circle at 88% 78%, rgba(245, 158, 11, 0.18), transparent 38%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.5), transparent 42%),
+    var(--background);
   color: var(--foreground);
   font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
 }
@@ -28,6 +56,60 @@ html[data-theme="dark"] body {
     radial-gradient(circle at 88% 20%, rgba(245, 158, 11, 0.12), transparent 32%),
     radial-gradient(circle at 50% 90%, rgba(59, 130, 246, 0.13), transparent 38%),
     var(--background);
+}
+
+.ui-surface {
+  background-color: var(--surface);
+  border-color: var(--border);
+  color: var(--foreground);
+}
+
+.ui-muted {
+  color: var(--muted-text);
+}
+
+.ui-nav {
+  background-color: var(--nav-surface);
+  border-color: var(--border);
+  color: var(--foreground);
+}
+
+.ui-control {
+  background-color: transparent;
+  color: var(--muted-text);
+}
+
+.ui-control:hover {
+  background-color: var(--button-soft-hover);
+  color: var(--foreground);
+}
+
+.ui-control-active {
+  background-color: var(--button-active);
+  color: var(--button-active-text);
+}
+
+.ui-button-soft {
+  background-color: var(--button-soft);
+  color: var(--foreground);
+}
+
+.ui-button-soft:hover {
+  background-color: var(--button-soft-hover);
+}
+
+.ui-button-primary {
+  background-color: var(--accent-strong);
+  color: white;
+}
+
+html[data-theme="dark"] .ui-button-primary {
+  color: #05251d;
+}
+
+.ui-link {
+  color: var(--accent-text);
+  text-decoration-color: var(--accent);
 }
 
 html[data-theme="dark"] .bg-white,

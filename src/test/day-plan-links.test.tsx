@@ -31,7 +31,7 @@ describe("DayPlan internal links", () => {
     expect(screen.getByText("Bloque principal")).toBeInTheDocument();
     expect(screen.getByText(/Museo ·/)).toHaveTextContent("Museo de arte moderno");
     expect(screen.getByText(/Alternativo ·/)).toHaveTextContent("centro artistico/cultural");
-    expect(screen.getByText(/La parte que mas define el dia/)).toBeInTheDocument();
+    expect(screen.getByText(/La parte que más define el día/)).toBeInTheDocument();
   });
 
   it("links event-only route items back to their venue ficha", () => {

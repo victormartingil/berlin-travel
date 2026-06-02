@@ -90,7 +90,7 @@ export function DayRouteMap({ day, places, events, locale }: { day: ItineraryDay
       const title = document.createElement("strong");
       title.textContent = `0. ${origin.name}`;
       const block = document.createElement("div");
-      block.textContent = locale === "es" ? "Origen del dia · alojamiento" : "Day origin · accommodation";
+      block.textContent = locale === "es" ? "Origen del día · alojamiento" : "Day origin · accommodation";
       const detail = document.createElement("a");
       detail.href = appPath(`/places/${origin.id}/`);
       detail.textContent = locale === "es" ? "Abrir ficha" : "Open details";

@@ -14,7 +14,7 @@ export const ui = {
     map: { es: "Mapa", en: "Map" },
     food: { es: "Comer", en: "Food" },
     favorites: { es: "Favoritos", en: "Favorites" },
-    more: { es: "Mas", en: "More" },
+    more: { es: "Más", en: "More" },
   },
   actions: {
     maps: { es: "Abrir mapa", en: "Open map" },
@@ -29,7 +29,7 @@ export const ui = {
     search: { es: "Buscar", en: "Search" },
     allAreas: { es: "Todos los barrios", en: "All areas" },
     allPrices: { es: "Todos los precios", en: "All prices" },
-    allVerification: { es: "Toda verificacion", en: "All verification" },
+    allVerification: { es: "Toda verificación", en: "All verification" },
     priority: { es: "Prioridad", en: "Priority" },
   },
   labels: {
@@ -40,6 +40,6 @@ export const ui = {
     rainy: { es: "Lluvia", en: "Rain" },
     booking: { es: "Reserva", en: "Booking" },
     cashless: { es: "Tarjeta", en: "Card" },
-    noFavorites: { es: "Todavia no hay favoritos.", en: "No favorites yet." },
+    noFavorites: { es: "Todavía no hay favoritos.", en: "No favorites yet." },
   },
 } as const;

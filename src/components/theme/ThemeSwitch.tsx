@@ -26,7 +26,7 @@ export function ThemeSwitch({ variant = "inline" }: { variant?: "inline" | "menu
             key={option.value}
             type="button"
             onClick={() => setPreference(option.value)}
-            className={`inline-flex items-center justify-center gap-1 rounded px-2 py-1 text-xs ${isMenu ? "flex-1" : ""} ${active ? "bg-zinc-900 text-white" : "text-zinc-700"}`}
+            className={`inline-flex items-center justify-center gap-1 rounded px-2 py-1 text-xs ${isMenu ? "flex-1" : ""} ${active ? "ui-control-active" : "ui-control"}`}
             aria-pressed={active}
             title={option.label[locale]}
           >

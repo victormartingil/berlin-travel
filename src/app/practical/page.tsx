@@ -9,7 +9,7 @@ export default function PracticalPage() {
     {
       title: isEs ? "Antes de salir" : "Before going out",
       items: isEs
-        ? ["Revisar horarios oficiales del plan del dia.", "Guardar ruta Google Maps y area offline.", "Comprobar si hay reserva o ticket.", "Llevar bateria externa."]
+        ? ["Revisar horarios oficiales del plan del día.", "Guardar ruta Google Maps y área offline.", "Comprobar si hay reserva o ticket.", "Llevar batería externa."]
         : ["Check official opening times for the day.", "Save Google Maps route and offline area.", "Check whether booking or ticket is needed.", "Carry a power bank."],
     },
     {

@@ -73,7 +73,7 @@ export function PlaceFilters({
             <option value="brunch">Brunch</option>
             <option value="lunch">{locale === "es" ? "Comida" : "Lunch"}</option>
             <option value="dinner">{locale === "es" ? "Cena" : "Dinner"}</option>
-            <option value="quick">{locale === "es" ? "Rapido" : "Quick"}</option>
+            <option value="quick">{locale === "es" ? "Rápido" : "Quick"}</option>
             <option value="special">{locale === "es" ? "Especial" : "Special"}</option>
           </select>
           <select value={filters.areaUseCase} onChange={(e) => setFilters({ ...filters, areaUseCase: e.target.value as PF["areaUseCase"] })} className="rounded border p-2 text-sm">
@@ -82,7 +82,7 @@ export function PlaceFilters({
             <option value="near_museum">{locale === "es" ? "Post-museo" : "Near museum"}</option>
             <option value="near_market">{locale === "es" ? "Mercados/ruta" : "Near market"}</option>
             <option value="near_club">{locale === "es" ? "Pre/post club" : "Near club"}</option>
-            <option value="destination_worthy">{locale === "es" ? "Merece desvio" : "Worth a detour"}</option>
+            <option value="destination_worthy">{locale === "es" ? "Merece desvío" : "Worth a detour"}</option>
           </select>
           <select value={filters.diet} onChange={(e) => setFilters({ ...filters, diet: e.target.value as PF["diet"] })} className="rounded border p-2 text-sm">
             <option value="all">{locale === "es" ? "Cualquier dieta" : "Any diet"}</option>
@@ -110,7 +110,7 @@ export function PlaceFilters({
             <button
               key={c}
               onClick={() => setFilters({ ...filters, categories: active ? filters.categories.filter((x) => x !== c) : [...filters.categories, c] })}
-              className={`rounded-full px-2 py-1 text-xs ${active ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-700"}`}
+              className={`rounded-full px-2 py-1 text-xs ${active ? "ui-control-active" : "ui-button-soft"}`}
             >
               {c}
             </button>

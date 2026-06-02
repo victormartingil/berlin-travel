@@ -12,7 +12,7 @@ import { buildGoogleMapsDirectionsUrl, buildGoogleMapsPlaceUrl } from "@/lib/map
 import { getMapIconForCategory } from "@/lib/mapIcons";
 
 const blockLabels = {
-  morning: { es: "Arranque del dia", en: "Start of the day" },
+  morning: { es: "Arranque del día", en: "Start of the day" },
   lunch: { es: "Pausa y recarga", en: "Pause and refuel" },
   afternoon: { es: "Bloque principal", en: "Main route block" },
   dinner: { es: "Cena flexible", en: "Flexible dinner" },
@@ -23,7 +23,7 @@ const blockLabels = {
 
 const blockDescriptions = {
   morning: {
-    es: "Primer tramo realista: empezar bien, sin gastar toda la energia demasiado pronto.",
+    es: "Primer tramo realista: empezar bien, sin gastar toda la energía demasiado pronto.",
     en: "A realistic first stretch: start well without burning all your energy too early.",
   },
   lunch: {
@@ -31,7 +31,7 @@ const blockDescriptions = {
     en: "A useful pause to recalibrate pace, weather and hunger before the next block.",
   },
   afternoon: {
-    es: "La parte que mas define el dia: museos, barrios, historia o plan alternativo.",
+    es: "La parte que más define el día: museos, barrios, historia o plan alternativo.",
     en: "The part that defines the day most: museums, neighborhoods, history or alternative culture.",
   },
   dinner: {

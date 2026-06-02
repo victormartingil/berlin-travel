@@ -66,8 +66,8 @@ export function buildPlaceDetailSections(place: Place, locale: "es" | "en") {
     place.friendNote ? `★ ${t(place.friendNote, locale)}` : null,
     ...(place.localSignals ?? []).map((note) => t(note, locale)),
     place.rainyDay ? (locale === "es" ? "Buen comodin con lluvia." : "Good rainy-day backup.") : null,
-    place.quickStop ? (locale === "es" ? "Sirve para resolver rapido sin romper ruta." : "Useful for a quick stop without breaking the route.") : null,
-    place.destinationWorthy ? (locale === "es" ? "Puede justificar desvio si encaja con energia y horarios." : "Can justify a detour if energy and opening times fit.") : null,
+    place.quickStop ? (locale === "es" ? "Sirve para resolver rápido sin romper ruta." : "Useful for a quick stop without breaking the route.") : null,
+    place.destinationWorthy ? (locale === "es" ? "Puede justificar desvío si encaja con energía y horarios." : "Can justify a detour if energy and opening times fit.") : null,
   ].filter(Boolean) as string[];
 
   return { why, practical, signals };

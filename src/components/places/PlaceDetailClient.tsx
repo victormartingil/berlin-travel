@@ -76,32 +76,32 @@ export function PlaceDetailClient({ place }: { place: Place }) {
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         <div className="space-y-6">
           <section className="rounded-md border border-zinc-200 bg-white p-4">
-            <h2 className="text-lg font-semibold">{locale === "es" ? "Por que encaja" : "Why it fits"}</h2>
+            <h2 className="text-lg font-semibold">{locale === "es" ? "Por qué encaja" : "Why it fits"}</h2>
             <ul className="mt-3 space-y-2 text-sm text-zinc-700">
               {details.why.map((item) => <li key={item}>• {item}</li>)}
             </ul>
           </section>
 
           <section className="rounded-md border border-zinc-200 bg-white p-4">
-            <h2 className="text-lg font-semibold">{locale === "es" ? "Practico" : "Practical"}</h2>
+            <h2 className="text-lg font-semibold">{locale === "es" ? "Práctico" : "Practical"}</h2>
             <ul className="mt-3 space-y-2 text-sm text-zinc-700">
               {details.practical.map((item) => <li key={item}>• {item}</li>)}
             </ul>
           </section>
 
           <section className="rounded-md border border-zinc-200 bg-white p-4">
-            <h2 className="text-lg font-semibold">{locale === "es" ? "Senales utiles" : "Useful signals"}</h2>
+            <h2 className="text-lg font-semibold">{locale === "es" ? "Señales útiles" : "Useful signals"}</h2>
             {details.signals.length ? (
               <ul className="mt-3 space-y-2 text-sm text-zinc-700">
                 {details.signals.map((item) => <li key={item}>• {item}</li>)}
               </ul>
             ) : (
-              <p className="mt-3 text-sm text-zinc-600">{locale === "es" ? "Sin senales extra verificadas por ahora." : "No extra verified signals yet."}</p>
+              <p className="mt-3 text-sm text-zinc-600">{locale === "es" ? "Sin señales extra verificadas por ahora." : "No extra verified signals yet."}</p>
             )}
           </section>
 
           <section className="rounded-md border border-zinc-200 bg-white p-4">
-            <h2 className="text-lg font-semibold">{locale === "es" ? "Imagenes y referencias visuales" : "Images and visual references"}</h2>
+            <h2 className="text-lg font-semibold">{locale === "es" ? "Imágenes y referencias visuales" : "Images and visual references"}</h2>
             {images.length > 0 ? (
               <div className="mt-3 grid gap-3 md:grid-cols-2">
                 {images.map((image) => (
@@ -134,7 +134,7 @@ export function PlaceDetailClient({ place }: { place: Place }) {
             ) : images.length === 0 ? (
               <p className="mt-3 text-sm text-zinc-600">
                 {locale === "es"
-                  ? "Pendiente de anadir fotos con licencia o desde fuentes oficiales. Mientras tanto usa Google Maps y la web oficial para confirmar ambiente actual."
+                  ? "Pendiente de añadir fotos con licencia o desde fuentes oficiales. Mientras tanto usa Google Maps y la web oficial para confirmar ambiente actual."
                   : "Pending licensed or official photos. For now use Google Maps and the official site to confirm the current vibe."}
               </p>
             ) : null}
@@ -142,7 +142,7 @@ export function PlaceDetailClient({ place }: { place: Place }) {
         </div>
 
         <aside className="space-y-3">
-          <a className="flex items-center justify-center gap-2 rounded-md bg-zinc-900 px-3 py-3 text-sm text-white" href={buildGoogleMapsPlaceUrl(place)} target="_blank" rel="noreferrer">
+          <a className="ui-button-primary flex items-center justify-center gap-2 rounded-md px-3 py-3 text-sm" href={buildGoogleMapsPlaceUrl(place)} target="_blank" rel="noreferrer">
             <MapPin size={16} />
             {t(ui.actions.maps, locale)}
           </a>
@@ -152,15 +152,15 @@ export function PlaceDetailClient({ place }: { place: Place }) {
           {place.ticketUrl ? <ActionLink href={place.ticketUrl} label={t(ui.actions.ticket, locale)} icon="ticket" /> : null}
           {place.reservationUrl ? <ActionLink href={place.reservationUrl} label={t(ui.actions.reserve, locale)} icon="calendar" /> : null}
           <div className="rounded-md border border-zinc-200 bg-white p-3 text-xs text-zinc-600">
-            <p>{locale === "es" ? "Ultima verificacion" : "Last verified"}: {place.lastVerifiedAt ?? place.verification.lastVerifiedAt ?? "unknown"}</p>
+            <p>{locale === "es" ? "Última verificación" : "Last verified"}: {place.lastVerifiedAt ?? place.verification.lastVerifiedAt ?? "unknown"}</p>
             <p className="mt-1">{locale === "es" ? "Estado" : "Status"}: {place.verification.status}</p>
           </div>
           {rating ? (
             <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-xs text-amber-950">
-              <p className="font-semibold">{locale === "es" ? "Rating Google Maps" : "Google Maps rating"}</p>
+              <p className="font-semibold">{locale === "es" ? "Rating de Google Maps" : "Google Maps rating"}</p>
               <p className="mt-1">
                 {rating.rating.toFixed(1)} / 5 · {rating.reviewCount.toLocaleString(locale === "es" ? "es-ES" : "en-US")}{" "}
-                {locale === "es" ? "resenas" : "reviews"}
+                {locale === "es" ? "reseñas" : "reviews"}
               </p>
               <p className="mt-1">{locale === "es" ? "Verificado" : "Verified"}: {rating.lastVerifiedAt}</p>
             </div>
@@ -174,7 +174,7 @@ export function PlaceDetailClient({ place }: { place: Place }) {
 function ActionLink({ href, label, icon }: { href: string; label: string; icon: "external" | "ticket" | "calendar" }) {
   const Icon = icon === "ticket" ? Ticket : icon === "calendar" ? CalendarCheck : ExternalLink;
   return (
-    <a className="flex items-center justify-center gap-2 rounded-md bg-white px-3 py-3 text-sm ring-1 ring-zinc-200" href={href} target="_blank" rel="noreferrer">
+    <a className="ui-button-soft flex items-center justify-center gap-2 rounded-md px-3 py-3 text-sm ring-1 ring-zinc-200" href={href} target="_blank" rel="noreferrer">
       <Icon size={16} />
       {label}
     </a>

@@ -30,8 +30,8 @@ describe("SiteNav", () => {
     );
 
     expect(screen.getAllByRole("link", { name: /Inicio/ }).length).toBeGreaterThan(0);
-    const more = screen.getByRole("button", { name: "Mas movil" });
-    const topMenu = screen.getByRole("button", { name: "Menu movil" });
+    const more = screen.getByRole("button", { name: "Más móvil" });
+    const topMenu = screen.getByRole("button", { name: "Menú móvil" });
     expect(more).toHaveAttribute("aria-expanded", "false");
     expect(topMenu).toHaveAttribute("aria-expanded", "false");
 
@@ -42,7 +42,7 @@ describe("SiteNav", () => {
     expect(screen.getAllByRole("link", { name: /Favoritos/ }).length).toBeGreaterThan(0);
     expect(screen.getAllByRole("link", { name: /Mercados/ }).length).toBeGreaterThan(0);
 
-    fireEvent.click(screen.getByRole("button", { name: "Cerrar menu" }));
+    fireEvent.click(screen.getByRole("button", { name: "Cerrar menú" }));
     expect(topMenu).toHaveAttribute("aria-expanded", "false");
   });
 
@@ -55,7 +55,7 @@ describe("SiteNav", () => {
       </ThemeProvider>,
     );
 
-    const more = screen.getByRole("button", { name: "Mas secciones" });
+    const more = screen.getByRole("button", { name: "Más secciones" });
     expect(more).toHaveAttribute("aria-expanded", "false");
 
     fireEvent.click(more);

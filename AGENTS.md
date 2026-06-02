@@ -75,7 +75,7 @@ Content rules:
 - For dated events, capture exact time, venue, price, lineup, ticket/source URL and flyer/source link when the original source provides them.
 - For autonomous/squatted spaces, write respectful guidance: event-only when appropriate, no intrusive tourism, no treating residential/political projects as attractions.
 - Embedded images require a clear license, ownership or permission. Google Images is discovery only, not a license source.
-- Cards should be visual by default: use `src/data/placeMedia.ts` for embedded thumbnails and keep author/license/source metadata. If no safe image exists yet, use a category-based visual fallback rather than leaving a flat empty card.
+- Cards must be visual: every `Place` must have at least one `src/data/placeMedia.ts` entry so cards, popups and fichas never render without media. Prefer a real place photo; if no usable exact photo can be sourced, add a generated local visual fallback and document it as such.
 - When adding images at scale, prefer Wikimedia Commons or official press/media assets with explicit permission/license; reject ambiguous Google Images results, wrong-city matches, logos used as photos, and social images without reuse permission.
 - Spanish visible copy must keep natural accents (`Más`, `Menú móvil`, `Práctico`, `Señales`, `reseñas`, `rápido`, `desvío`, etc.). Do not degrade ES text to ASCII in user-facing strings.
 - UI color changes should use semantic tokens in `src/app/globals.css` (`ui-surface`, `ui-control`, `ui-control-active`, `ui-button-soft`, `ui-button-primary`) instead of hardcoded black/white hover states.

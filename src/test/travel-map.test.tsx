@@ -70,20 +70,20 @@ describe("TravelMap", () => {
     });
   });
 
-  it("adds a visual fallback to popups when no media exists", async () => {
-    const placeWithoutImage = places.find((place) => place.id === "accommodation-nena-moritzplatz");
-    expect(placeWithoutImage).toBeDefined();
+  it("adds the accommodation thumbnail to its popup", async () => {
+    const accommodation = places.find((place) => place.id === "accommodation-nena-moritzplatz");
+    expect(accommodation).toBeDefined();
 
     render(
       <FavoritesProvider>
-        <TravelMap places={placeWithoutImage ? [placeWithoutImage] : []} locale="en" />
+        <TravelMap places={accommodation ? [accommodation] : []} locale="en" />
       </FavoritesProvider>,
     );
 
     await waitFor(() => {
       const popup = bindPopupMock.mock.calls.at(-1)?.[0] as HTMLElement | undefined;
-      expect(popup?.querySelector(".travel-map-popup-fallback")).toBeTruthy();
-      expect(popup?.querySelector(".travel-map-popup-fallback")?.textContent).toContain("Accommodation");
+      expect(popup?.querySelector("img")?.getAttribute("src")).toBe("/images/places/accommodation-nena-moritzplatz-01.jpg");
+      expect(popup?.querySelector("img")?.getAttribute("alt")).toContain("Nena Apartments");
     });
   });
 });

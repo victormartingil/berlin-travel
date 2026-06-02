@@ -114,7 +114,7 @@ export function PlaceDetailClient({ place }: { place: Place }) {
                       <p>
                         {image.license} · {image.author} ·{" "}
                         <a href={image.sourceUrl} target="_blank" rel="noreferrer" className="underline">
-                          Wikimedia Commons
+                          {image.sourceUrl.includes("commons.wikimedia.org") ? "Wikimedia Commons" : locale === "es" ? "Fuente de imagen" : "Image source"}
                         </a>
                       </p>
                     </figcaption>

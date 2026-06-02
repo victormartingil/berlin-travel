@@ -27,7 +27,7 @@ For every ficha, explicitly check whether these fields are complete and useful:
 - `priceLevel`, `ticketUrl`, `reservationUrl`, `officialUrl`, `sourceUrl`, `lastVerifiedAt`.
 - `practicalNotes`: booking, cash/card, queue, weather, etiquette, noise, late-night or safety notes.
 - `photos` or `placeMedia`: local embedded image only when license/permission is clear; otherwise source link only.
-- Small cards: verify that the place shows either a real embedded thumbnail or a useful category visual fallback.
+- Small cards: verify that every place has a `placeMedia` entry. Prefer a real embedded thumbnail; if no exact usable photo exists after source checks, add a generated local visual fallback so the card is never flat or empty.
 - `placeRatings`: optional Google Places snapshot with `rating`, `reviewCount`, `googlePlaceId`/`googleMapsUrl`, and `lastVerifiedAt`; omit if not verified.
 - Spanish copy: preserve natural accents and readable phrasing. Search for common degraded strings such as `Mas`, `Menu movil`, `Practico`, `Senales`, `resenas`, `rapido`, `desvio`, `verificacion` before finishing.
 
@@ -48,4 +48,5 @@ Acceptance:
 - Itinerary copy prioritizes places, pacing and decisions; food appears as support, not as the only plan.
 - Tests for data validation pass.
 - UI/card tests cover at least one place with embedded media.
+- Data tests must fail when a place has no media entry.
 - Static export links are valid for GitHub Pages when internal place links changed.

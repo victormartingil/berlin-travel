@@ -56,6 +56,11 @@ describe("content validation", () => {
     expect(validatePlaceImages(placeImages, places)).toEqual([]);
   });
 
+  it("keeps every place card backed by media", () => {
+    const mediaPlaceIds = new Set(placeImages.map((image) => image.placeId));
+    expect(places.filter((place) => !mediaPlaceIds.has(place.id)).map((place) => place.id)).toEqual([]);
+  });
+
   it("keeps external rating snapshots coherent when present", () => {
     expect(validatePlaceRatings(placeRatings, places)).toEqual([]);
   });

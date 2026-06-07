@@ -2,6 +2,15 @@ import type { PlaceImage } from "@/domain/place";
 
 export const placeImages: PlaceImage[] = [
   {
+    placeId: "holocaust-memorial",
+    src: "/images/places/holocaust-memorial-01.svg",
+    alt: { es: "Visual generado del campo de estelas del Memorial a los Judíos Asesinados de Europa.", en: "Generated visual of the Field of Stelae at the Memorial to the Murdered Jews of Europe." },
+    author: "Generated local visual",
+    license: "Project-generated fallback",
+    licenseUrl: "https://www.stiftung-denkmal.de/en/memorials/memorial-to-the-murdered-jews-of-europe/",
+    sourceUrl: "https://www.stiftung-denkmal.de/en/memorials/memorial-to-the-murdered-jews-of-europe/",
+  },
+  {
     placeId: "berlin-wall-memorial",
     src: "/images/places/berlin-wall-memorial-01.jpg",
     alt: { es: "Memorial del Muro de Berlin en Bernauer Strasse.", en: "Berlin Wall Memorial site on Bernauer Strasse." },

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Generated visual of the Holocaust Memorial in Berlin</title>
+  <desc id="desc">A restrained editorial illustration of grey concrete stelae under warm Berlin light.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#f4efe7"/>
+      <stop offset="0.62" stop-color="#d8e0df"/>
+      <stop offset="1" stop-color="#9aa6a3"/>
+    </linearGradient>
+    <linearGradient id="stone" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#9ca3a3"/>
+      <stop offset="1" stop-color="#505858"/>
+    </linearGradient>
+    <linearGradient id="side" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#6e7777"/>
+      <stop offset="1" stop-color="#323838"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#sky)"/>
+  <path d="M0 530 C180 500 310 535 500 510 C720 480 910 505 1200 470 L1200 800 L0 800 Z" fill="#596463"/>
+  <g opacity="0.28" fill="#eef0eb">
+    <circle cx="230" cy="150" r="90"/>
+    <circle cx="1010" cy="110" r="60"/>
+  </g>
+  <g transform="translate(80 170)">
+    <g opacity="0.55">
+      <rect x="0" y="220" width="54" height="160" fill="url(#stone)"/>
+      <rect x="84" y="190" width="58" height="190" fill="url(#stone)"/>
+      <rect x="174" y="160" width="64" height="220" fill="url(#stone)"/>
+      <rect x="278" y="130" width="70" height="250" fill="url(#stone)"/>
+      <rect x="390" y="105" width="78" height="275" fill="url(#stone)"/>
+      <rect x="520" y="82" width="86" height="298" fill="url(#stone)"/>
+      <rect x="658" y="118" width="74" height="262" fill="url(#stone)"/>
+      <rect x="784" y="148" width="66" height="232" fill="url(#stone)"/>
+      <rect x="900" y="180" width="58" height="200" fill="url(#stone)"/>
+      <rect x="1000" y="216" width="50" height="164" fill="url(#stone)"/>
+    </g>
+    <g>
+      <path d="M70 330 L170 305 L170 570 L70 595 Z" fill="url(#stone)"/>
+      <path d="M170 305 L210 332 L210 595 L170 570 Z" fill="url(#side)"/>
+      <path d="M250 290 L370 265 L370 610 L250 640 Z" fill="url(#stone)"/>
+      <path d="M370 265 L418 296 L418 638 L370 610 Z" fill="url(#side)"/>
+      <path d="M475 240 L620 214 L620 654 L475 690 Z" fill="url(#stone)"/>
+      <path d="M620 214 L680 250 L680 686 L620 654 Z" fill="url(#side)"/>
+      <path d="M740 285 L860 258 L860 620 L740 650 Z" fill="url(#stone)"/>
+      <path d="M860 258 L910 290 L910 648 L860 620 Z" fill="url(#side)"/>
+      <path d="M965 335 L1060 314 L1060 570 L965 592 Z" fill="url(#stone)"/>
+      <path d="M1060 314 L1100 342 L1100 594 L1060 570 Z" fill="url(#side)"/>
+    </g>
+  </g>
+  <path d="M0 720 C260 650 500 730 760 665 C940 620 1080 650 1200 610 L1200 800 L0 800 Z" fill="#2f3837" opacity="0.42"/>
+</svg>

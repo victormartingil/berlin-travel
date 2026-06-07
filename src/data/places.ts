@@ -637,12 +637,20 @@ export const places: Place[] = [
     coordinates: { lat: 52.5235, lng: 13.4029 },
     priority: "high",
     priceLevel: "low",
-    tags: ["courtyards", "street-art", "photo"],
-    description: { es: "Patio con textura urbana, murales y muy buen encaje fotografico.", en: "Urban courtyard with murals and strong photo value." },
+    tags: ["courtyards", "street-art", "photo", "dead-chicken-alley"],
+    description: { es: "Patio con textura urbana, murales y muy buen encaje fotografico; el callejón de street art se conoce también como Dead Chicken Alley.", en: "Urban courtyard with murals and strong photo value; the street-art alley is also known as Dead Chicken Alley." },
+    story: {
+      es: "Dead Chicken Alley no es una calle separada que haya que buscar lejos: es el pasaje/patio de Haus Schwarzenberg, cubierto de stickers, grafitis, murales e instalaciones. El nombre viene del colectivo artístico Dead Chickens, ligado al lugar tras la caída del Muro.",
+      en: "Dead Chicken Alley is not a separate street to hunt down elsewhere: it is the passage/courtyard of Haus Schwarzenberg, covered with stickers, graffiti, murals and installations. The name comes from the Dead Chickens artist collective, connected to the site after the fall of the Wall.",
+    },
     openingHours: { es: "Patio exterior normalmente accesible de dia; Neurotitan y negocios del patio tienen horarios propios.", en: "Courtyard usually works as a daytime stop; Neurotitan and courtyard businesses keep their own hours." },
     estimatedDuration: "45-90 min",
     sourceUrl: "https://www.berlin.de/en/tourism/guides/x/6873214-5426434-hidden-backyards-in-mitte.en.html",
     lastVerifiedAt: verifiedAt,
+    whyGo: [
+      { es: "Perfecto para tenerlo en mente si alguien os dice Dead Chicken Alley: entrad por Rosenthaler Strasse 39 y mirad el patio con calma.", en: "Useful to keep in mind if someone says Dead Chicken Alley: enter through Rosenthaler Strasse 39 and read the courtyard slowly." },
+      { es: "Es mejor como paso de 45-90 minutos dentro de Mitte que como desvío aislado.", en: "It works better as a 45-90 minute Mitte pass than as an isolated detour." },
+    ],
     verification: { status: "needs_verification", sourceUrl: "https://www.berlin.de/en/tourism/guides/x/6873214-5426434-hidden-backyards-in-mitte.en.html", lastVerifiedAt: verifiedAt },
   },
   {

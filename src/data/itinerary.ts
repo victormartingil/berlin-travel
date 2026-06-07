@@ -55,7 +55,7 @@ export const itinerary: ItineraryDay[] = [
       ],
       afternoon: [
         item("d11-a1", "Eje clásico visto con calma: Holocaust Memorial, Brandenburger Tor y Reichstag por fuera. Es memoria y poder en 60-90 minutos, no una checklist monumental.", "Classic axis, done calmly: Holocaust Memorial, Brandenburg Gate and the Reichstag from outside. It is memory and power in 60-90 minutes, not a monumental checklist.", { placeId: "holocaust-memorial", duration: "1-1.5 h", routeFromPlaceId: "topography-of-terror" }),
-        item("d11-a2", "Luego cambiad de escala: Hackesche Hofe y Haus Schwarzenberg. Aquí Berlín se vuelve patio, cartel, mural, tienda rara y capa histórica.", "Then change scale: Hackesche Hofe and Haus Schwarzenberg. Here Berlin becomes courtyard, poster, mural, odd shop and historical layer.", { placeId: "haus-schwarzenberg", duration: "2-3 h", routeFromPlaceId: "holocaust-memorial" }),
+        item("d11-a2", "Luego cambiad de escala: Hackesche Hofe y Haus Schwarzenberg / Dead Chicken Alley. Aquí Berlín se vuelve patio, cartel, mural, tienda rara y capa histórica.", "Then change scale: Hackesche Hofe and Haus Schwarzenberg / Dead Chicken Alley. Here Berlin becomes courtyard, poster, mural, odd shop and historical layer.", { placeId: "haus-schwarzenberg", duration: "2-3 h", routeFromPlaceId: "holocaust-memorial" }),
         item("d11-a3", "Si os queda curiosidad, ACUD Macht Neu es un radar bueno para ver si esa noche hay algo experimental cerca.", "If curiosity remains, ACUD Macht Neu is a good radar to check whether there is something experimental nearby that night.", { placeId: "acud-macht-neu", duration: "30-60 min" }),
       ],
       dinner: [

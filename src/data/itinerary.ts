@@ -33,6 +33,7 @@ export const itinerary: ItineraryDay[] = [
       ],
       evening: [
         item("d10-e1", "Paseo corto por Oranienstrasse y SO36 por fuera. Si os gusta el pulso del barrio, tomad algo; si no, retirada digna.", "Short walk along Oranienstrasse and past SO36. If you like the neighbourhood pulse, stop for a drink; otherwise call it early.", { placeId: "so36", flags: ["tired"] }),
+        item("d10-e2", "Primera copa fácil: Möbel Olfe si queréis Kneipe queer con carácter; Südblock si preferís terraza y algo menos cerrado.", "Easy first drink: Moebel Olfe if you want a queer Kneipe with character; Sudblock if you prefer terrace space and a less enclosed bar.", { placeId: "moebel-olfe", flags: ["tired"] }),
       ],
       night: [
         item("d10-n1", "No fuerzo una noche grande aquí. Usad Club der Visionaere solo si el cuerpo pide canal, música suave y poco compromiso.", "I would not force a big night here. Use Club der Visionaere only if the body asks for canal-side music and low commitment.", { placeId: "club-der-visionaere", flags: ["tired"] }),
@@ -40,6 +41,7 @@ export const itinerary: ItineraryDay[] = [
       alternatives: [
         item("d10-x1", "Si el viaje llega torcido: Berlinische Galerie largo, compra básica, ducha y dormir. Ganar energía hoy mejora viernes y sábado.", "If travel goes sideways: longer Berlinische Galerie, basic groceries, shower and sleep. Saving energy today improves Friday and Saturday.", { flags: ["rain", "tired"] }),
         item("d10-x2", "Si os sobra una hora cerca de Moritzplatz, Prinzessinnengarten es un paso rápido amable: jardín comunitario, pausa verde y cero épica de llegada.", "If you have a spare hour near Moritzplatz, Prinzessinnengarten is a gentle quick stop: community garden, green pause and zero arrival-day heroics.", { placeId: "prinzessinnengarten-kreuzberg", duration: "30-60 min", flags: ["tired"] }),
+        item("d10-x3", "Si llegáis con hambre real y cero ganas de mesa: Nefis, Sahara o Maroush resuelven Kreuzberg rápido; elegid uno por cercanía y antojo.", "If you arrive properly hungry with no appetite for a table: Nefis, Sahara or Maroush solve Kreuzberg quickly; choose one by proximity and craving.", { placeId: "nefis-gemuesekebab-kreuzberg", duration: "20-45 min", flags: ["low_budget", "tired"] }),
       ],
     },
   },
@@ -70,6 +72,7 @@ export const itinerary: ItineraryDay[] = [
       alternatives: [
         item("d11-x1", "Con lluvia fuerte: Topography + Hamburger Bahnhof. Menos calle, más contenido, y el día sigue teniendo sentido.", "With heavy rain: Topography + Hamburger Bahnhof. Less street time, more substance, and the day still makes sense.", { placeId: "hamburger-bahnhof", flags: ["rain"] }),
         item("d11-x2", "Si os apetece un clásico más o llueve justo al llegar a Mitte: Museum Island / Pergamon Panorama sustituye parte de los patios, no se suma a todo.", "If you want one more classic or rain hits as you reach Mitte: Museum Island / Pergamon Panorama replaces part of the courtyards, it does not get added on top.", { placeId: "museum-island-pergamon-panorama", duration: "2-3 h", flags: ["rain"] }),
+        item("d11-x3", "Si preferís noche cultural a bar: mirad Gorki/Studio Я por función concreta; Berliner Ensemble queda como opción más clásica.", "If you prefer a cultural night over a bar: check Gorki/Studio Я for a specific performance; Berliner Ensemble is the more classic option.", { placeId: "maxim-gorki-studio-ya", duration: "1.5-3 h", flags: ["rain", "booking"] }),
       ],
     },
   },
@@ -99,6 +102,8 @@ export const itinerary: ItineraryDay[] = [
       ],
       alternatives: [
         item("d12-x1", "Si llueve o Tempelhof no apetece: Hamburger Bahnhof o Gropius Bau, y noche más corta. No pasa nada por cambiar el viernes.", "If it rains or Tempelhof does not appeal: Hamburger Bahnhof or Gropius Bau, and a shorter night. It is fine to change Friday.", { placeId: "hamburger-bahnhof", flags: ["rain", "tired"] }),
+        item("d12-x2", "Si hace calor y Tempelhof se vuelve demasiado expuesto: Hasenheide da sombra, descanso y plan Neukölln sin cambiar de eje.", "If it is hot and Tempelhof feels too exposed: Hasenheide gives shade, rest and a Neukolln plan without changing axis.", { placeId: "hasenheide", duration: "45-120 min", flags: ["tired"] }),
+        item("d12-x3", "Cena rápida amiga: Sahara gana por falafel con salsa de cacahuete; Buya Ramen gana si llueve y queréis mesa caliente.", "Friend-tip quick dinner: Sahara wins for falafel with peanut sauce; Buya Ramen wins if it rains and you want a hot table.", { placeId: "sahara-imbiss-kreuzberg", duration: "30-60 min", flags: ["low_budget", "rain"] }),
       ],
     },
   },
@@ -132,6 +137,8 @@ export const itinerary: ItineraryDay[] = [
         item("d13-x1", "Si no queréis puerta ni maratón: Watergate Open Air en SAGE funciona de 15:00 a 03:00 junto al Spree.", "If you do not want a door gamble or a marathon: Watergate Open Air at SAGE runs 15:00-03:00 by the Spree.", { eventId: "watergate-open-air-sage-2026-06-13" }),
         item("d13-x2", "Si RAW os atrapa y no queréis moveros: Freak on a Leash en Badehaus es la salida cero-techno.", "If RAW catches you and you do not want to move: Freak on a Leash at Badehaus is the zero-techno exit.", { eventId: "freak-on-a-leash-badehaus-2026-06-13" }),
         item("d13-x3", "Si el jueves quedó corto o descartáis el bloque Spree/RAW, Hackesche Hofe puede ser paso rápido de mañana; si no, no hace falta repetir Mitte.", "If Thursday felt unfinished or you skip the Spree/RAW block, Hackesche Hofe can be a quick morning pass; otherwise there is no need to repeat Mitte.", { placeId: "hackesche-hoefe", duration: "45-75 min", flags: ["tired"] }),
+        item("d13-x4", "Si RAW os satura pero queréis seguir en Friedrichshain: Neue Zukunft da biergarten, cine o concierto con menos presión de club.", "If RAW gets too much but you want to stay in Friedrichshain: Neue Zukunft gives you beer garden, cinema or a gig with less club pressure.", { placeId: "neue-zukunft", duration: "1.5-4 h", flags: ["tired"] }),
+        item("d13-x5", "Si queréis intentar Berghain, hacedlo como curiosidad con plan B claro: about blank/Tresor son salidas más realistas.", "If you want to try Berghain, do it as a curiosity with a clear plan B: about blank/Tresor are more realistic exits.", { placeId: "berghain", flags: ["booking"] }),
       ],
     },
   },
@@ -167,6 +174,8 @@ export const itinerary: ItineraryDay[] = [
         item("d14-x5", "Si os apetecen discos, libros y coleccionismo, Antikmarkt Ostbahnhof es el rastro más específico; elegidlo en vez de otra vuelta por el parque.", "If records, books and collectibles sound better, Antikmarkt Ostbahnhof is the more specific flea market; choose it instead of another park loop.", { placeId: "antikmarkt-ostbahnhof" }),
         item("d14-x6", "Si os quedáis cerca de Kreuzberg, Marheinekeplatz resuelve rastro corto, cafés y Bergmannstrasse sin abrir una ruta nueva.", "If you stay near Kreuzberg, Marheinekeplatz gives you a short flea-market stop, cafes and Bergmannstrasse without opening a new route.", { placeId: "marheinekeplatz-flea-market" }),
         item("d14-x7", "Si el día va largo, YAAM baja a plan B sin culpa: el Spree ya quedó cubierto el sábado con East Side Gallery y Holzmarkt.", "If the day runs long, YAAM drops to plan B without guilt: the Spree was already covered on Saturday with East Side Gallery and Holzmarkt.", { placeId: "yaam", flags: ["tired"] }),
+        item("d14-x8", "Si os apetece improvisar algo más subcultural que turístico, revisad Stressfaktor por fecha y solo id a eventos públicos claros.", "If you want to improvise something more subcultural than touristy, check Stressfaktor by date and only go to clearly public events.", { placeId: "stressfaktor-calendar" }),
+        item("d14-x9", "Si el plan parque es más calor que postal: Hasenheide descansa mejor; Görlitzer Park es más pulso de Kreuzberg que parque bonito.", "If the park plan is more heat than postcard: Hasenheide rests better; Goerlitzer Park is more Kreuzberg pulse than pretty park.", { placeId: "hasenheide", flags: ["tired"] }),
       ],
     },
   },
@@ -196,6 +205,7 @@ export const itinerary: ItineraryDay[] = [
       alternatives: [
         item("d15-x1", "Si Teufelsberg se complica por lluvia, cansancio o transporte: Neue Nationalgalerie o Gropius Bau según exposiciones. Es sustituto, no añadido.", "If Teufelsberg gets complicated by rain, fatigue or transit: Neue Nationalgalerie or Gropius Bau depending on exhibitions. It is a replacement, not an add-on.", { placeId: "neue-nationalgalerie", flags: ["rain", "tired"] }),
         item("d15-x2", "Si queréis atardecer fácil en vez de cruzar a Grunewald: Klunkerkranich da vista, música suave y salida menos exigente.", "If you want an easy sunset instead of crossing to Grunewald: Klunkerkranich gives you a view, soft music and a less demanding exit.", { placeId: "klunkerkranich", flags: ["tired"] }),
+        item("d15-x3", "Si os queda energía de club pero no de maratón, RSO o Humboldthain solo compensan con cartel fuerte; si no, Klunker gana.", "If you still have club energy but not marathon energy, RSO or Humboldthain only pay off with a strong lineup; otherwise Klunker wins.", { placeId: "rso-berlin", flags: ["booking", "tired"] }),
       ],
     },
   },

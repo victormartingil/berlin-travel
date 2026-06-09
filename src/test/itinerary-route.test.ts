@@ -15,7 +15,7 @@ describe("itinerary route helpers", () => {
     expect(stops.length).toBeGreaterThan(4);
     expect(stops.map((stop) => stop.order)).toEqual(stops.map((_, index) => index + 1));
     expect(stops.map((stop) => stop.place.id)).toContain("raw-gelaende");
-    expect(stops.map((stop) => stop.place.id)).toContain("else");
+    expect(stops.map((stop) => stop.place.id)).toContain("humboldthain-club");
     expect(stops.some((stop) => stop.block === "alternatives")).toBe(false);
   });
 

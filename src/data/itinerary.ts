@@ -126,12 +126,13 @@ export const itinerary: ItineraryDay[] = [
         item("d13-d1", "Cena simple en Friedrichshain: 1990 Vegan Living, Vöner o algo rápido. Sábado no necesita cena pesada.", "Simple Friedrichshain dinner: 1990 Vegan Living, Voner or something quick. Saturday does not need a heavy dinner.", { placeId: "1990-vegan-living" }),
       ],
       evening: [
-        item("d13-e1", "Decidid pronto la dirección: Else si queréis la opción más completa; Toy Tonics/AEDEN si os tira más disco-house; Watergate Open Air si preferís Spree y acceso más fácil.", "Decide the direction early: Else for the most complete option; Toy Tonics/AEDEN for disco-house; Watergate Open Air for Spree-side dancing and easier access."),
+        item("d13-e1", "Decidid pronto la dirección: Else si queréis la opción más completa; RSO/Glitch si os apetece noche fuerte industrial; Toy Tonics/AEDEN si os tira más disco-house.", "Decide the direction early: Else for the most complete option; RSO/Glitch if you want a harder industrial night; Toy Tonics/AEDEN if disco-house sounds better."),
       ],
       night: [
         item("d13-n1", "Primera opción: Else x Mano Le Tough. Tiene día, noche, terraza, comida y cubierta si llueve.", "First choice: Else x Mano Le Tough. It has day, night, terrace, food and cover if it rains.", { eventId: "else-mano-le-tough-maeve-2026-06-13", flags: ["booking", "cash_card"] }),
-        item("d13-n2", "Alternativa luminosa: Toy Tonics Jam en AEDEN, 14:00-08:00, 25 EUR, house/disco y cuatro floors.", "Brighter alternative: Toy Tonics Jam at AEDEN, 14:00-08:00, 25 EUR, house/disco and four floors.", { eventId: "toy-tonics-aeden-2026-06-13" }),
-        item("d13-n3", "Alternativa más de escena: STAUB XL en about blank, 12:00-10:00, jardín y techno/experimental.", "More scene-rooted alternative: STAUB XL at about blank, 12:00-10:00, garden and techno/experimental.", { eventId: "staub-xl-about-blank-2026-06-13" }),
+        item("d13-n2", "Candidato fuerte: Glitch Berlin en RSO, 22:00-lunes 06:00. Es el plan más duro/industrial; elegidlo si de verdad queréis noche larga.", "Strong candidate: Glitch Berlin at RSO, 22:00-Monday 06:00. This is the harder, more industrial plan; choose it if you genuinely want a long night.", { eventId: "glitch-berlin-rso-2026-06-13", flags: ["booking"] }),
+        item("d13-n3", "Alternativa luminosa: Toy Tonics Jam en AEDEN, 14:00-08:00, 25 EUR, house/disco y cuatro floors.", "Brighter alternative: Toy Tonics Jam at AEDEN, 14:00-08:00, 25 EUR, house/disco and four floors.", { eventId: "toy-tonics-aeden-2026-06-13" }),
+        item("d13-n4", "Alternativa más de escena: STAUB XL en about blank, 12:00-10:00, jardín y techno/experimental.", "More scene-rooted alternative: STAUB XL at about blank, 12:00-10:00, garden and techno/experimental.", { eventId: "staub-xl-about-blank-2026-06-13" }),
       ],
       alternatives: [
         item("d13-x1", "Si no queréis puerta ni maratón: Watergate Open Air en SAGE funciona de 15:00 a 03:00 junto al Spree.", "If you do not want a door gamble or a marathon: Watergate Open Air at SAGE runs 15:00-03:00 by the Spree.", { eventId: "watergate-open-air-sage-2026-06-13" }),
@@ -139,6 +140,7 @@ export const itinerary: ItineraryDay[] = [
         item("d13-x3", "Si el jueves quedó corto o descartáis el bloque Spree/RAW, Hackesche Hofe puede ser paso rápido de mañana; si no, no hace falta repetir Mitte.", "If Thursday felt unfinished or you skip the Spree/RAW block, Hackesche Hofe can be a quick morning pass; otherwise there is no need to repeat Mitte.", { placeId: "hackesche-hoefe", duration: "45-75 min", flags: ["tired"] }),
         item("d13-x4", "Si RAW os satura pero queréis seguir en Friedrichshain: Neue Zukunft da biergarten, cine o concierto con menos presión de club.", "If RAW gets too much but you want to stay in Friedrichshain: Neue Zukunft gives you beer garden, cinema or a gig with less club pressure.", { placeId: "neue-zukunft", duration: "1.5-4 h", flags: ["tired"] }),
         item("d13-x5", "Si queréis intentar Berghain, hacedlo como curiosidad con plan B claro: about blank/Tresor son salidas más realistas.", "If you want to try Berghain, do it as a curiosity with a clear plan B: about blank/Tresor are more realistic exits.", { placeId: "berghain", flags: ["booking"] }),
+        item("d13-x6", "Sisyphos queda como radar: ahora mismo la web oficial muestra evento del 19 al 22, fuera del viaje; si aparece algo nuevo en fechas, compite con RSO.", "Keep Sisyphos as a radar: right now the official site shows a 19-22 June event, outside the trip; if something new appears on your dates, it competes with RSO.", { placeId: "sisyphos", flags: ["booking"] }),
       ],
     },
   },
@@ -205,7 +207,7 @@ export const itinerary: ItineraryDay[] = [
       alternatives: [
         item("d15-x1", "Si Teufelsberg se complica por lluvia, cansancio o transporte: Neue Nationalgalerie o Gropius Bau según exposiciones. Es sustituto, no añadido.", "If Teufelsberg gets complicated by rain, fatigue or transit: Neue Nationalgalerie or Gropius Bau depending on exhibitions. It is a replacement, not an add-on.", { placeId: "neue-nationalgalerie", flags: ["rain", "tired"] }),
         item("d15-x2", "Si queréis atardecer fácil en vez de cruzar a Grunewald: Klunkerkranich da vista, música suave y salida menos exigente.", "If you want an easy sunset instead of crossing to Grunewald: Klunkerkranich gives you a view, soft music and a less demanding exit.", { placeId: "klunkerkranich", flags: ["tired"] }),
-        item("d15-x3", "Si os queda energía de club pero no de maratón, RSO o Humboldthain solo compensan con cartel fuerte; si no, Klunker gana.", "If you still have club energy but not marathon energy, RSO or Humboldthain only pay off with a strong lineup; otherwise Klunker wins.", { placeId: "rso-berlin", flags: ["booking", "tired"] }),
+        item("d15-x3", "Si os queda energía de club pero no de maratón, Humboldthain solo compensa con cartel fuerte; para RSO la ventana buena es el sábado con Glitch.", "If you still have club energy but not marathon energy, Humboldthain only pays off with a strong lineup; for RSO the good window is Saturday with Glitch.", { placeId: "humboldthain-club", flags: ["booking", "tired"] }),
       ],
     },
   },

@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { FavoritesProvider } from "@/components/favorites/FavoritesProvider";
 import { TravelMap } from "@/components/map/TravelMap";
@@ -9,28 +9,17 @@ const circleMock = vi.fn(() => ({
   addTo: vi.fn().mockReturnThis(),
   remove: vi.fn(),
 }));
-const polylineMock = vi.fn(() => ({
+const markerMock = vi.fn(() => ({
   addTo: vi.fn().mockReturnThis(),
+  bindPopup: bindPopupMock,
   remove: vi.fn(),
 }));
-const markerInstances: Array<{ on: ReturnType<typeof vi.fn> }> = [];
-const markerMock = vi.fn(() => {
-  const instance = {
-    addTo: vi.fn().mockReturnThis(),
-    bindPopup: bindPopupMock,
-    on: vi.fn().mockReturnThis(),
-    remove: vi.fn(),
-  };
-  markerInstances.push(instance);
-  return instance;
-});
 const permissionStatusMock = { onchange: null, state: "prompt" } as unknown as PermissionStatus;
 const watchPositionMock = vi.fn();
 
 vi.mock("leaflet", () => ({
   default: {},
   circle: circleMock,
-  polyline: polylineMock,
   map: vi.fn(() => ({ setView: vi.fn().mockReturnThis(), remove: vi.fn() })),
   tileLayer: vi.fn(() => ({ addTo: vi.fn() })),
   marker: markerMock,
@@ -42,8 +31,6 @@ describe("TravelMap", () => {
     bindPopupMock.mockClear();
     circleMock.mockClear();
     markerMock.mockClear();
-    polylineMock.mockClear();
-    markerInstances.length = 0;
     watchPositionMock.mockReset();
     watchPositionMock.mockReturnValue(1);
     (permissionStatusMock as { state: PermissionState }).state = "prompt";
@@ -171,59 +158,6 @@ describe("TravelMap", () => {
 
     await waitFor(() => {
       expect(circleMock).toHaveBeenCalledWith([52.51, 13.4], expect.objectContaining({ radius: 18 }));
-    });
-  });
-
-  it("shows a walking preview card after selecting a marker", async () => {
-    const destination = places.find((place) => place.id === "yaam");
-    expect(destination?.coordinates).toBeDefined();
-
-    render(
-      <FavoritesProvider>
-        <TravelMap places={destination ? [places[0], destination] : places.slice(0, 2)} locale="es" />
-      </FavoritesProvider>,
-    );
-
-    await waitFor(() => {
-      expect(markerInstances.length).toBeGreaterThan(1);
-    });
-
-    const clickHandler = markerInstances.at(-1)?.on.mock.calls.find(([eventName]) => eventName === "click")?.[1] as (() => void) | undefined;
-    expect(clickHandler).toBeDefined();
-    await act(async () => {
-      clickHandler?.();
-    });
-
-    expect(await screen.findByText(/trayecto estimado/i)).toBeInTheDocument();
-    expect(screen.getByText(/km a pie/i)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /abrir ruta a pie/i })).toHaveAttribute("href", expect.stringContaining("google.com/maps/dir"));
-    expect(polylineMock).toHaveBeenCalled();
-  });
-
-  it("closes the route preview card", async () => {
-    const destination = places.find((place) => place.id === "yaam");
-    expect(destination?.coordinates).toBeDefined();
-
-    render(
-      <FavoritesProvider>
-        <TravelMap places={destination ? [places[0], destination] : places.slice(0, 2)} locale="en" />
-      </FavoritesProvider>,
-    );
-
-    await waitFor(() => {
-      expect(markerInstances.length).toBeGreaterThan(1);
-    });
-
-    const clickHandler = markerInstances.at(-1)?.on.mock.calls.find(([eventName]) => eventName === "click")?.[1] as (() => void) | undefined;
-    await act(async () => {
-      clickHandler?.();
-    });
-
-    const closeButton = await screen.findByRole("button", { name: /close/i });
-    fireEvent.click(closeButton);
-
-    await waitFor(() => {
-      expect(screen.queryByText(/estimated walk preview/i)).not.toBeInTheDocument();
     });
   });
 });

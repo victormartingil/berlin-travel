@@ -1,7 +1,7 @@
 "use client";
 
-import { Compass, LocateFixed, LocateOff } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Compass, LocateFixed, LocateOff, Route, X } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import type { Layer as LeafletLayer, Map as LeafletMap } from "leaflet";
 import type { Locale } from "@/domain/common";
@@ -10,10 +10,12 @@ import { getPlaceImages } from "@/data/placeMedia";
 import { useUserLocation } from "@/hooks/useUserLocation";
 import { useFavorites } from "@/hooks/useFavorites";
 import { getMapIconForCategory } from "@/lib/mapIcons";
-import { buildGoogleMapsPlaceUrl } from "@/lib/maps";
+import { buildGoogleMapsDirectionsUrl, buildGoogleMapsPlaceUrl } from "@/lib/maps";
 import { appPath, publicAssetPath } from "@/lib/paths";
 import { t, ui } from "@/lib/i18n";
+import { tripOriginPlaceId } from "@/lib/itineraryRoute";
 import { getCompassLabel } from "@/lib/userLocation";
+import { getRoutePreviewMetrics, getRoutePreviewToneLabel } from "@/lib/routePreview";
 
 export function TravelMap({ places, locale }: { places: Place[]; locale: Locale }) {
   const elRef = useRef<HTMLDivElement | null>(null);
@@ -21,10 +23,43 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
   const leafletRef = useRef<typeof import("leaflet") | null>(null);
   const markersRef = useRef<LeafletLayer[]>([]);
   const userLayersRef = useRef<LeafletLayer[]>([]);
+  const previewLayersRef = useRef<LeafletLayer[]>([]);
   const hasCenteredOnUserRef = useRef(false);
   const [mapReady, setMapReady] = useState(false);
+  const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
   const fav = useFavorites();
   const { compassError, compassPermission, isCompassActive, isLocating, location, locationError, locationPermission, requestCompass, requestLocation } = useUserLocation();
+  const basePlace = useMemo(() => places.find((place) => place.id === tripOriginPlaceId && place.coordinates), [places]);
+  const selectedPlace = useMemo(() => places.find((place) => place.id === selectedPlaceId && place.coordinates), [places, selectedPlaceId]);
+  const previewOrigin = useMemo(() => {
+    if (location) {
+      return {
+        coordinates: { lat: location.lat, lng: location.lng },
+        label: locale === "es" ? "Tu ubicación" : "Your location",
+        source: "user" as const,
+        urlValue: `${location.lat},${location.lng}`,
+      };
+    }
+
+    if (basePlace?.coordinates) {
+      return {
+        coordinates: basePlace.coordinates,
+        label: locale === "es" ? "Alojamiento" : "Accommodation",
+        source: "base" as const,
+        urlValue: basePlace.address ?? basePlace.name,
+      };
+    }
+
+    return null;
+  }, [basePlace, locale, location]);
+  const previewMetrics = useMemo(() => {
+    if (!previewOrigin || !selectedPlace?.coordinates) return null;
+    return getRoutePreviewMetrics(previewOrigin.coordinates, selectedPlace.coordinates, locale);
+  }, [locale, previewOrigin, selectedPlace]);
+  const directionsUrl = useMemo(() => {
+    if (!previewOrigin || !selectedPlace) return null;
+    return buildGoogleMapsDirectionsUrl(previewOrigin.urlValue, selectedPlace.address ?? `${selectedPlace.name}, Berlin`, "walking");
+  }, [previewOrigin, selectedPlace]);
 
   useEffect(() => {
     let mounted = true;
@@ -46,6 +81,8 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
       markersRef.current = [];
       userLayersRef.current.forEach((layer) => layer.remove());
       userLayersRef.current = [];
+      previewLayersRef.current.forEach((layer) => layer.remove());
+      previewLayersRef.current = [];
       mapRef.current?.remove();
       mapRef.current = null;
       leafletRef.current = null;
@@ -114,6 +151,7 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
       button.addEventListener("click", () => fav.toggle(place.id));
       container.append(title, meta, link, document.createTextNode(" · "), detailLink, document.createElement("br"), button);
       marker.bindPopup(container);
+      marker.on("click", () => setSelectedPlaceId(place.id));
       markersRef.current.push(marker);
     });
   }, [fav, locale, mapReady, places]);
@@ -174,6 +212,31 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
       map.setView(latLng, 15);
     }
   }, [locale, location, mapReady]);
+
+  useEffect(() => {
+    const L = leafletRef.current;
+    const map = mapRef.current;
+    if (!mapReady || !map || !L) return;
+
+    previewLayersRef.current.forEach((layer) => layer.remove());
+    previewLayersRef.current = [];
+
+    if (!previewOrigin || !selectedPlace?.coordinates) return;
+
+    const originLatLng = [previewOrigin.coordinates.lat, previewOrigin.coordinates.lng] as [number, number];
+    const destinationLatLng = [selectedPlace.coordinates.lat, selectedPlace.coordinates.lng] as [number, number];
+
+    if (originLatLng[0] === destinationLatLng[0] && originLatLng[1] === destinationLatLng[1]) return;
+
+    const line = L.polyline([originLatLng, destinationLatLng], {
+      color: "#0f766e",
+      weight: 3,
+      opacity: 0.7,
+      dashArray: "6 8",
+    }).addTo(map);
+
+    previewLayersRef.current.push(line);
+  }, [mapReady, previewOrigin, selectedPlace]);
 
   const categories = Array.from(new Set(places.map((p) => p.category)));
   const withoutCoordinates = places.filter((p) => !p.coordinates);
@@ -252,6 +315,49 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
           </span>
         ))}
       </div>
+      {selectedPlace && previewOrigin && previewMetrics ? (
+        <section className="ui-surface space-y-3 rounded-md border px-3 py-3 text-sm">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="space-y-1">
+              <p className="font-semibold">{locale === "es" ? "Trayecto estimado" : "Estimated walk preview"}</p>
+              <p className="text-xs text-zinc-600">
+                {locale === "es"
+                  ? `${previewOrigin.label} → ${selectedPlace.name}`
+                  : `${previewOrigin.label} → ${selectedPlace.name}`}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setSelectedPlaceId(null)}
+              className="ui-button-soft inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs"
+            >
+              <X size={13} />
+              {locale === "es" ? "Cerrar" : "Close"}
+            </button>
+          </div>
+          <div className="flex flex-wrap gap-2 text-xs">
+            <span className="rounded-full bg-emerald-50 px-2 py-1 text-emerald-900">{previewMetrics.distanceLabel}</span>
+            <span className="rounded-full bg-zinc-100 px-2 py-1 text-zinc-700">{previewMetrics.durationLabel}</span>
+            <span className="rounded-full bg-amber-50 px-2 py-1 text-amber-900">{getRoutePreviewToneLabel(previewMetrics.tone, locale)}</span>
+          </div>
+          <p className="text-xs text-zinc-600">
+            {locale === "es"
+              ? "Estimación ligera para decidir si compensa ir andando. Para ruta exacta, abrid Google Maps."
+              : "Light estimate to decide whether it is worth walking. Open Google Maps for exact routing."}
+          </p>
+          {directionsUrl ? (
+            <div className="flex flex-wrap gap-2">
+              <a className="ui-button-primary inline-flex items-center gap-2 rounded-md px-3 py-2 text-xs font-medium" href={directionsUrl} target="_blank" rel="noreferrer">
+                <Route size={14} />
+                {locale === "es" ? "Abrir ruta a pie" : "Open walking route"}
+              </a>
+              <a className="ui-button-soft inline-flex items-center gap-2 rounded-md px-3 py-2 text-xs font-medium" href={appPath(`/places/${selectedPlace.id}/`)}>
+                {locale === "es" ? "Abrir ficha" : "Open details"}
+              </a>
+            </div>
+          ) : null}
+        </section>
+      ) : null}
       {withoutCoordinates.length > 0 ? (
         <p className="text-sm text-zinc-600">
           {withoutCoordinates.length} {locale === "es" ? "lugares sin coordenadas se muestran solo en la lista." : "places without coordinates are shown only in the list."}

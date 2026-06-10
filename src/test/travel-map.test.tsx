@@ -192,6 +192,11 @@ describe("TravelMap", () => {
       </FavoritesProvider>,
     );
 
-    expect(await screen.findByRole("button", { name: /activar orientación/i })).toBeInTheDocument();
-  });
+    await waitFor(
+      async () => {
+        expect(await screen.findByRole("button", { name: /activar orientación/i })).toBeInTheDocument();
+      },
+      { timeout: 2_000 },
+    );
+  }, 8_000);
 });

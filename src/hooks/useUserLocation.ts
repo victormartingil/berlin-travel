@@ -25,11 +25,14 @@ const GEOLOCATION_OPTIONS: PositionOptions = {
   maximumAge: 15_000,
   timeout: 15_000,
 };
+const ORIENTATION_AUTO_WAIT_MS = 1_200;
 
 export function useUserLocation() {
   const watchIdRef = useRef<number | null>(null);
   const permissionRef = useRef<PermissionStatus | null>(null);
   const deviceOrientationListenerRef = useRef<((event: DeviceOrientationEvent) => void) | null>(null);
+  const orientationFallbackTimeoutRef = useRef<number | null>(null);
+  const compassActiveRef = useRef(false);
   const [locationPermission, setLocationPermission] = useState<LocationPermissionState>("unknown");
   const [compassPermission, setCompassPermission] = useState<CompassPermissionState>("idle");
   const [location, setLocation] = useState<UserLocationSnapshot | null>(null);
@@ -38,6 +41,10 @@ export function useUserLocation() {
   const [isCompassActive, setIsCompassActive] = useState(false);
   const [needsCompassGesture, setNeedsCompassGesture] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
+
+  useEffect(() => {
+    compassActiveRef.current = isCompassActive;
+  }, [isCompassActive]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -132,11 +139,6 @@ export function useUserLocation() {
       return;
     }
 
-    if (typeof DeviceOrientationCtor.requestPermission === "function") {
-      queueMicrotask(() => setNeedsCompassGesture(true));
-      return;
-    }
-
     queueMicrotask(() => setNeedsCompassGesture(false));
 
     if (deviceOrientationListenerRef.current) return;
@@ -144,8 +146,13 @@ export function useUserLocation() {
     const listener = (event: DeviceOrientationEvent) => {
       const heading = getOrientationHeading(event);
       if (heading === null) return;
+      if (orientationFallbackTimeoutRef.current !== null) {
+        window.clearTimeout(orientationFallbackTimeoutRef.current);
+        orientationFallbackTimeoutRef.current = null;
+      }
       setCompassPermission("granted");
       setIsCompassActive(true);
+      setNeedsCompassGesture(false);
       setLocation((previous) => {
         if (!previous) return previous;
         return {
@@ -158,10 +165,22 @@ export function useUserLocation() {
 
     deviceOrientationListenerRef.current = listener;
     window.addEventListener("deviceorientation", listener);
+
+    if (typeof DeviceOrientationCtor.requestPermission === "function") {
+      orientationFallbackTimeoutRef.current = window.setTimeout(() => {
+        if (!compassActiveRef.current) {
+          setNeedsCompassGesture(true);
+        }
+      }, ORIENTATION_AUTO_WAIT_MS);
+    }
   }, []);
 
   useEffect(() => {
     return () => {
+      if (orientationFallbackTimeoutRef.current !== null) {
+        window.clearTimeout(orientationFallbackTimeoutRef.current);
+        orientationFallbackTimeoutRef.current = null;
+      }
       if (deviceOrientationListenerRef.current) {
         window.removeEventListener("deviceorientation", deviceOrientationListenerRef.current);
         deviceOrientationListenerRef.current = null;
@@ -233,6 +252,7 @@ export function useUserLocation() {
           setNeedsCompassGesture(true);
           return;
         }
+        setNeedsCompassGesture(false);
       } catch {
         setCompassPermission("denied");
         setCompassError("denied");
@@ -252,6 +272,7 @@ export function useUserLocation() {
       if (heading === null) return;
       setCompassPermission("granted");
       setIsCompassActive(true);
+      setNeedsCompassGesture(false);
       setLocation((previous) => {
         if (!previous) return previous;
         return {

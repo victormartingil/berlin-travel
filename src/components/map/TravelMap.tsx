@@ -34,6 +34,11 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
       if (!mounted || !elRef.current) return;
       leafletRef.current = L;
       mapRef.current = L.map(elRef.current).setView([52.505, 13.41], 12);
+      mapRef.current.createPane("travel-map-user-location");
+      const userPane = mapRef.current.getPane("travel-map-user-location");
+      if (userPane) {
+        userPane.style.zIndex = "675";
+      }
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors",
       }).addTo(mapRef.current);
@@ -134,6 +139,7 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
       fillColor: "#60a5fa",
       fillOpacity: 0.12,
       opacity: 0.65,
+      pane: "travel-map-user-location",
       radius: Math.max(location.accuracy, 8),
       weight: 1.5,
     }).addTo(map);
@@ -143,6 +149,8 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
       : "";
 
     const marker = L.marker(latLng, {
+      pane: "travel-map-user-location",
+      zIndexOffset: 10_000,
       icon: L.divIcon({
         className: "travel-map-user-marker",
         html: `<span style="position:relative;display:flex;height:22px;width:22px;align-items:center;justify-content:center;">${headingMarkup}<span style="position:absolute;inset:0;border-radius:9999px;background:#3b82f6;box-shadow:0 0 0 4px rgba(59,130,246,0.2),0 0 0 2px rgba(255,255,255,0.96),0 8px 20px rgba(37,99,235,0.28);"></span><span style="position:relative;height:8px;width:8px;border-radius:9999px;background:white;"></span></span>`,

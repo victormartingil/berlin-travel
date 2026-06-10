@@ -20,7 +20,12 @@ const watchPositionMock = vi.fn();
 vi.mock("leaflet", () => ({
   default: {},
   circle: circleMock,
-  map: vi.fn(() => ({ setView: vi.fn().mockReturnThis(), remove: vi.fn() })),
+  map: vi.fn(() => ({
+    createPane: vi.fn(),
+    getPane: vi.fn(() => ({ style: {} })),
+    setView: vi.fn().mockReturnThis(),
+    remove: vi.fn(),
+  })),
   tileLayer: vi.fn(() => ({ addTo: vi.fn() })),
   marker: markerMock,
   divIcon: vi.fn((options) => options),
@@ -154,6 +159,7 @@ describe("TravelMap", () => {
 
     await waitFor(() => {
       expect(circleMock).toHaveBeenCalledWith([52.51, 13.4], expect.objectContaining({ radius: 18 }));
+      expect(markerMock).toHaveBeenCalledWith([52.51, 13.4], expect.objectContaining({ pane: "travel-map-user-location", zIndexOffset: 10_000 }));
     });
   });
 

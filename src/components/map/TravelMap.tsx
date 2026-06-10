@@ -195,12 +195,6 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
     <div className="space-y-3">
       <div className="flex flex-wrap items-start justify-between gap-3 rounded-md border border-zinc-200 bg-zinc-50 px-3 py-3 text-sm">
         <div className="space-y-1">
-          <p className="font-medium">{locale === "es" ? "Ubicación en tiempo real" : "Live location"}</p>
-          <p className="text-xs text-zinc-600">
-            {locale === "es"
-              ? "El mapa intenta cargar ubicación y orientación automáticamente cuando el navegador lo permite. En GitHub Pages HTTPS o localhost, si aceptáis permisos, el punto azul aparece sin tocar nada."
-              : "The map tries to load location and orientation automatically when the browser allows it. On GitHub Pages HTTPS or localhost, if permissions are accepted, the blue dot appears without extra taps."}
-          </p>
           {location ? (
             <p className="text-xs text-zinc-600">
               {locale === "es"

@@ -17,7 +17,7 @@ export default function MapPage() {
   return (
     <section className="space-y-4">
       <h1 className="text-2xl font-semibold">{locale === "es" ? "Mapa" : "Map"}</h1>
-      <PlaceFilters filters={filters} setFilters={setFilters} categories={categories} neighbourhoods={neighbourhoods} locale={locale} />
+      <PlaceFilters filters={filters} setFilters={setFilters} categories={categories} neighbourhoods={neighbourhoods} locale={locale} showBasicSelectFilters={false} />
       <div className="flex flex-wrap items-center justify-between gap-2 rounded-md bg-zinc-100 px-3 py-2 text-sm">
         <span>{filtered.length} {locale === "es" ? "lugares visibles" : "visible places"}</span>
         <button type="button" onClick={() => setFilters(defaultPlaceFilters)} className="rounded bg-white px-3 py-1 font-medium">

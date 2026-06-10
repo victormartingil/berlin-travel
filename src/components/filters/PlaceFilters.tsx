@@ -11,6 +11,7 @@ export function PlaceFilters({
   categories,
   neighbourhoods,
   locale,
+  showBasicSelectFilters = true,
   showFoodFilters = false,
   showMarketFilters = false,
 }: {
@@ -19,6 +20,7 @@ export function PlaceFilters({
   categories: PlaceCategory[];
   neighbourhoods: string[];
   locale: Locale;
+  showBasicSelectFilters?: boolean;
   showFoodFilters?: boolean;
   showMarketFilters?: boolean;
 }) {
@@ -30,34 +32,38 @@ export function PlaceFilters({
         placeholder={t(ui.filters.search, locale)}
         className="rounded border p-2 text-sm"
       />
-      <select value={filters.neighbourhood} onChange={(e) => setFilters({ ...filters, neighbourhood: e.target.value })} className="rounded border p-2 text-sm">
-        <option value="all">{t(ui.filters.allAreas, locale)}</option>
-        {neighbourhoods.map((n) => (
-          <option key={n} value={n}>
-            {n}
-          </option>
-        ))}
-      </select>
-      <select value={filters.price} onChange={(e) => setFilters({ ...filters, price: e.target.value as PF["price"] })} className="rounded border p-2 text-sm">
-        <option value="all">{t(ui.filters.allPrices, locale)}</option>
-        <option value="low">low</option>
-        <option value="mid">mid</option>
-        <option value="high">high</option>
-      </select>
-      <select value={filters.priority} onChange={(e) => setFilters({ ...filters, priority: e.target.value as PF["priority"] })} className="rounded border p-2 text-sm">
-        <option value="all">{t(ui.filters.priority, locale)}</option>
-        <option value="essential">essential</option>
-        <option value="high">high</option>
-        <option value="medium">medium</option>
-        <option value="optional">optional</option>
-      </select>
-      <select value={filters.verification} onChange={(e) => setFilters({ ...filters, verification: e.target.value as PF["verification"] })} className="rounded border p-2 text-sm">
-        <option value="all">{t(ui.filters.allVerification, locale)}</option>
-        <option value="verified">{t(ui.labels.verified, locale)}</option>
-        <option value="needs_verification">{t(ui.labels.needs_verification, locale)}</option>
-        <option value="unknown">{t(ui.labels.unknown, locale)}</option>
-        <option value="outdated">{t(ui.labels.outdated, locale)}</option>
-      </select>
+      {showBasicSelectFilters ? (
+        <>
+          <select value={filters.neighbourhood} onChange={(e) => setFilters({ ...filters, neighbourhood: e.target.value })} className="rounded border p-2 text-sm">
+            <option value="all">{t(ui.filters.allAreas, locale)}</option>
+            {neighbourhoods.map((n) => (
+              <option key={n} value={n}>
+                {n}
+              </option>
+            ))}
+          </select>
+          <select value={filters.price} onChange={(e) => setFilters({ ...filters, price: e.target.value as PF["price"] })} className="rounded border p-2 text-sm">
+            <option value="all">{t(ui.filters.allPrices, locale)}</option>
+            <option value="low">low</option>
+            <option value="mid">mid</option>
+            <option value="high">high</option>
+          </select>
+          <select value={filters.priority} onChange={(e) => setFilters({ ...filters, priority: e.target.value as PF["priority"] })} className="rounded border p-2 text-sm">
+            <option value="all">{t(ui.filters.priority, locale)}</option>
+            <option value="essential">essential</option>
+            <option value="high">high</option>
+            <option value="medium">medium</option>
+            <option value="optional">optional</option>
+          </select>
+          <select value={filters.verification} onChange={(e) => setFilters({ ...filters, verification: e.target.value as PF["verification"] })} className="rounded border p-2 text-sm">
+            <option value="all">{t(ui.filters.allVerification, locale)}</option>
+            <option value="verified">{t(ui.labels.verified, locale)}</option>
+            <option value="needs_verification">{t(ui.labels.needs_verification, locale)}</option>
+            <option value="unknown">{t(ui.labels.unknown, locale)}</option>
+            <option value="outdated">{t(ui.labels.outdated, locale)}</option>
+          </select>
+        </>
+      ) : null}
       <button
         type="button"
         onClick={() => setFilters({ ...filters, friendRecommended: !filters.friendRecommended })}

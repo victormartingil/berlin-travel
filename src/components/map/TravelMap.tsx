@@ -185,9 +185,6 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
 
   const categories = Array.from(new Set(places.map((p) => p.category)));
   const withoutCoordinates = places.filter((p) => !p.coordinates);
-  const currentHeading = location?.heading ?? null;
-  const headingLabel = currentHeading !== null ? getCompassLabel(currentHeading, locale) : null;
-  const headingDegrees = currentHeading !== null ? Math.round(currentHeading) : null;
   const showLocationRetry = locationPermission === "denied" && location === null;
   const showCompassRetry = needsCompassGesture && !isCompassActive && compassPermission !== "unsupported";
 
@@ -195,13 +192,6 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
     <div className="space-y-3">
       <div className="flex flex-wrap items-start justify-between gap-3 rounded-md border border-zinc-200 bg-zinc-50 px-3 py-3 text-sm">
         <div className="space-y-1">
-          {location ? (
-            <p className="text-xs text-zinc-600">
-              {locale === "es"
-                ? `Precisión aprox. ${Math.round(location.accuracy)} m${headingLabel && headingDegrees !== null ? ` · ${headingLabel} ${headingDegrees}°` : ""}`
-                : `Approx. accuracy ${Math.round(location.accuracy)} m${headingLabel && headingDegrees !== null ? ` · ${headingLabel} ${headingDegrees}°` : ""}`}
-            </p>
-          ) : null}
           {isLocating && !location ? (
             <p className="text-xs text-zinc-600">{locale === "es" ? "Intentando ubicaros..." : "Trying to locate you..."}</p>
           ) : null}

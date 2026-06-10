@@ -160,6 +160,10 @@ describe("TravelMap", () => {
     await waitFor(() => {
       expect(circleMock).toHaveBeenCalledWith([52.51, 13.4], expect.objectContaining({ radius: 18 }));
       expect(markerMock).toHaveBeenCalledWith([52.51, 13.4], expect.objectContaining({ pane: "travel-map-user-location", zIndexOffset: 10_000 }));
+      const markerCalls = markerMock.mock.calls as unknown[][];
+      const userMarkerOptions = markerCalls.at(-1)?.[1] as { icon?: { html?: string } } | undefined;
+      expect(userMarkerOptions?.icon?.html).toContain("z-index:2");
+      expect(userMarkerOptions?.icon?.html).toContain("overflow:visible");
     });
   });
 

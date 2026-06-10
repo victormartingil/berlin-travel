@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { FavoritesProvider } from "@/components/favorites/FavoritesProvider";
 import { TravelMap } from "@/components/map/TravelMap";
@@ -115,14 +115,12 @@ describe("TravelMap", () => {
     });
   });
 
-  it("starts geolocation when the user requests it", async () => {
+  it("starts geolocation automatically on map load when permission is prompt", async () => {
     render(
       <FavoritesProvider>
         <TravelMap places={places.slice(0, 2)} locale="es" />
       </FavoritesProvider>,
     );
-
-    fireEvent.click(screen.getByRole("button", { name: /mostrar mi ubicación/i }));
 
     await waitFor(() => {
       expect(watchPositionMock).toHaveBeenCalled();
@@ -154,10 +152,46 @@ describe("TravelMap", () => {
       </FavoritesProvider>,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: /show my location/i }));
-
     await waitFor(() => {
       expect(circleMock).toHaveBeenCalledWith([52.51, 13.4], expect.objectContaining({ radius: 18 }));
     });
+  });
+
+  it("shows retry location only after a denied geolocation permission", async () => {
+    watchPositionMock.mockImplementation((_success: PositionCallback, error: PositionErrorCallback) => {
+      error({
+        code: 1,
+        message: "denied",
+        PERMISSION_DENIED: 1,
+        POSITION_UNAVAILABLE: 2,
+        TIMEOUT: 3,
+      } as GeolocationPositionError);
+      return 1;
+    });
+
+    render(
+      <FavoritesProvider>
+        <TravelMap places={places.slice(0, 2)} locale="es" />
+      </FavoritesProvider>,
+    );
+
+    expect(await screen.findByRole("button", { name: /reintentar ubicación/i })).toBeInTheDocument();
+  });
+
+  it("shows orientation fallback button when the device needs a gesture", async () => {
+    Object.defineProperty(global.window, "DeviceOrientationEvent", {
+      configurable: true,
+      value: class DeviceOrientationEventMock {
+        static requestPermission = vi.fn();
+      },
+    });
+
+    render(
+      <FavoritesProvider>
+        <TravelMap places={places.slice(0, 2)} locale="es" />
+      </FavoritesProvider>,
+    );
+
+    expect(await screen.findByRole("button", { name: /activar orientación/i })).toBeInTheDocument();
   });
 });

@@ -1,6 +1,6 @@
 "use client";
 
-import { Compass, LocateFixed, LocateOff } from "lucide-react";
+import { Compass, LocateFixed } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import type { Layer as LeafletLayer, Map as LeafletMap } from "leaflet";
@@ -24,7 +24,7 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
   const hasCenteredOnUserRef = useRef(false);
   const [mapReady, setMapReady] = useState(false);
   const fav = useFavorites();
-  const { compassError, compassPermission, isCompassActive, isLocating, location, locationError, locationPermission, requestCompass, requestLocation } = useUserLocation();
+  const { compassError, compassPermission, isCompassActive, isLocating, location, locationError, locationPermission, needsCompassGesture, requestCompass, requestLocation } = useUserLocation();
 
   useEffect(() => {
     let mounted = true;
@@ -180,8 +180,8 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
   const currentHeading = location?.heading ?? null;
   const headingLabel = currentHeading !== null ? getCompassLabel(currentHeading, locale) : null;
   const headingDegrees = currentHeading !== null ? Math.round(currentHeading) : null;
-  const canUseCompass = compassPermission !== "unsupported";
-  const canLocate = locationPermission !== "unsupported";
+  const showLocationRetry = locationPermission === "denied" && location === null;
+  const showCompassRetry = needsCompassGesture && !isCompassActive && compassPermission !== "unsupported";
 
   return (
     <div className="space-y-3">
@@ -190,8 +190,8 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
           <p className="font-medium">{locale === "es" ? "Ubicación en tiempo real" : "Live location"}</p>
           <p className="text-xs text-zinc-600">
             {locale === "es"
-              ? "El punto azul y la brújula funcionan solo en contexto seguro (GitHub Pages HTTPS o localhost) y con permisos del navegador."
-              : "The blue dot and compass only work in a secure context (GitHub Pages HTTPS or localhost) and with browser permissions."}
+              ? "El mapa intenta cargar ubicación y orientación automáticamente cuando el navegador lo permite. En GitHub Pages HTTPS o localhost, si aceptáis permisos, el punto azul aparece sin tocar nada."
+              : "The map tries to load location and orientation automatically when the browser allows it. On GitHub Pages HTTPS or localhost, if permissions are accepted, the blue dot appears without extra taps."}
           </p>
           {location ? (
             <p className="text-xs text-zinc-600">
@@ -200,45 +200,54 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
                 : `Approx. accuracy ${Math.round(location.accuracy)} m${headingLabel && headingDegrees !== null ? ` · ${headingLabel} ${headingDegrees}°` : ""}`}
             </p>
           ) : null}
+          {isLocating && !location ? (
+            <p className="text-xs text-zinc-600">{locale === "es" ? "Intentando ubicaros..." : "Trying to locate you..."}</p>
+          ) : null}
           {locationError === "denied" ? (
-            <p className="text-xs text-amber-800">{locale === "es" ? "El navegador ha bloqueado la ubicación. Permitid acceso para ver el punto azul." : "The browser blocked location. Allow access to see the blue dot."}</p>
+            <p className="text-xs text-amber-800">{locale === "es" ? "El navegador ha bloqueado la ubicación. Si queréis el punto azul, podéis reintentarlo." : "The browser blocked location. If you want the blue dot, you can retry."}</p>
           ) : null}
           {compassError === "denied" ? (
-            <p className="text-xs text-amber-800">{locale === "es" ? "La brújula requiere permiso del dispositivo, especialmente en iPhone/iPad." : "The compass needs device permission, especially on iPhone/iPad."}</p>
+            <p className="text-xs text-amber-800">{locale === "es" ? "La orientación sigue dependiendo del dispositivo; en iPhone/iPad puede requerir confirmación manual." : "Orientation still depends on the device; on iPhone/iPad it may require manual confirmation."}</p>
           ) : null}
         </div>
-        <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() => {
-              const currentLocation = location;
-              if (currentLocation) {
-                mapRef.current?.setView([currentLocation.lat, currentLocation.lng], 15);
-                return;
-              }
-              requestLocation();
-            }}
-            disabled={!canLocate}
-            className="ui-button-primary inline-flex items-center gap-2 rounded-md px-3 py-2 text-xs font-medium disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {locationPermission === "unsupported" ? <LocateOff size={14} /> : <LocateFixed size={14} />}
-            {location
-              ? locale === "es" ? "Centrarme" : "Center on me"
-              : isLocating ? locale === "es" ? "Buscando..." : "Locating..."
-              : locale === "es" ? "Mostrar mi ubicación" : "Show my location"}
-          </button>
-          <button
-            type="button"
-            onClick={() => void requestCompass()}
-            disabled={!canUseCompass}
-            className="ui-button-soft inline-flex items-center gap-2 rounded-md px-3 py-2 text-xs font-medium disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <Compass size={14} />
-            {isCompassActive
-              ? locale === "es" ? "Brújula activa" : "Compass on"
-              : locale === "es" ? "Activar brújula" : "Enable compass"}
-          </button>
-        </div>
+        {showLocationRetry || showCompassRetry || location ? (
+          <div className="flex flex-wrap gap-2">
+            {location ? (
+              <button
+                type="button"
+                onClick={() => {
+                  mapRef.current?.setView([location.lat, location.lng], 15);
+                }}
+                className="ui-button-primary inline-flex items-center gap-2 rounded-md px-3 py-2 text-xs font-medium"
+              >
+                <LocateFixed size={14} />
+                {locale === "es" ? "Centrarme" : "Center on me"}
+              </button>
+            ) : null}
+            {showLocationRetry ? (
+              <button
+                type="button"
+                onClick={() => requestLocation()}
+                className="ui-button-soft inline-flex items-center gap-2 rounded-md px-3 py-2 text-xs font-medium"
+              >
+                <LocateFixed size={14} />
+                {locale === "es" ? "Reintentar ubicación" : "Retry location"}
+              </button>
+            ) : null}
+            {showCompassRetry ? (
+              <button
+                type="button"
+                onClick={() => void requestCompass()}
+                className="ui-button-soft inline-flex items-center gap-2 rounded-md px-3 py-2 text-xs font-medium"
+              >
+                <Compass size={14} />
+                {isCompassActive
+                  ? locale === "es" ? "Brújula activa" : "Compass on"
+                  : locale === "es" ? "Activar orientación" : "Enable orientation"}
+              </button>
+            ) : null}
+          </div>
+        ) : null}
       </div>
       <div
         ref={elRef}

@@ -36,6 +36,7 @@ export function useUserLocation() {
   const [locationError, setLocationError] = useState<string | null>(null);
   const [compassError, setCompassError] = useState<string | null>(null);
   const [isCompassActive, setIsCompassActive] = useState(false);
+  const [needsCompassGesture, setNeedsCompassGesture] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
 
   useEffect(() => {
@@ -101,9 +102,12 @@ export function useUserLocation() {
 
         if (permissionStatus.state === "granted") {
           startWatching();
+        } else if (permissionStatus.state === "prompt") {
+          startWatching();
         }
       } catch {
         setLocationPermission("unknown");
+        startWatching();
       }
     })();
 
@@ -124,7 +128,36 @@ export function useUserLocation() {
     const DeviceOrientationCtor = window.DeviceOrientationEvent as DeviceOrientationWithPermission | undefined;
     if (!DeviceOrientationCtor) {
       queueMicrotask(() => setCompassPermission("unsupported"));
+      queueMicrotask(() => setNeedsCompassGesture(false));
+      return;
     }
+
+    if (typeof DeviceOrientationCtor.requestPermission === "function") {
+      queueMicrotask(() => setNeedsCompassGesture(true));
+      return;
+    }
+
+    queueMicrotask(() => setNeedsCompassGesture(false));
+
+    if (deviceOrientationListenerRef.current) return;
+
+    const listener = (event: DeviceOrientationEvent) => {
+      const heading = getOrientationHeading(event);
+      if (heading === null) return;
+      setCompassPermission("granted");
+      setIsCompassActive(true);
+      setLocation((previous) => {
+        if (!previous) return previous;
+        return {
+          ...previous,
+          heading,
+          headingSource: "deviceorientation",
+        };
+      });
+    };
+
+    deviceOrientationListenerRef.current = listener;
+    window.addEventListener("deviceorientation", listener);
   }, []);
 
   useEffect(() => {
@@ -185,6 +218,7 @@ export function useUserLocation() {
     if (!DeviceOrientationCtor) {
       setCompassPermission("unsupported");
       setCompassError("unsupported");
+      setNeedsCompassGesture(false);
       return;
     }
 
@@ -196,11 +230,13 @@ export function useUserLocation() {
         if (permission !== "granted") {
           setCompassPermission("denied");
           setCompassError("denied");
+          setNeedsCompassGesture(true);
           return;
         }
       } catch {
         setCompassPermission("denied");
         setCompassError("denied");
+        setNeedsCompassGesture(true);
         return;
       }
     }
@@ -239,6 +275,7 @@ export function useUserLocation() {
     location,
     locationError,
     locationPermission,
+    needsCompassGesture,
     requestCompass,
     requestLocation,
   };

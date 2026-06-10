@@ -13,11 +13,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" data-theme="dark" data-theme-preference="system" style={{ colorScheme: "dark" }} suppressHydrationWarning>
       <head>
         <ThemeInitScript />
       </head>
-      <body className="min-h-screen bg-zinc-50 text-zinc-900">
+      <body className="min-h-screen">
         <ThemeProvider>
           <LocaleProvider>
             <FavoritesProvider>

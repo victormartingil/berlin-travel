@@ -26,6 +26,58 @@ const GEOLOCATION_OPTIONS: PositionOptions = {
   timeout: 15_000,
 };
 const ORIENTATION_AUTO_WAIT_MS = 1_200;
+const LOCATION_STORAGE_KEY = "berlin-guide-last-location";
+const LOCATION_CACHE_MAX_AGE_MS = 5 * 60_000;
+
+function buildLocationSnapshot(position: GeolocationPosition, previous: UserLocationSnapshot | null): UserLocationSnapshot {
+  const nextHeading = typeof position.coords.heading === "number" && Number.isFinite(position.coords.heading)
+    ? position.coords.heading
+    : null;
+
+  return {
+    accuracy: position.coords.accuracy,
+    heading: previous?.headingSource === "deviceorientation" ? previous.heading : nextHeading,
+    headingSource: previous?.headingSource === "deviceorientation" ? previous.headingSource : nextHeading !== null ? "geolocation" : previous?.headingSource ?? null,
+    lat: position.coords.latitude,
+    lng: position.coords.longitude,
+    speed: position.coords.speed,
+    updatedAt: position.timestamp,
+  };
+}
+
+function readCachedLocation(): UserLocationSnapshot | null {
+  if (typeof window === "undefined" || !window.localStorage) return null;
+
+  try {
+    const raw = window.localStorage.getItem(LOCATION_STORAGE_KEY);
+    if (!raw) return null;
+
+    const parsed = JSON.parse(raw) as Partial<UserLocationSnapshot>;
+    if (
+      typeof parsed?.lat !== "number"
+      || typeof parsed.lng !== "number"
+      || typeof parsed.accuracy !== "number"
+      || typeof parsed.updatedAt !== "number"
+      || Date.now() - parsed.updatedAt > LOCATION_CACHE_MAX_AGE_MS
+    ) {
+      window.localStorage.removeItem(LOCATION_STORAGE_KEY);
+      return null;
+    }
+
+    return {
+      accuracy: parsed.accuracy,
+      heading: typeof parsed.heading === "number" ? parsed.heading : null,
+      headingSource: parsed.headingSource === "deviceorientation" || parsed.headingSource === "geolocation" ? parsed.headingSource : null,
+      lat: parsed.lat,
+      lng: parsed.lng,
+      speed: typeof parsed.speed === "number" ? parsed.speed : null,
+      updatedAt: parsed.updatedAt,
+    };
+  } catch {
+    window.localStorage.removeItem(LOCATION_STORAGE_KEY);
+    return null;
+  }
+}
 
 export function useUserLocation() {
   const watchIdRef = useRef<number | null>(null);
@@ -35,7 +87,7 @@ export function useUserLocation() {
   const compassActiveRef = useRef(false);
   const [locationPermission, setLocationPermission] = useState<LocationPermissionState>("unknown");
   const [compassPermission, setCompassPermission] = useState<CompassPermissionState>("idle");
-  const [location, setLocation] = useState<UserLocationSnapshot | null>(null);
+  const [location, setLocation] = useState<UserLocationSnapshot | null>(() => readCachedLocation());
   const [locationError, setLocationError] = useState<string | null>(null);
   const [compassError, setCompassError] = useState<string | null>(null);
   const [isCompassActive, setIsCompassActive] = useState(false);
@@ -45,6 +97,16 @@ export function useUserLocation() {
   useEffect(() => {
     compassActiveRef.current = isCompassActive;
   }, [isCompassActive]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.localStorage || !location) return;
+
+    try {
+      window.localStorage.setItem(LOCATION_STORAGE_KEY, JSON.stringify(location));
+    } catch {
+      // Ignore storage failures; live geolocation still works without cache.
+    }
+  }, [location]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -63,21 +125,7 @@ export function useUserLocation() {
       setLocationError(null);
       watchIdRef.current = geolocation.watchPosition(
         (position) => {
-          setLocation((previous) => {
-            const nextHeading = typeof position.coords.heading === "number" && Number.isFinite(position.coords.heading)
-              ? position.coords.heading
-              : null;
-
-            return {
-              accuracy: position.coords.accuracy,
-              heading: previous?.headingSource === "deviceorientation" ? previous.heading : nextHeading,
-              headingSource: previous?.headingSource === "deviceorientation" ? previous.headingSource : nextHeading !== null ? "geolocation" : previous?.headingSource ?? null,
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-              speed: position.coords.speed,
-              updatedAt: position.timestamp,
-            };
-          });
+          setLocation((previous) => buildLocationSnapshot(position, previous));
           setLocationPermission("granted");
           setIsLocating(false);
         },
@@ -201,21 +249,7 @@ export function useUserLocation() {
     setLocationError(null);
     watchIdRef.current = navigator.geolocation.watchPosition(
       (position) => {
-        setLocation((previous) => {
-          const nextHeading = typeof position.coords.heading === "number" && Number.isFinite(position.coords.heading)
-            ? position.coords.heading
-            : null;
-
-          return {
-            accuracy: position.coords.accuracy,
-            heading: previous?.headingSource === "deviceorientation" ? previous.heading : nextHeading,
-            headingSource: previous?.headingSource === "deviceorientation" ? previous.headingSource : nextHeading !== null ? "geolocation" : previous?.headingSource ?? null,
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-            speed: position.coords.speed,
-            updatedAt: position.timestamp,
-          };
-        });
+        setLocation((previous) => buildLocationSnapshot(position, previous));
         setLocationPermission("granted");
         setIsLocating(false);
       },

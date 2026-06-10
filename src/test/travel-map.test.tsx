@@ -14,6 +14,7 @@ const markerMock = vi.fn(() => ({
   bindPopup: bindPopupMock,
   remove: vi.fn(),
 }));
+const localStorageState = new Map<string, string>();
 const permissionStatusMock = { onchange: null, state: "prompt" } as unknown as PermissionStatus;
 const watchPositionMock = vi.fn();
 
@@ -38,6 +39,16 @@ describe("TravelMap", () => {
     markerMock.mockClear();
     watchPositionMock.mockReset();
     watchPositionMock.mockReturnValue(1);
+    localStorageState.clear();
+    Object.defineProperty(global.window, "localStorage", {
+      configurable: true,
+      value: {
+        clear: () => localStorageState.clear(),
+        getItem: (key: string) => localStorageState.get(key) ?? null,
+        removeItem: (key: string) => localStorageState.delete(key),
+        setItem: (key: string, value: string) => localStorageState.set(key, value),
+      },
+    });
     (permissionStatusMock as { state: PermissionState }).state = "prompt";
     Object.defineProperty(global.navigator, "geolocation", {
       configurable: true,
@@ -166,6 +177,29 @@ describe("TravelMap", () => {
       expect(userMarkerOptions?.icon?.html).toContain("overflow:visible");
       expect(userMarkerOptions?.icon?.html).toContain("height:30px;width:30px");
       expect(userMarkerOptions?.icon?.html).toContain("border:2px solid rgba(255,255,255,0.96)");
+    });
+  });
+
+  it("rehydrates the last cached location immediately after reload", async () => {
+    window.localStorage.setItem("berlin-guide-last-location", JSON.stringify({
+      accuracy: 22,
+      heading: null,
+      headingSource: null,
+      lat: 52.52,
+      lng: 13.405,
+      speed: null,
+      updatedAt: Date.now(),
+    }));
+
+    render(
+      <FavoritesProvider>
+        <TravelMap places={[]} locale="es" />
+      </FavoritesProvider>,
+    );
+
+    await waitFor(() => {
+      expect(circleMock).toHaveBeenCalledWith([52.52, 13.405], expect.objectContaining({ radius: 22 }));
+      expect(markerMock).toHaveBeenCalledWith([52.52, 13.405], expect.objectContaining({ pane: "travel-map-user-location" }));
     });
   });
 

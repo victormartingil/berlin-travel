@@ -1,18 +1,25 @@
-import { render, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { FavoritesProvider } from "@/components/favorites/FavoritesProvider";
 import { TravelMap } from "@/components/map/TravelMap";
 import { places } from "@/data/places";
 
 const bindPopupMock = vi.fn();
+const circleMock = vi.fn(() => ({
+  addTo: vi.fn().mockReturnThis(),
+  remove: vi.fn(),
+}));
 const markerMock = vi.fn(() => ({
   addTo: vi.fn().mockReturnThis(),
   bindPopup: bindPopupMock,
   remove: vi.fn(),
 }));
+const permissionStatusMock = { onchange: null, state: "prompt" } as unknown as PermissionStatus;
+const watchPositionMock = vi.fn();
 
 vi.mock("leaflet", () => ({
   default: {},
+  circle: circleMock,
   map: vi.fn(() => ({ setView: vi.fn().mockReturnThis(), remove: vi.fn() })),
   tileLayer: vi.fn(() => ({ addTo: vi.fn() })),
   marker: markerMock,
@@ -22,7 +29,28 @@ vi.mock("leaflet", () => ({
 describe("TravelMap", () => {
   beforeEach(() => {
     bindPopupMock.mockClear();
+    circleMock.mockClear();
     markerMock.mockClear();
+    watchPositionMock.mockReset();
+    watchPositionMock.mockReturnValue(1);
+    (permissionStatusMock as { state: PermissionState }).state = "prompt";
+    Object.defineProperty(global.navigator, "geolocation", {
+      configurable: true,
+      value: {
+        clearWatch: vi.fn(),
+        watchPosition: watchPositionMock,
+      },
+    });
+    Object.defineProperty(global.navigator, "permissions", {
+      configurable: true,
+      value: {
+        query: vi.fn().mockResolvedValue(permissionStatusMock),
+      },
+    });
+    Object.defineProperty(global.window, "DeviceOrientationEvent", {
+      configurable: true,
+      value: class DeviceOrientationEventMock {},
+    });
   });
 
   it("renders markers after the async Leaflet setup completes", async () => {
@@ -84,6 +112,52 @@ describe("TravelMap", () => {
       const popup = bindPopupMock.mock.calls.at(-1)?.[0] as HTMLElement | undefined;
       expect(popup?.querySelector("img")?.getAttribute("src")).toBe("/images/places/accommodation-nena-moritzplatz-01.jpg");
       expect(popup?.querySelector("img")?.getAttribute("alt")).toContain("Nena Apartments");
+    });
+  });
+
+  it("starts geolocation when the user requests it", async () => {
+    render(
+      <FavoritesProvider>
+        <TravelMap places={places.slice(0, 2)} locale="es" />
+      </FavoritesProvider>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /mostrar mi ubicación/i }));
+
+    await waitFor(() => {
+      expect(watchPositionMock).toHaveBeenCalled();
+    });
+  });
+
+  it("renders the user accuracy layer after a successful geolocation fix", async () => {
+    watchPositionMock.mockImplementation((success: PositionCallback) => {
+      success({
+        coords: {
+          accuracy: 18,
+          heading: 45,
+          latitude: 52.51,
+          longitude: 13.4,
+          speed: 0,
+          altitude: null,
+          altitudeAccuracy: null,
+          toJSON: () => ({}),
+        },
+        timestamp: Date.now(),
+        toJSON: () => ({}),
+      } as GeolocationPosition);
+      return 1;
+    });
+
+    render(
+      <FavoritesProvider>
+        <TravelMap places={places.slice(0, 2)} locale="en" />
+      </FavoritesProvider>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /show my location/i }));
+
+    await waitFor(() => {
+      expect(circleMock).toHaveBeenCalledWith([52.51, 13.4], expect.objectContaining({ radius: 18 }));
     });
   });
 });

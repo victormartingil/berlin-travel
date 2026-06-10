@@ -153,7 +153,7 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
       zIndexOffset: 10_000,
       icon: L.divIcon({
         className: "travel-map-user-marker",
-        html: `<span style="position:relative;display:flex;height:22px;width:22px;align-items:center;justify-content:center;overflow:visible;">${headingMarkup}<span style="position:absolute;inset:0;z-index:1;border-radius:9999px;background:#3b82f6;box-shadow:0 0 0 4px rgba(59,130,246,0.2),0 0 0 2px rgba(255,255,255,0.96),0 8px 20px rgba(37,99,235,0.28);"></span><span style="position:relative;z-index:2;height:8px;width:8px;border-radius:9999px;background:white;"></span></span>`,
+        html: `<span style="position:relative;display:flex;height:22px;width:22px;align-items:center;justify-content:center;overflow:visible;">${headingMarkup}<span style="position:absolute;left:50%;top:50%;z-index:0;height:30px;width:30px;border-radius:9999px;background:rgba(59,130,246,0.2);transform:translate(-50%,-50%);pointer-events:none;"></span><span style="position:absolute;inset:0;z-index:1;border-radius:9999px;background:#3b82f6;border:2px solid rgba(255,255,255,0.96);pointer-events:none;"></span><span style="position:relative;z-index:2;height:8px;width:8px;border-radius:9999px;background:white;"></span></span>`,
         iconSize: [22, 22],
         iconAnchor: [11, 11],
       }),

@@ -164,6 +164,8 @@ describe("TravelMap", () => {
       const userMarkerOptions = markerCalls.at(-1)?.[1] as { icon?: { html?: string } } | undefined;
       expect(userMarkerOptions?.icon?.html).toContain("z-index:2");
       expect(userMarkerOptions?.icon?.html).toContain("overflow:visible");
+      expect(userMarkerOptions?.icon?.html).toContain("height:30px;width:30px");
+      expect(userMarkerOptions?.icon?.html).toContain("border:2px solid rgba(255,255,255,0.96)");
     });
   });
 

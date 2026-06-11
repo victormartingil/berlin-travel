@@ -15,6 +15,21 @@ import { appPath, publicAssetPath } from "@/lib/paths";
 import { t, ui } from "@/lib/i18n";
 import { getCompassLabel } from "@/lib/userLocation";
 
+function buildUserLocationIconHtml(heading: number | null): string {
+  const marker = heading !== null && Number.isFinite(heading)
+    ? `<g transform="rotate(${heading} 17 17)">
+        <path d="M17 4.5 25 27.5 17 23.5 9 27.5Z" fill="#3b82f6" stroke="rgba(255,255,255,0.96)" stroke-width="2.25" stroke-linejoin="round"/>
+        <circle cx="17" cy="17" r="3.75" fill="white"/>
+      </g>`
+    : `<circle cx="17" cy="17" r="9" fill="#3b82f6" stroke="rgba(255,255,255,0.96)" stroke-width="2.25"/>
+       <circle cx="17" cy="17" r="3.75" fill="white"/>`;
+
+  return `<svg aria-hidden="true" viewBox="0 0 34 34" width="34" height="34" style="display:block;overflow:visible;filter:drop-shadow(0 5px 12px rgba(37,99,235,0.26));">
+    <circle cx="17" cy="17" r="15" fill="rgba(59,130,246,0.2)"/>
+    ${marker}
+  </svg>`;
+}
+
 export function TravelMap({ places, locale }: { places: Place[]; locale: Locale }) {
   const elRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<LeafletMap | null>(null);
@@ -144,18 +159,14 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
       weight: 1.5,
     }).addTo(map);
 
-    const headingMarkup = location.heading !== null
-      ? `<span style="position:absolute;left:50%;top:50%;z-index:2;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:18px solid rgba(37,99,235,0.96);transform:translate(-50%,-122%) rotate(${location.heading}deg);transform-origin:50% 92%;filter:drop-shadow(0 2px 3px rgba(15,23,42,0.28));pointer-events:none;"></span>`
-      : "";
-
     const marker = L.marker(latLng, {
       pane: "travel-map-user-location",
       zIndexOffset: 10_000,
       icon: L.divIcon({
         className: "travel-map-user-marker",
-        html: `<span style="position:relative;display:flex;height:22px;width:22px;align-items:center;justify-content:center;overflow:visible;">${headingMarkup}<span style="position:absolute;left:50%;top:50%;z-index:0;height:30px;width:30px;border-radius:9999px;background:rgba(59,130,246,0.2);transform:translate(-50%,-50%);pointer-events:none;"></span><span style="position:absolute;inset:0;z-index:1;border-radius:9999px;background:#3b82f6;border:2px solid rgba(255,255,255,0.96);pointer-events:none;"></span><span style="position:relative;z-index:2;height:8px;width:8px;border-radius:9999px;background:white;"></span></span>`,
-        iconSize: [22, 22],
-        iconAnchor: [11, 11],
+        html: buildUserLocationIconHtml(location.heading),
+        iconSize: [34, 34],
+        iconAnchor: [17, 17],
       }),
     }).addTo(map);
 

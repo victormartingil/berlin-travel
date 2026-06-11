@@ -173,10 +173,9 @@ describe("TravelMap", () => {
       expect(markerMock).toHaveBeenCalledWith([52.51, 13.4], expect.objectContaining({ pane: "travel-map-user-location", zIndexOffset: 10_000 }));
       const markerCalls = markerMock.mock.calls as unknown[][];
       const userMarkerOptions = markerCalls.at(-1)?.[1] as { icon?: { html?: string } } | undefined;
-      expect(userMarkerOptions?.icon?.html).toContain("z-index:2");
-      expect(userMarkerOptions?.icon?.html).toContain("overflow:visible");
-      expect(userMarkerOptions?.icon?.html).toContain("height:30px;width:30px");
-      expect(userMarkerOptions?.icon?.html).toContain("border:2px solid rgba(255,255,255,0.96)");
+      expect(userMarkerOptions?.icon?.html).toContain("viewBox=\"0 0 34 34\"");
+      expect(userMarkerOptions?.icon?.html).toContain("rotate(45 17 17)");
+      expect(userMarkerOptions?.icon).toEqual(expect.objectContaining({ iconAnchor: [17, 17], iconSize: [34, 34] }));
     });
   });
 
@@ -200,6 +199,10 @@ describe("TravelMap", () => {
     await waitFor(() => {
       expect(circleMock).toHaveBeenCalledWith([52.52, 13.405], expect.objectContaining({ radius: 22 }));
       expect(markerMock).toHaveBeenCalledWith([52.52, 13.405], expect.objectContaining({ pane: "travel-map-user-location" }));
+      const markerCalls = markerMock.mock.calls as unknown[][];
+      const userMarkerOptions = markerCalls.at(-1)?.[1] as { icon?: { html?: string } } | undefined;
+      expect(userMarkerOptions?.icon?.html).toContain("viewBox=\"0 0 34 34\"");
+      expect(userMarkerOptions?.icon?.html).not.toContain("rotate(");
     });
   });
 

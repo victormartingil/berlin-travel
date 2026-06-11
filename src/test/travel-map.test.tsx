@@ -152,7 +152,7 @@ describe("TravelMap", () => {
     });
   });
 
-  it("renders the user accuracy layer after a successful geolocation fix", async () => {
+  it("renders user location as a single anchored marker after a successful geolocation fix", async () => {
     watchPositionMock.mockImplementation((success: PositionCallback) => {
       success({
         coords: {
@@ -178,23 +178,25 @@ describe("TravelMap", () => {
     );
 
     await waitFor(() => {
-      expect(circleMock).toHaveBeenCalledWith([52.51, 13.4], expect.objectContaining({ radius: 18 }));
       expect(markerMock).toHaveBeenCalledWith([52.51, 13.4], expect.objectContaining({ pane: "travel-map-user-location", zIndexOffset: 10_000 }));
-      expect(mapOnMock).toHaveBeenCalledWith("zoomstart", expect.any(Function));
-      expect(mapOnMock).toHaveBeenCalledWith("zoomend", expect.any(Function));
       const markerCalls = markerMock.mock.calls as unknown[][];
       const userMarkerOptions = markerCalls.at(-1)?.[1] as { icon?: { html?: string } } | undefined;
-      expect(userMarkerOptions?.icon?.html).toContain("viewBox=\"0 0 34 34\"");
-      expect(userMarkerOptions?.icon?.html).toContain("rotate(45 17 17)");
-      expect(userMarkerOptions?.icon).toEqual(expect.objectContaining({ iconAnchor: [17, 17], iconSize: [34, 34] }));
+      expect(circleMock).not.toHaveBeenCalled();
+      expect(mapOnMock).not.toHaveBeenCalledWith("zoomstart", expect.any(Function));
+      expect(mapOnMock).not.toHaveBeenCalledWith("zoomend", expect.any(Function));
+      expect(userMarkerOptions?.icon?.html).toContain("viewBox=\"0 0 54 54\"");
+      expect(userMarkerOptions?.icon?.html).toContain("data-accuracy-halo=\"true\"");
+      expect(userMarkerOptions?.icon?.html).toContain("r=\"18\"");
+      expect(userMarkerOptions?.icon?.html).toContain("rotate(45 27 27)");
+      expect(userMarkerOptions?.icon).toEqual(expect.objectContaining({ iconAnchor: [27, 27], iconSize: [54, 54] }));
     });
   });
 
-  it("hides the geographic accuracy circle while the map is zooming", async () => {
+  it("scales the marker halo based on geolocation accuracy without adding vector layers", async () => {
     watchPositionMock.mockImplementation((success: PositionCallback) => {
       success({
         coords: {
-          accuracy: 24,
+          accuracy: 120,
           heading: null,
           latitude: 52.51,
           longitude: 13.4,
@@ -216,17 +218,14 @@ describe("TravelMap", () => {
     );
 
     await waitFor(() => {
-      expect(mapOnMock).toHaveBeenCalledWith("zoomstart", expect.any(Function));
-      expect(mapOnMock).toHaveBeenCalledWith("zoomend", expect.any(Function));
+      expect(markerMock).toHaveBeenCalledWith([52.51, 13.4], expect.objectContaining({ pane: "travel-map-user-location" }));
     });
 
-    const zoomStart = mapOnMock.mock.calls.find(([event]) => event === "zoomstart")?.[1] as (() => void) | undefined;
-    const zoomEnd = mapOnMock.mock.calls.find(([event]) => event === "zoomend")?.[1] as (() => void) | undefined;
-    zoomStart?.();
-    zoomEnd?.();
-
-    expect(circleSetStyleMock).toHaveBeenCalledWith({ fillOpacity: 0, opacity: 0 });
-    expect(circleSetStyleMock).toHaveBeenCalledWith({ fillOpacity: 0.12, opacity: 0.65 });
+    const markerCalls = markerMock.mock.calls as unknown[][];
+    const userMarkerOptions = markerCalls.at(-1)?.[1] as { icon?: { html?: string } } | undefined;
+    expect(circleMock).not.toHaveBeenCalled();
+    expect(userMarkerOptions?.icon?.html).toContain("r=\"26\"");
+    expect(userMarkerOptions?.icon?.html).not.toContain("rotate(");
   });
 
   it("rehydrates the last cached location immediately after reload", async () => {
@@ -247,11 +246,12 @@ describe("TravelMap", () => {
     );
 
     await waitFor(() => {
-      expect(circleMock).toHaveBeenCalledWith([52.52, 13.405], expect.objectContaining({ radius: 22 }));
       expect(markerMock).toHaveBeenCalledWith([52.52, 13.405], expect.objectContaining({ pane: "travel-map-user-location" }));
       const markerCalls = markerMock.mock.calls as unknown[][];
       const userMarkerOptions = markerCalls.at(-1)?.[1] as { icon?: { html?: string } } | undefined;
-      expect(userMarkerOptions?.icon?.html).toContain("viewBox=\"0 0 34 34\"");
+      expect(circleMock).not.toHaveBeenCalled();
+      expect(userMarkerOptions?.icon?.html).toContain("viewBox=\"0 0 54 54\"");
+      expect(userMarkerOptions?.icon?.html).toContain("r=\"18\"");
       expect(userMarkerOptions?.icon?.html).not.toContain("rotate(");
     });
   });

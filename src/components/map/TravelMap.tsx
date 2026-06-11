@@ -15,17 +15,24 @@ import { appPath, publicAssetPath } from "@/lib/paths";
 import { t, ui } from "@/lib/i18n";
 import { getCompassLabel } from "@/lib/userLocation";
 
-function buildUserLocationIconHtml(heading: number | null): string {
-  const marker = heading !== null && Number.isFinite(heading)
-    ? `<g transform="rotate(${heading} 17 17)">
-        <path d="M17 4.5 25 27.5 17 23.5 9 27.5Z" fill="#3b82f6" stroke="rgba(255,255,255,0.96)" stroke-width="2.25" stroke-linejoin="round"/>
-        <circle cx="17" cy="17" r="3.75" fill="white"/>
-      </g>`
-    : `<circle cx="17" cy="17" r="9" fill="#3b82f6" stroke="rgba(255,255,255,0.96)" stroke-width="2.25"/>
-       <circle cx="17" cy="17" r="3.75" fill="white"/>`;
+function getAccuracyHaloRadius(accuracy: number): number {
+  if (accuracy <= 25) return 18;
+  if (accuracy <= 75) return 23;
+  return 26;
+}
 
-  return `<svg aria-hidden="true" viewBox="0 0 34 34" width="34" height="34" style="display:block;overflow:visible;filter:drop-shadow(0 5px 12px rgba(37,99,235,0.26));">
-    <circle cx="17" cy="17" r="15" fill="rgba(59,130,246,0.2)"/>
+function buildUserLocationIconHtml({ accuracy, heading }: { accuracy: number; heading: number | null }): string {
+  const haloRadius = getAccuracyHaloRadius(accuracy);
+  const marker = heading !== null && Number.isFinite(heading)
+    ? `<g transform="rotate(${heading} 27 27)">
+        <path d="M27 14.5 35 37.5 27 33.5 19 37.5Z" fill="#3b82f6" stroke="rgba(255,255,255,0.96)" stroke-width="2.25" stroke-linejoin="round"/>
+        <circle cx="27" cy="27" r="3.75" fill="white"/>
+      </g>`
+    : `<circle cx="27" cy="27" r="9" fill="#3b82f6" stroke="rgba(255,255,255,0.96)" stroke-width="2.25"/>
+       <circle cx="27" cy="27" r="3.75" fill="white"/>`;
+
+  return `<svg aria-hidden="true" viewBox="0 0 54 54" width="54" height="54" style="display:block;overflow:visible;filter:drop-shadow(0 5px 12px rgba(37,99,235,0.26));pointer-events:none;">
+    <circle data-accuracy-halo="true" cx="27" cy="27" r="${haloRadius}" fill="rgba(59,130,246,0.18)" stroke="rgba(37,99,235,0.34)" stroke-width="2.25"/>
     ${marker}
   </svg>`;
 }
@@ -149,33 +156,14 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
     if (!location) return;
 
     const latLng = [location.lat, location.lng] as [number, number];
-    const accuracyCircle = L.circle(latLng, {
-      color: "#2563eb",
-      fillColor: "#60a5fa",
-      fillOpacity: 0.12,
-      interactive: false,
-      opacity: 0.65,
-      pane: "travel-map-user-location",
-      radius: Math.max(location.accuracy, 8),
-      weight: 1.5,
-    }).addTo(map);
-    const hideAccuracyCircle = () => {
-      accuracyCircle.setStyle({ fillOpacity: 0, opacity: 0 });
-    };
-    const showAccuracyCircle = () => {
-      accuracyCircle.setStyle({ fillOpacity: 0.12, opacity: 0.65 });
-    };
-    map.on("zoomstart", hideAccuracyCircle);
-    map.on("zoomend", showAccuracyCircle);
-
     const marker = L.marker(latLng, {
       pane: "travel-map-user-location",
       zIndexOffset: 10_000,
       icon: L.divIcon({
         className: "travel-map-user-marker",
-        html: buildUserLocationIconHtml(location.heading),
-        iconSize: [34, 34],
-        iconAnchor: [17, 17],
+        html: buildUserLocationIconHtml({ accuracy: location.accuracy, heading: location.heading }),
+        iconSize: [54, 54],
+        iconAnchor: [27, 27],
       }),
     }).addTo(map);
 
@@ -195,17 +183,12 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
     }
     marker.bindPopup(popup);
 
-    userLayersRef.current.push(accuracyCircle, marker);
+    userLayersRef.current.push(marker);
 
     if (!hasCenteredOnUserRef.current) {
       hasCenteredOnUserRef.current = true;
       map.setView(latLng, 15);
     }
-
-    return () => {
-      map.off("zoomstart", hideAccuracyCircle);
-      map.off("zoomend", showAccuracyCircle);
-    };
   }, [locale, location, mapReady]);
 
   const categories = Array.from(new Set(places.map((p) => p.category)));

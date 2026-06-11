@@ -5,9 +5,11 @@ import { TravelMap } from "@/components/map/TravelMap";
 import { places } from "@/data/places";
 
 const bindPopupMock = vi.fn();
+const circleSetStyleMock = vi.fn();
 const circleMock = vi.fn(() => ({
   addTo: vi.fn().mockReturnThis(),
   remove: vi.fn(),
+  setStyle: circleSetStyleMock,
 }));
 const markerMock = vi.fn(() => ({
   addTo: vi.fn().mockReturnThis(),
@@ -15,6 +17,8 @@ const markerMock = vi.fn(() => ({
   remove: vi.fn(),
 }));
 const localStorageState = new Map<string, string>();
+const mapOffMock = vi.fn();
+const mapOnMock = vi.fn();
 const permissionStatusMock = { onchange: null, state: "prompt" } as unknown as PermissionStatus;
 const watchPositionMock = vi.fn();
 
@@ -24,8 +28,10 @@ vi.mock("leaflet", () => ({
   map: vi.fn(() => ({
     createPane: vi.fn(),
     getPane: vi.fn(() => ({ style: {} })),
-    setView: vi.fn().mockReturnThis(),
+    off: mapOffMock,
+    on: mapOnMock,
     remove: vi.fn(),
+    setView: vi.fn().mockReturnThis(),
   })),
   tileLayer: vi.fn(() => ({ addTo: vi.fn() })),
   marker: markerMock,
@@ -36,6 +42,9 @@ describe("TravelMap", () => {
   beforeEach(() => {
     bindPopupMock.mockClear();
     circleMock.mockClear();
+    circleSetStyleMock.mockClear();
+    mapOffMock.mockClear();
+    mapOnMock.mockClear();
     markerMock.mockClear();
     watchPositionMock.mockReset();
     watchPositionMock.mockReturnValue(1);
@@ -171,12 +180,53 @@ describe("TravelMap", () => {
     await waitFor(() => {
       expect(circleMock).toHaveBeenCalledWith([52.51, 13.4], expect.objectContaining({ radius: 18 }));
       expect(markerMock).toHaveBeenCalledWith([52.51, 13.4], expect.objectContaining({ pane: "travel-map-user-location", zIndexOffset: 10_000 }));
+      expect(mapOnMock).toHaveBeenCalledWith("zoomstart", expect.any(Function));
+      expect(mapOnMock).toHaveBeenCalledWith("zoomend", expect.any(Function));
       const markerCalls = markerMock.mock.calls as unknown[][];
       const userMarkerOptions = markerCalls.at(-1)?.[1] as { icon?: { html?: string } } | undefined;
       expect(userMarkerOptions?.icon?.html).toContain("viewBox=\"0 0 34 34\"");
       expect(userMarkerOptions?.icon?.html).toContain("rotate(45 17 17)");
       expect(userMarkerOptions?.icon).toEqual(expect.objectContaining({ iconAnchor: [17, 17], iconSize: [34, 34] }));
     });
+  });
+
+  it("hides the geographic accuracy circle while the map is zooming", async () => {
+    watchPositionMock.mockImplementation((success: PositionCallback) => {
+      success({
+        coords: {
+          accuracy: 24,
+          heading: null,
+          latitude: 52.51,
+          longitude: 13.4,
+          speed: 0,
+          altitude: null,
+          altitudeAccuracy: null,
+          toJSON: () => ({}),
+        },
+        timestamp: Date.now(),
+        toJSON: () => ({}),
+      } as GeolocationPosition);
+      return 1;
+    });
+
+    render(
+      <FavoritesProvider>
+        <TravelMap places={[]} locale="en" />
+      </FavoritesProvider>,
+    );
+
+    await waitFor(() => {
+      expect(mapOnMock).toHaveBeenCalledWith("zoomstart", expect.any(Function));
+      expect(mapOnMock).toHaveBeenCalledWith("zoomend", expect.any(Function));
+    });
+
+    const zoomStart = mapOnMock.mock.calls.find(([event]) => event === "zoomstart")?.[1] as (() => void) | undefined;
+    const zoomEnd = mapOnMock.mock.calls.find(([event]) => event === "zoomend")?.[1] as (() => void) | undefined;
+    zoomStart?.();
+    zoomEnd?.();
+
+    expect(circleSetStyleMock).toHaveBeenCalledWith({ fillOpacity: 0, opacity: 0 });
+    expect(circleSetStyleMock).toHaveBeenCalledWith({ fillOpacity: 0.12, opacity: 0.65 });
   });
 
   it("rehydrates the last cached location immediately after reload", async () => {

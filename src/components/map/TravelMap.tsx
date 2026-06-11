@@ -153,11 +153,20 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
       color: "#2563eb",
       fillColor: "#60a5fa",
       fillOpacity: 0.12,
+      interactive: false,
       opacity: 0.65,
       pane: "travel-map-user-location",
       radius: Math.max(location.accuracy, 8),
       weight: 1.5,
     }).addTo(map);
+    const hideAccuracyCircle = () => {
+      accuracyCircle.setStyle({ fillOpacity: 0, opacity: 0 });
+    };
+    const showAccuracyCircle = () => {
+      accuracyCircle.setStyle({ fillOpacity: 0.12, opacity: 0.65 });
+    };
+    map.on("zoomstart", hideAccuracyCircle);
+    map.on("zoomend", showAccuracyCircle);
 
     const marker = L.marker(latLng, {
       pane: "travel-map-user-location",
@@ -192,6 +201,11 @@ export function TravelMap({ places, locale }: { places: Place[]; locale: Locale 
       hasCenteredOnUserRef.current = true;
       map.setView(latLng, 15);
     }
+
+    return () => {
+      map.off("zoomstart", hideAccuracyCircle);
+      map.off("zoomend", showAccuracyCircle);
+    };
   }, [locale, location, mapReady]);
 
   const categories = Array.from(new Set(places.map((p) => p.category)));
